@@ -3,6 +3,7 @@ import React from 'react';
 import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
 import ApiProvider from './ApiProvider';
 import SignupView from './views/SignupView';
+import SetProfileView from './views/SetProfileView';
 
 function App() {
 
@@ -17,7 +18,7 @@ function App() {
           <Route path="/login" />
           <Route path="/signup" element={<SignupView/>}/>
           <Route path="/verify" />
-          <Route path="/set-profile" />
+          <Route path="/set-profile" element={<SetProfileView />} />
           <Route path="/listing/:id" />
           <Route path="/profile/:id" />
           <Route path="/favorites" />
