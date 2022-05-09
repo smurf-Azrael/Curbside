@@ -2,12 +2,15 @@ const BASE_API_URL = process.env.REACT_APP_BASE_API_URL;
 
 export default class CurbsideApiClient {
   base_url: string;
+  userToken: string | null;
 
   constructor() {
     this.base_url = BASE_API_URL + '/api'
+    this.userToken = localStorage.getItem('userToken');
   }
 
   async request(options:options) {
+    let auth = this.userToken !== null ? {'Authorization': `Bearer ${this.userToken}`} : undefined;
     let query = new URLSearchParams(options.query || {}).toString();
     if (query !== '') {
       query = '?' + query;
@@ -19,6 +22,7 @@ export default class CurbsideApiClient {
         method: options.method,
         headers: {
           'Content-Type': 'application/json', 
+          ...auth, 
           ...options.headers
         },
         body: options.body ? JSON.stringify(options.body) : null,
@@ -42,15 +46,15 @@ export default class CurbsideApiClient {
     }
   }
 
-  async get(url:string, query:query, options:options) {
+  async get(url:string, query?:query, options?:options) {
     return this.request({method: 'GET', url, query, ...options})
   }
 
-  async post(url:string, body:any, options:options) {
+  async post(url:string, body:any, options?:options) {
     return this.request({method: 'POST', url, body, ...options})
   }
 
-  async patch(url:string, body:any, options:options) {
+  async patch(url:string, body:any, options?:options) {
     return this.request({method:'PATCH', url, body, ...options})
   }
 
@@ -60,7 +64,9 @@ interface options {
   method?: string,
   url?: string,
   body?: any, 
-  headers?: {[key:string]:string}
+  headers?: {
+    [key:string]:string | undefined
+  }
   [key:string]: any;
 }
 

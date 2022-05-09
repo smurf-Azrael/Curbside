@@ -1,8 +1,9 @@
 import './App.css';
 import React from 'react';
 import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
-import ApiProvider from './ApiProvider';
+import ApiProvider from './contexts/ApiProvider';
 import SignupView from './views/SignupView';
+import ListingView from './views/ListingView';
 
 function App() {
 
@@ -23,7 +24,7 @@ function App() {
           <Route path="/favorites" />
           <Route path="chats" />
           <Route path="/chats/:id" />
-          <Route path="/add-listing" />
+          <Route path="/add-listing" element={<ListingView />}/>
         </Routes>
       </ApiProvider>
       </BrowserRouter>
