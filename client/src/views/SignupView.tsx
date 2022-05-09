@@ -1,8 +1,10 @@
+// @ts-nocheck
 import React from 'react';
 import Signup from './../components/Signup';
 import { Container } from 'react-bootstrap';
 
 export default function SignupView() {
+
   return (
     <Container
       className="d-flex align-items-center justify-content-center"
