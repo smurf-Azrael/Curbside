@@ -5,14 +5,9 @@ import { auth } from '../firebase';
 
 interface AuthContextType {
   currentUser: fUser | null | undefined;
-  // currentMongoUser: User | null | undefined;
-  // setCurrentMongoUser: Dispatch<SetStateAction<User | null | undefined>>;
-  // userSigningUp: fUser | null | undefined;
   signUp: (email: string, password: string) => Promise<void>;
-  // signIn: (email: string, password: string, cb: VoidFunction) => Promise<void>;
-  signIn: (email: string, password: string) => Promise<void>;
+  logIn: (email: string, password: string) => Promise<void>;
   logOut: () => Promise<void>;
-  // loading: boolean;
 }
 
 
@@ -27,20 +22,21 @@ export function useAuth() {
 export default function AuthProvider({ children }: {children: any}) {
 
   const [currentUser, setCurrentUser ] = useState<fUser | null>(); // React.useState<string | undefined>(undefined);
-  const [userSigningUp, setUserSigningUp] = useState<fUser | null>();
+  const [loading, setLoading] = useState(true);
 
   async function signUp(email: string, password: string): any {
-    const userCredential = auth.createUserWithEmailAndPassword( email, password);
-    setUserSigningUp(userCredential.user);
+      const userCredential = await auth.createUserWithEmailAndPassword( email, password);
+      return userCredential;
   }
 
-  async function signIn(email: string, password: string): any {
-    await auth.signInWithEmailAndPassword(email, password);
+  async function logIn(email: string, password: string): any {
+      const userCredential = await auth.signInWithEmailAndPassword(email, password);
+      return userCredential;
   }
 
   async function logOut() {
     await auth.signOut();
-    localStorage.removeItem('user');
+    localStorage.removeItem('userToken');
     setCurrentUser(null);
   };
 
@@ -48,8 +44,8 @@ export default function AuthProvider({ children }: {children: any}) {
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
-      // setCurrentUser(user);
-
+      setCurrentUser(user);
+      setLoading(false);
     })
     return unsubscribe
   }, [])
@@ -57,13 +53,13 @@ export default function AuthProvider({ children }: {children: any}) {
   const value: any = {
     currentUser,
       signUp,
-      signIn,
+      logIn,
       logOut
   }
 
   return (
     <AuthContext.Provider value={value}>
-      {children}
+      {!loading && children}
     </AuthContext.Provider>
   );
 }

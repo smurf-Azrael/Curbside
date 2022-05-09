@@ -11,15 +11,106 @@ datasource db {
 }
 
 model User {
-  id            String   @id
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  emailVerified Boolean
+  id            String       @id
   firstName     String?
   lastName      String?
-  email         String   @unique
+  emailVerified Boolean      @default(false)
+  email         String       @unique
   photoUrl      String?
   city          String?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
   longitude     Float?
   latitude      Float?
+  favorites     Listing[]    @relation("favorites")
+  listings      Listing[]
+  buyer         Transaction? @relation("buyer")
+  seller        Transaction? @relation("seller")
+  sellerchat    Chat?        @relation("sellerChat")
+  buyerchat     Chat?        @relation("buyerChat")
+  sellerRating  Rating?      @relation("sellerRating")
+  buyerRating   Rating?      @relation("buyerRating")
+
+}
+
+model Listing {
+  id            String           @id @default(cuid())
+  user          User             @relation(fields: [userId], references: [id])
+  userId        String
+  transactionId String           @default(cuid())
+  title         String
+  description   String
+  images        String[]
+  status        ListingStatus    @default(available)
+  longitude     Float
+  latitude      Float
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  condition     ListingCondition
+  chats         Chat[]
+  tags          Tag[]
+  favorites     User[]           @relation("favorites")
+}
+
+enum ListingStatus {
+  available
+  reserved
+  sold
+}
+
+enum ListingCondition {
+  new
+  gentlyUsed
+  used
+}
+
+model Transaction {
+  id        String   @id @default(cuid())
+  listingId String
+  buyerId   String   @unique
+  sellerId  String   @unique
+  buyer     User     @relation(name: "buyer", fields: [buyerId], references: [id])
+  seller    User     @relation(name: "seller", fields: [sellerId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model Chat {
+  id        String     @id @default(cuid())
+  listing   Listing    @relation(fields: [listingId], references: [id])
+  listingId String
+  seller    User       @relation(name: "sellerChat", fields: [sellerId], references: [id])
+  sellerId  String     @unique
+  buyer     User       @relation(name: "buyerChat", fields: [buyerId], references: [id])
+  buyerId   String     @unique
+  status    ChatStatus @default(open)
+  messages  Message[]
+}
+
+enum ChatStatus {
+  open
+  closed
+}
+
+model Message {
+  id       String @id @default(cuid())
+  senderId String
+  chat     Chat   @relation(fields: [chatId], references: [id])
+  chatId   String @default(cuid())
+  body     String
+}
+
+model Tag {
+  id       String    @id @default(cuid())
+  title    String
+  listings Listing[]
+
+}
+
+model Rating {
+  id       String @id @default(cuid())
+  seller   User   @relation(name: "sellerRating", fields: [sellerId], references: [id])
+  sellerId String @unique
+  buyer    User   @relation(name: "buyerRating", fields: [buyerId], references: [id])
+  buyerId  String @unique
+  rating   Int
 }
