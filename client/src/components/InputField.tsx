@@ -1,18 +1,20 @@
 import { MutableRefObject } from "react"
+import Form from 'react-bootstrap/Form'
 
 export default function InputField(
-  { name, label, type, placeholder, error, fieldref }: inputInterface
+  { name, label, type, placeholder, error, fieldref, required }: inputInterface
 ) {
   return (
-    <div className="InputField">
-      {label && <label>{label}</label>}
-      <input
+    <Form.Group controlId={name} className="InputField">
+      {label && <Form.Label>{label}</Form.Label>}
+      <Form.Control
         type={type || 'text'}
         placeholder={placeholder}
         ref={fieldref}
+        required={required}
       />
-      <p>{error}</p>
-    </div>
+      <Form.Text className={'text-danger'}>{error}</Form.Text>
+    </Form.Group>
   )
 }
 
@@ -23,4 +25,5 @@ interface inputInterface {
   placeholder?: string,
   error?: string,
   fieldref?: MutableRefObject<HTMLInputElement | null>;
+  required?:boolean
 }
