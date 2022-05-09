@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import CurbsideApiClient from "./CurbsideApiClient";
+import CurbsideApiClient from "../CurbsideApiClient";
 
 export const ApiContext = createContext<CurbsideApiClient>({} as CurbsideApiClient);
 
