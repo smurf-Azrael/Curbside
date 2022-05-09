@@ -1,6 +1,6 @@
 import { User } from '@prisma/client';
 import { CustomError } from '../errors/CustomError.class';
-import { USER_PARSING_ERROR } from '../errors/ErrorMessages';
+import { USER_PARSING_ERROR } from '../errors/SharedErrorMessages';
 import { IUser } from '../interfaces/user.interface';
 import { FinalizeUserDTO, InitialUserDTO } from '../interfaces/users.interface.dto';
 import { prisma } from '../prisma/client';
