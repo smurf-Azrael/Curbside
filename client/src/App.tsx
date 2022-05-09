@@ -1,12 +1,14 @@
 import './App.css';
 import React from 'react';
 import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
+import ApiProvider from './ApiProvider';
 
 function App() {
 
   return (
     <div className="App">
       <BrowserRouter>
+      <ApiProvider>
         <Routes>
           <Route path="/"><Navigate to="/home" /></Route>
           <Route path="/home" />
@@ -22,6 +24,7 @@ function App() {
           <Route path="/chats/:id" />
           <Route path="/add-listing" />
         </Routes>
+      </ApiProvider>
       </BrowserRouter>
     </div>
   );
