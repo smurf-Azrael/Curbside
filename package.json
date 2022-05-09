@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "cd server && npm test && cd ../client && npm test",
     "prepare": "husky install"
   },
   "repository": {

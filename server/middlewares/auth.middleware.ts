@@ -8,7 +8,6 @@ const serviceAccount = require('../config/service-account.json');
 initializeApp({ credential: credential.cert(serviceAccount as ServiceAccount) });
 
 export const authMiddleware = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  console.log('AUTH MIDDLEWARE CALLED');
   try {
     const authHeader = req.headers.authorization;
     if (authHeader) {
