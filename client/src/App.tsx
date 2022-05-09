@@ -2,6 +2,7 @@ import './App.css';
 import React from 'react';
 import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
 import ApiProvider from './ApiProvider';
+import SignupView from './views/SignupView';
 
 function App() {
 
@@ -10,11 +11,11 @@ function App() {
       <BrowserRouter>
       <ApiProvider>
         <Routes>
-          <Route path="/"><Navigate to="/home" /></Route>
+          <Route path="/"></Route>
           <Route path="/home" />
           <Route path="/learn-more" />
           <Route path="/login" />
-          <Route path="/signup" />
+          <Route path="/signup" element={<SignupView/>}/>
           <Route path="/verify" />
           <Route path="/set-profile" />
           <Route path="/listing/:id" />
