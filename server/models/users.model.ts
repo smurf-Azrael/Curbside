@@ -1,5 +1,5 @@
 import { CustomError } from '../errors/CustomError.class';
-import { UNKNOWN_SERVER_ERROR } from '../errors/ErrorMessages';
+import { UNKNOWN_SERVER_ERROR } from '../errors/SharedErrorMessages';
 import { IUser } from '../interfaces/user.interface';
 import { FinalizeUserDTO, InitialUserDTO } from '../interfaces/users.interface.dto';
 import userQueries from '../queries/userQueries';
