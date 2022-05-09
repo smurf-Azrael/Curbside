@@ -11,14 +11,15 @@ datasource db {
 }
 
 model User {
-  id        String   @id
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  firstName String
-  lastName  String
-  email     String   @unique
-  photoUrl  String?
-  city      String?
-  longitude Float
-  latitude  Float
+  id            String   @id
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  emailVerified Boolean
+  firstName     String?
+  lastName      String?
+  email         String   @unique
+  photoUrl      String?
+  city          String?
+  longitude     Float?
+  latitude      Float?
 }
