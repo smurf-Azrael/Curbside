@@ -50,9 +50,17 @@ export const getUserByEmail = async (email: string): Promise<IUser | null> => {
   const user: IUser = convertDataBaseUserToUser(dbUser);
   return user;
 };
-
+export const getUserById = async (id: string): Promise<IUser | null> => {
+  const dbUser = await prisma.user.findUnique({ where: { id } });
+  if (!dbUser) {
+    return null;
+  }
+  const user: IUser = convertDataBaseUserToUser(dbUser);
+  return user;
+};
 export default {
   createInitialUser,
   finalizeUser,
-  getUserByEmail
+  getUserByEmail,
+  getUserById
 };
