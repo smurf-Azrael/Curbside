@@ -3,16 +3,11 @@ import { UNKNOWN_SERVER_ERROR } from '../errors/ErrorMessages';
 import { IUser } from '../interfaces/user.interface';
 import { FinalizeUserDTO, InitialUserDTO } from '../interfaces/users.interface.dto';
 import userQueries from '../queries/userQueries';
-import { addInitialUserInputValidation, finalizeUserInputValidation, usersModelErrorMessages } from './users.model.validation';
+import { addInitialUserInputValidation, finalizeUserInputValidation } from './users.model.validation';
 
 const addInitialUser = async (userDetails: InitialUserDTO): Promise<IUser> => {
   try {
-    addInitialUserInputValidation(userDetails);
-    // check if email already in use
-    const userDoesNotExist = await userQueries.getUserByEmail(userDetails.email);
-    if (userDoesNotExist !== null) {
-      throw new CustomError(usersModelErrorMessages.emailExists, 400);
-    }
+    await addInitialUserInputValidation(userDetails);
     const user: IUser = await userQueries.createInitialUser(userDetails);
     return user;
   } catch (error) {
@@ -26,7 +21,7 @@ const addInitialUser = async (userDetails: InitialUserDTO): Promise<IUser> => {
 
 const finalizeUser = async (userId: string, userDetails: FinalizeUserDTO): Promise<IUser> => {
   try {
-    finalizeUserInputValidation(userDetails);
+    await finalizeUserInputValidation(userId, userDetails);
     const user: IUser = await userQueries.finalizeUser(userId, userDetails);
     return user;
   } catch (error) {

@@ -1,6 +1,7 @@
 import { CustomError } from '../errors/CustomError.class';
 import { CustomErrorMessageObject } from '../errors/CustomErrorMessageObject.interface';
 import { FinalizeUserDTO, InitialUserDTO } from '../interfaces/users.interface.dto';
+import userQueries from '../queries/userQueries';
 
 export const usersModelErrorMessages = {
   noEmailVerified: 'No email-verified provided.',
@@ -9,10 +10,11 @@ export const usersModelErrorMessages = {
   emailExists: 'Email already in use.',
   invalidFirstName: 'Please enter a valid first name.',
   invalidLastName: 'Please enter a valid last name.',
-  invalidCoordinate: 'Invalid location coordinates.'
+  invalidCoordinate: 'Invalid location coordinates.',
+  userNotFound: 'User not found.'
 };
 
-export const addInitialUserInputValidation = (userDetails: InitialUserDTO): void => {
+export const addInitialUserInputValidation = async (userDetails: InitialUserDTO): Promise<void> => {
   const errorMessages: CustomErrorMessageObject = {};
   if (userDetails.emailVerified === undefined) {
     errorMessages.emailVerified = usersModelErrorMessages.noEmailVerified;
@@ -26,6 +28,11 @@ export const addInitialUserInputValidation = (userDetails: InitialUserDTO): void
     const regex = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
     if (!userDetails.email.match(regex)?.length) {
       errorMessages.email = usersModelErrorMessages.wrongEmailFormat;
+    } else {
+      const userDoesNotExist = await userQueries.getUserByEmail(userDetails.email);
+      if (userDoesNotExist !== null) {
+        throw new CustomError(usersModelErrorMessages.emailExists, 400);
+      }
     }
   }
   if (Object.keys(errorMessages).length) {
@@ -33,7 +40,7 @@ export const addInitialUserInputValidation = (userDetails: InitialUserDTO): void
   }
 };
 
-export const finalizeUserInputValidation = (userDetails: FinalizeUserDTO): void => {
+export const finalizeUserInputValidation = async (userId: string, userDetails: FinalizeUserDTO): Promise<void> => {
   const errorMessages: CustomErrorMessageObject = {};
   if (userDetails.emailVerified === undefined) {
     errorMessages.emailVerified = usersModelErrorMessages.noEmailVerified;
@@ -46,6 +53,10 @@ export const finalizeUserInputValidation = (userDetails: FinalizeUserDTO): void 
   }
   if (!_coordinationVerification(userDetails.longitude)) {
     errorMessages.longitude = usersModelErrorMessages.invalidCoordinate;
+  }
+  const userExists = await userQueries.getUserById(userId);
+  if (userExists === null) {
+    errorMessages.userId = usersModelErrorMessages.userNotFound;
   }
   if (Object.keys(errorMessages).length) {
     throw new CustomError(JSON.stringify(errorMessages), 400);
