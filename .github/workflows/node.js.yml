@@ -18,6 +18,12 @@ jobs:
       matrix:
         node-version: [16.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+    services:
+      image: postgres:12-alpine
+      env:
+        POSTGRES_USER: ${{secrets.PG_USER}}
+        POSTGRES_PASSWORD: ${{secrets.PG_PW}}
+        POSTGRES_DB: ${{secrets.PG_DB}}
 
     steps:
     - uses: actions/checkout@v3
@@ -26,6 +32,16 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
+    - run: |
+        npm ci
+        npx prisma db push
+        test
+      working-directory: ./server
+      env:
+        DATABASE_URL: ${{secrets.DATABASE_URL}}
+        FIREBASE_API_KEY: ${{secrets.FIREBASE_API_KEY}}
+        SECRET_UID: ${{secrets.SECRET_UID}}
+    - run: |
+        npm ci
+        npm test
+      working-directory: ./client
