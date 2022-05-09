@@ -8,16 +8,19 @@ const addInitialUser = async (req: Request, res: Response, next: NextFunction): 
     const user = await usersModel.addInitialUser(userDetails);
     res.status(200).send({ user });
   } catch (error) {
-    console.log('Error caught: ', error);
     next(error);
   }
 };
 
-const finalizeUser = async (req: Request, res: Response): Promise<void> => {
-  const userDetails: FinalizeUserDTO = req.body;
-  const userId: string = req.params.id;
-  const user = await usersModel.finalizeUser(userId, userDetails);
-  res.status(200).send({ user });
+const finalizeUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const userDetails: FinalizeUserDTO = req.body;
+    const userId: string = req.params.id;
+    const user = await usersModel.finalizeUser(userId, userDetails);
+    res.status(200).send({ user });
+  } catch (error) {
+    next(error);
+  }
 };
 
 export default {
