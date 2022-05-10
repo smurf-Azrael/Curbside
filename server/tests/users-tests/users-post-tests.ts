@@ -7,6 +7,7 @@ import { getTestIdToken } from '../test-helpers';
 export const usersPostTests = (): void => {
   describe('POST /users', () => {
     const mockInitialUserInput: InitialUserDTO = {
+      // id: process.env.SECRET_UID!,
       id: mocks.Users[0].id,
       email: mocks.Users[0].email,
       emailVerified: mocks.Users[0].emailVerified
