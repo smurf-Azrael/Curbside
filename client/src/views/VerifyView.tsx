@@ -1,13 +1,31 @@
-import React, { useState } from 'react';
-import { Container, Card, Button, Alert } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import { Container, Card, Button } from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';
+import { reload } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
 
 export default function VerifyView() {
-  const [error, setError] = useState("");
-  const { currentUser, sendVerificationAgain } = useAuth();
+  const [error, setError, ] = useState("");
+  const { currentUser, sendVerification } = useAuth();
+  const [emailSent, setEmailSent] = useState(false);
+  const navigate = useNavigate();
   async function handleClick() {
-    await sendVerificationAgain();
+    await sendVerification(currentUser)
+      .then((e:any) => console.log('eee', e))
+      .catch((e:any) => console.log('error', e));
+    setEmailSent(true);
+    const checkingUser = setInterval(async () => {
+      const user = await reload(currentUser);
+      console.log('user interval');
+      console.log(user);
+      console.log('INTERVAL');
+      if (currentUser.user.multiFactor.user.accessToken){
+        clearInterval(checkingUser)
+        navigate("/");
+      }
+    }, 3000)
   }
+
   return (
     <Container
       className="d-flex align-items-center justify-content-center"
@@ -23,7 +41,7 @@ export default function VerifyView() {
               type="submit"
               className="w-100"
               style={{ marginTop: "20px" }}
-            >Send verification email again
+            >Send verification email {emailSent ? "again" : ""}
             </Button>
           </Card.Body>
         </Card>

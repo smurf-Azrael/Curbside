@@ -34,17 +34,9 @@ export default function Login() {
       setFormErrors({});
       setLoading(true);
       const firebaseLogIn = await logIn(emailRef.current!.value, passwordRef.current!.value)
-      console.log('firebaseLogIn')
-      console.log(firebaseLogIn)
       const userToken = firebaseLogIn.user.multiFactor.user.accessToken;
       localStorage.setItem("userToken", JSON.stringify(userToken));
-      const emailVerified = firebaseLogIn.user.multiFactor.user.emailVerified;
-      if(emailVerified){
-        navigate('/')
-      } else {
-        sendVerificationAgain();
-        navigate('/verify');
-      }
+      navigate('/')
     } catch (error: any) {
       if (error.code === 'auth/too-many-requests') {
         setFormErrors({ globalError: "Too many requests, try again later" })

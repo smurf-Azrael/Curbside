@@ -42,17 +42,16 @@ export default function Signup() {
       setFormErrors({});
       setLoading(true);
       const firebaseSignUp = await signUp(emailRef.current!.value, passwordRef.current!.value);
-      console.log('firebaseSignUp')
-      console.log(firebaseSignUp)
       const userToken = firebaseSignUp.user.multiFactor.user.accessToken;
-      localStorage.setItem("userToken", JSON.stringify(userToken));
+      localStorage.setItem("userToken", userToken);
       const body = {
-        id:"",
-        email:"",
-        emailVerified:"false"
+        id: firebaseSignUp.user.multiFactor.user.uid,
+        email:firebaseSignUp.user.multiFactor.user.email,
+        emailVerified: true
       };
-      // await api.post('/users', body);
-      navigate("/verify");
+      await api.post('/users', body);
+      navigate("/set-profile");
+      // navigate("/verify") // check later
     } catch (error: any) {
       if (error.code === 'auth/email-already-in-use') {
         setFormErrors({
