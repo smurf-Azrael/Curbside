@@ -25,7 +25,7 @@ export const addListingInputValidation = async (listingDetails: AddListingDTO): 
   if (typeof listingDetails.priceInCents !== 'number' || listingDetails.priceInCents < 0 || listingDetails.priceInCents > 10000000) {
     errorMessages.priceInCents = listingsModelErrorMessages.invalidPrice;
   }
-  if (listingDetails.photoUrls === undefined || JSON.parse(listingDetails.photoUrls).length === 0) {
+  if (listingDetails.photoUrls === undefined || listingDetails.photoUrls.length === 0) {
     errorMessages.photoUrls = listingsModelErrorMessages.invalidPhotos;
   }
   if (!coordinationVerification(listingDetails.longitude)) {
