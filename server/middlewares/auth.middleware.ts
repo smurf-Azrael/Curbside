@@ -1,10 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import { initializeApp } from 'firebase-admin/app';
 import { auth, credential } from 'firebase-admin';
-import { USER_NOT_AUTHENTICATED } from '../errors/SharedErrorMessages';
 import dotenv from 'dotenv';
 import path from 'path';
-
 dotenv.config({ path: path.resolve(__dirname, `../config/${process.env.NODE_ENV}.env`) });
 
 initializeApp({
@@ -26,13 +24,13 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
         req.user = user;
         next();
       } else {
-        res.status(403).send({ error: USER_NOT_AUTHENTICATED });
+        next();
       }
     } else {
-      res.status(403).send({ error: USER_NOT_AUTHENTICATED });
+      next();
     }
   } catch (error) {
     console.log(error);
-    res.status(401).send({ error: USER_NOT_AUTHENTICATED });
+    next();
   }
 };
