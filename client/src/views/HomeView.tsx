@@ -4,8 +4,11 @@ import { mocks } from '../mocks';
 import ListingPreview from "../components/ListingPreview";
 import { ReactComponent as FiltersIcon } from "../assets/filters.svg";
 import FiltersComponent from "../components/FiltersComponent";
+import Header from '../components/Header';
+import Footer from "../components/Footer";
+import '../styling/HomeView.css';
 
-export default function HomeView () {
+export default function HomeView() {
   const api = useApi()
 
   const [listings, setListings] = useState<any[]>([]);
@@ -15,14 +18,14 @@ export default function HomeView () {
   const offset = useRef<number>(0);
   const radiusField = useRef<HTMLInputElement>(null); // for geo modal
 
-  const tagsField = useRef<{[key:string]:string}>({})
+  const tagsField = useRef<{ [key: string]: string }>({})
   const sortByField = useRef<HTMLSelectElement>(null);
   const maxPriceField = useRef<HTMLInputElement>(null);
-  const minPriceField =  useRef<HTMLInputElement>(null); 
+  const minPriceField = useRef<HTMLInputElement>(null);
   const conditionField = useRef<HTMLSelectElement>(null);
   const fields = { tagsField, sortByField, maxPriceField, minPriceField, conditionField }
 
-  const getListings = useCallback(async (offset:number) => {
+  const getListings = useCallback(async (offset: number) => {
     const tagString = Object.values(tagsField.current).join('+');
     const tags = tagString !== '' ? tagString : undefined;
     const radius = radiusField.current?.value || 10;
@@ -30,14 +33,14 @@ export default function HomeView () {
     const minPrice = minPriceField.current?.value || 0;
     const sortBy = sortByField.current?.value || 'closest';
     const condition = conditionField.current?.value || 'all';
-    const query = {offset:offset, radius, condition, tags, maxPrice, minPrice, sortBy};
-    return  await api.get('/listings', query);
+    const query = { offset: offset, radius, condition, tags, maxPrice, minPrice, sortBy };
+    return await api.get('/listings', query);
   }, [api])
 
 
-  
+
   async function handleScroll() {
-    const res = await getListings(offset.current); 
+    const res = await getListings(offset.current);
     if (res.ok) {
       offset.current = res.body.data.offset;
       setListings(res.body.data.listings);
@@ -53,7 +56,7 @@ export default function HomeView () {
     console.log(conditionField.current?.value)
     console.log(sortByField.current?.value)
 
-    const res = await getListings(0); 
+    const res = await getListings(0);
     if (res.ok) {
       offset.current = res.body.data.offset;
       setListings(res.body.data.listings);
@@ -62,7 +65,7 @@ export default function HomeView () {
     }
   }
 
-  useEffect(()=> {
+  useEffect(() => {
     const loadData = async () => {
       const res = await getListings(0);
       if (res.ok) {
@@ -74,18 +77,42 @@ export default function HomeView () {
       }
     }
     loadData();
-  }, [api, getListings]) 
-  
+  }, [api, getListings])
+
   return (
     <>
-      <button onClick={ openFiltersModal }><FiltersIcon /></button>
-        <FiltersComponent
-          filtersAreVisible={FiltersAreVisible}
-          closeFiltersModal={closeFiltersModal}
-          applyFilters={applyFilters}
-          fields={fields}
-        />
-      {listings.length > 0 && listings.map(listing => <ListingPreview key={listing.id} listing={listing}/>)}
+      <Header />
+      <div className="body-background">
+        <div className="body-frame">
+          <div className="global-search-area">
+            <input></input>
+            <div className='search-buttons-group' >
+              <button className="search-location-button search-btn" onClick={openFiltersModal}>
+                <p>
+                  <i className="bi bi-geo-alt"></i>
+                  Location
+                </p>
+              </button>
+              <button className="search-filter-button search-btn" onClick={openFiltersModal}>
+                <p>
+                  Filter
+                  <i className="bi bi-sliders"></i>
+                </p>
+              </button>
+            </div>
+          </div>
+          <FiltersComponent
+            filtersAreVisible={FiltersAreVisible}
+            closeFiltersModal={closeFiltersModal}
+            applyFilters={applyFilters}
+            fields={fields}
+          />
+          <div className='listings-container' >
+            {listings.length > 0 && listings.map(listing => <ListingPreview key={listing.id} listing={listing} />)}
+          </div>
+        </div>
+      </div>
+      <Footer />
     </>
   )
 }
