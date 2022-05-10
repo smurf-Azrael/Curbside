@@ -24,7 +24,7 @@ const getListings = async (): Promise<any> => {
     const listings: IListing[] = await spatialQueryListings(query);
     return listings;
   } catch (error) {
-    console.log('/models/users.model addInitialUser ERROR', error);
+    console.log('/models/users.model getListings ERROR', error);
     if (error instanceof CustomError) {
       throw error;
     }
