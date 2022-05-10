@@ -22,7 +22,8 @@ const convertDataBaseListingToListing = (dbListing: Listing): IListing => {
       photoUrls: dbListing.photoUrls,
       longitude: dbListing.longitude,
       latitude: dbListing.latitude,
-      status: dbListing.status
+      status: dbListing.status,
+      createdAt: dbListing.createdAt
     };
     return listing;
   } catch (error) {
