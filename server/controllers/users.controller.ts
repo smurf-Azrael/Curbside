@@ -28,8 +28,8 @@ const getUserProfile = async (req: Request, res: Response, next: NextFunction): 
   try {
     const userId = req.params.id;
     // @ts-ignore
-    const profile: ProfileDTO = await usersModel.getUser(req.user?.uid, userId);
-    res.status(200).send({ profile });
+    const { user, listings }: ProfileDTO = await usersModel.getUser(req.user?.uid, userId);
+    res.status(200).send({ user, listings });
   } catch (error) {
     next(error);
   }
