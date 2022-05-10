@@ -1,16 +1,16 @@
 const BASE_API_URL = process.env.REACT_APP_BASE_API_URL;
+if (!BASE_API_URL) throw new Error('add env vars for REACT_APP_BASE_API_URL')
 
 export default class CurbsideApiClient {
   base_url: string;
-  userToken: string | null;
 
   constructor() {
     this.base_url = BASE_API_URL + '/api'
-    this.userToken = localStorage.getItem('userToken');
   }
 
   async request(options:options) {
-    let auth = this.userToken !== null ? {'Authorization': `Bearer ${this.userToken}`} : undefined;
+    const userToken = await localStorage.getItem('userToken');
+    let auth = userToken !== null ? {'Authorization': `Bearer ${userToken}`} : undefined;
     Object.keys(options.query).forEach(key => options.query[key] === undefined && delete options.query[key])
     let query = new URLSearchParams(options.query || {}).toString();
     if (query !== '') {
