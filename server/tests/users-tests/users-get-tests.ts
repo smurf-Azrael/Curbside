@@ -5,6 +5,8 @@ import { prisma } from '../../prisma/client';
 import { getTestIdToken } from '../test-helpers';
 import { IUser } from '../../interfaces/user.interface';
 import { USER_NOT_FOUND } from '../../errors/SharedErrorMessages';
+import { AddListingDTO } from '../../interfaces/listings.interface.dto';
+import { IListingCondition } from '../../interfaces/listing.interface';
 export const usersGetTests = (): void => {
   describe('GET /users/:id', () => {
     const mockUserInput: IUser = { ...mocks.Users[0], createdAt: new Date(), id: process.env.SECRET_UID! };
@@ -17,6 +19,7 @@ export const usersGetTests = (): void => {
     });
 
     afterEach(async () => {
+      await prisma.listing.deleteMany();
       await prisma.user.deleteMany();
     });
 
@@ -33,7 +36,19 @@ export const usersGetTests = (): void => {
 
     it('Should get ONLY public user data and listings if requesting user is target user', async () => {
       expect(await prisma.user.findUnique({ where: { id: mockUserInputForeign.id } })).toBeNull();
+      const mockAddListing: AddListingDTO = {
+        userId: mockUserInputForeign.id,
+        title: mocks.listings[0].title,
+        description: mocks.listings[0].description,
+        priceInCents: mocks.listings[0].price,
+        currency: 'eur',
+        condition: IListingCondition.new,
+        photoUrls: JSON.stringify(mocks.listings[0].images),
+        longitude: mocks.listings[0].longitude,
+        latitude: mocks.listings[0].latitude
+      };
       await prisma.user.create({ data: mockUserInputForeign });
+      await prisma.listing.create({ data: mockAddListing });
       const { body } = await request(server)
         .get(`/users/${mockUserInputForeign.id}`)
         .set('Authorization', 'Bearer ' + testToken)
@@ -49,6 +64,7 @@ export const usersGetTests = (): void => {
       expect(body.user.latitude).toBeUndefined();
       expect(body.user.emailVerified).toBeUndefined();
       expect(body.user.email).toBeUndefined();
+      expect(body.listings.length).toEqual(1);
     });
 
     it('Should send a custom error to the client if something goes wrong', async () => {
