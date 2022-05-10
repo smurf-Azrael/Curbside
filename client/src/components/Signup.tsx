@@ -4,6 +4,8 @@ import InputField from './InputField';
 import { useAuth } from '../contexts/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { SignUpError } from '../interfaces/AuthenticationError';
+import "bootstrap/dist/css/bootstrap.min.css";
+import { useApi } from '../contexts/ApiProvider';
 
 export default function Signup() {
   const emailRef = React.useRef<HTMLInputElement>(null);
@@ -13,6 +15,7 @@ export default function Signup() {
   const { signUp } = useAuth();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const api = useApi();
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>): Promise<void> {
     setFormErrors({});
@@ -21,7 +24,7 @@ export default function Signup() {
     const password = passwordRef.current!.value;
     const confirmPassword = passwordConfirmRef.current!.value;
     const errors: SignUpError = {};
-
+    
     if (!email) {
       errors.email = "Email must not be empty"
     }
@@ -38,9 +41,18 @@ export default function Signup() {
     try {
       setFormErrors({});
       setLoading(true);
-      const firebaseSignUp = await signUp(emailRef.current!.value, passwordRef.current!.value)
+      const firebaseSignUp = await signUp(emailRef.current!.value, passwordRef.current!.value);
+      console.log('firebaseSignUp')
+      console.log(firebaseSignUp)
       const userToken = firebaseSignUp.user.multiFactor.user.accessToken;
       localStorage.setItem("userToken", JSON.stringify(userToken));
+      const body = {
+        id:"",
+        email:"",
+        emailVerified:"false"
+      };
+      // await api.post('/users', body);
+      navigate("/verify");
     } catch (error: any) {
       if (error.code === 'auth/email-already-in-use') {
         setFormErrors({
@@ -88,7 +100,14 @@ export default function Signup() {
               fieldref={passwordConfirmRef}
               error={formErrors.password2}
             />
-            <Button disabled={loading} type="submit" className="w-100" >Sign up</Button>
+            <Button
+              disabled={loading}
+              type="submit"
+              className="w-100"
+              style={{marginTop: "10px"}}
+              >
+                Sign up
+              </Button>
           </Form>
         </Card.Body>
       </Card>
