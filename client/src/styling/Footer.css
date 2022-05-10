@@ -1,0 +1,14 @@
+.footer-container{
+  min-height: 60px;
+  background-color: aquamarine;
+  display: flex;
+  align-items: center;
+  box-shadow: 0px 0px 8px 0.5px rgba(8, 1, 1, 0.199);
+}
+.footer-frame{
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  font-size: 25px;
+  padding: 0px 4vw;
+}
