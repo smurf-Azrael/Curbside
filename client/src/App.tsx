@@ -7,6 +7,7 @@ import LoginView from './views/LoginView';
 import VerifyView from './views/VerifyView';
 import AuthProvider from './contexts/AuthContext';
 import ListingView from './views/ListingView';
+import HomeView from './views/HomeView';
 
 function App() {
 
@@ -16,8 +17,8 @@ function App() {
         <ApiProvider>
           <AuthProvider>
             <Routes>
-              <Route path="/"></Route>
-              <Route path="/home" />
+              <Route path="/" element={<HomeView />}/>
+              <Route path="/home" element={<HomeView />}/>
               <Route path="/learn-more" />
               <Route path="/login" element={<LoginView />} />
               <Route path="/signup" element={<SignupView />} />
