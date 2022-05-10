@@ -62,8 +62,19 @@ export const spatialQueryListings = async (spatialQueryRes: any): Promise<any> =
   return dbListings.map(convertDataBaseListingToListing);
 };
 
+export const getListingsByUserId = async (userId: string):Promise<IListing[]> => {
+  const dbListings = await prisma.listing.findMany({
+    where: {
+      userId
+    }
+  });
+  const listings = dbListings.map(convertDataBaseListingToListing);
+  return listings;
+};
+
 export default {
   createListing,
   spatialQuery,
-  spatialQueryListings
+  spatialQueryListings,
+  getListingsByUserId
 };
