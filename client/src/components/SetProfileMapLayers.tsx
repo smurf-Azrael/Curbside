@@ -22,9 +22,7 @@ function SetProfileMapLayers({position, setPosition}) {
 })
 
 return (
-  <Marker position={position} icon={customIcon}>
-          <Popup>You are here</Popup>
-        </Marker>
+  <Marker position={position} icon={customIcon}/>
 )}
 
 export default SetProfileMapLayers
