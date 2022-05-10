@@ -9,6 +9,7 @@ import { errorHandler } from './middlewares/error-handler.middleware';
 dotenv.config({ path: path.resolve(__dirname, `./config/${process.env.NODE_ENV}.env`) });
 
 const PORT = process.env.PORT;
+
 export const app = express();
 
 app.use(cors());
