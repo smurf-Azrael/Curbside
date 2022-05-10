@@ -6,7 +6,7 @@ import SetProfileMapLayers from './SetProfileMapLayers';
 // import { Icon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
-function Map() {
+function Map({position, setPosition}) {
 
 
   return (
@@ -16,16 +16,16 @@ function Map() {
       {/* @ts-ignore:next-line */}
       <MapContainer
         center={{lng:13.38, lat:52.51}}
-        zoom={10}
+        zoom={11}
         scrollWheelZoom={true}
         style={{ height: '300px', width: '50%' }}
       >
         <TileLayer
           // @ts-ignore:next-line
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+          url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
         />
-        <SetProfileMapLayers />
+        <SetProfileMapLayers position={position} setPosition={setPosition} />
       </MapContainer>
       {/* --- ---------------------------- --- */}
       </div>

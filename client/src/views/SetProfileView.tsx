@@ -8,6 +8,7 @@ export default function SetProfileView() {
   const nameRef = React.useRef<HTMLInputElement>(null);
   const lastNameRef = React.useRef<HTMLInputElement>(null);
   const [formErrors, setFormErrors] = useState<{[key:string]:string}>({});
+  const [position, setPosition] = useState({lng:13.39, lat:52.51})
 
   const handleSubmit = (event: FormEvent) => {
     console.log('is in handleSubmit');
@@ -24,10 +25,12 @@ export default function SetProfileView() {
     }
     setFormErrors(errors);
     if(Object.keys(errors).length >0) {
+      console.log(errors);
       return;
     }
     if (name && lastName) {
       console.log('add functionality to update profile here');
+      console.log({position});
     }
   }
 
@@ -52,7 +55,7 @@ export default function SetProfileView() {
               error={formErrors.lastName}
             />
           </Form>
-          <Map />
+          <Map position={position} setPosition={setPosition}/>
           <Button type="submit" className="w-100" >Submit</Button>
         </Card.Body>
       </Card>
