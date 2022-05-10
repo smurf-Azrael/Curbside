@@ -1,27 +1,33 @@
 import React, { useState } from 'react';
-import { Card, Button, Alert } from 'react-bootstrap';
+import { Container, Card, Button, Alert } from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';
 
 export default function VerifyView() {
   const [error, setError] = useState("");
-  const { logOut } = useAuth();
-  const { currentUser } = useAuth();
-  async function handleLogOut() {
-    await logOut();
+  const { currentUser, sendVerificationAgain } = useAuth();
+  async function handleClick() {
+    await sendVerificationAgain();
   }
   return (
-    <>
-    <Card>
-      <Card.Body>
-      <h2 className="text-center mb-4">Sign up</h2>
-      {error && <Alert variant="danger">{error}</Alert>}
-      <strong>Email: </strong>{currentUser.email}
-      </Card.Body>
-
-    </Card>
-    <div className="w-100 text-center mt-2">
-      <Button variant="link" onClick={handleLogOut}>Log OUt</Button>
-    </div>
-    </>
+    <Container
+      className="d-flex align-items-center justify-content-center"
+      style={{ minHeight: "100vh" }}
+    >
+      <div className="w-100" style={{ maxWidth: "400px" }}>
+        <Card>
+          <Card.Body>
+            <h2 className="text-center mb-4">Verify Email</h2>
+            <strong>Email: </strong>{currentUser.email}
+            <Button
+              onClick={handleClick}
+              type="submit"
+              className="w-100"
+              style={{ marginTop: "20px" }}
+            >Send verification email again
+            </Button>
+          </Card.Body>
+        </Card>
+      </div>
+    </Container>
   )
 }

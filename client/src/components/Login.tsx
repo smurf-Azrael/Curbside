@@ -9,7 +9,7 @@ export default function Login() {
   const emailRef = React.useRef<HTMLInputElement>(null);
   const passwordRef = React.useRef<HTMLInputElement | null>(null);
   const [formErrors, setFormErrors] = useState<LogInError>({})
-  const { logIn } = useAuth();
+  const { logIn, sendVerificationAgain } = useAuth();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -19,7 +19,7 @@ export default function Login() {
     const email = emailRef.current!.value;
     const password = passwordRef.current!.value;
     const errors: LogInError = {};
-    
+
     if (!email) {
       errors.email = "Email must not be empty"
     }
@@ -34,17 +34,26 @@ export default function Login() {
       setFormErrors({});
       setLoading(true);
       const firebaseLogIn = await logIn(emailRef.current!.value, passwordRef.current!.value)
+      console.log('firebaseLogIn')
+      console.log(firebaseLogIn)
       const userToken = firebaseLogIn.user.multiFactor.user.accessToken;
       localStorage.setItem("userToken", JSON.stringify(userToken));
+      const emailVerified = firebaseLogIn.user.multiFactor.user.emailVerified;
+      if(emailVerified){
+        navigate('/')
+      } else {
+        sendVerificationAgain();
+        navigate('/verify');
+      }
     } catch (error: any) {
       if (error.code === 'auth/too-many-requests') {
-        setFormErrors({globalError : "Too many requests, try again later"})
+        setFormErrors({ globalError: "Too many requests, try again later" })
       } else if (error.code === 'auth/wrong-password') {
         setFormErrors({
-          globalError : "Wrong credentials",
+          globalError: "Wrong credentials",
         })
       } else {
-        setFormErrors({globalError : "Failed to log in"})
+        setFormErrors({ globalError: "Failed to log in" })
 
       }
     }
@@ -72,7 +81,14 @@ export default function Login() {
               fieldref={passwordRef}
               error={formErrors.password}
             />
-            <Button disabled={loading} type="submit" className="w-100" >Log in</Button>
+            <Button
+              disabled={loading}
+              type="submit"
+              className="w-100"
+              style={{ marginTop: "10px" }}
+            >
+              Log in
+            </Button>
           </Form>
         </Card.Body>
       </Card>
