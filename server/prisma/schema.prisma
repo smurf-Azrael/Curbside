@@ -105,7 +105,6 @@ model Tag {
   id       String    @id @default(cuid())
   title    String
   listings Listing[]
-
 }
 
 model Rating {

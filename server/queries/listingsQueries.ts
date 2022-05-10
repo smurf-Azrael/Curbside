@@ -53,13 +53,29 @@ export const spatialQuery = async (longitude: number, latitude: number, radius:n
 
 export const spatialQueryListings = async (spatialQueryRes: any): Promise<any> => {
   const dbListings = await prisma.listing.findMany({
+    skip: 50, // offset
     where: {
-      id: {
-        in: spatialQueryRes.map(({ id }: {id:string}) => id)
-      }
+      AND: [
+        {
+          id: {
+            in: spatialQueryRes.map(({ id }: {id:string}) => id)
+          }
+        },
+        {
+          priceInCents: {
+            gte: 0, // minPrice
+            lte: 10000 // maxPrice
+          }
+        }
+      ]
+    },
+    orderBy: {
+      createdAt: undefined, // sortBy
+      priceInCents: undefined
     }
   });
   return dbListings.map(convertDataBaseListingToListing);
+  // TODO filter by tags in javascript
 };
 
 export const getListingsByUserId = async (userId: string):Promise<IListing[]> => {

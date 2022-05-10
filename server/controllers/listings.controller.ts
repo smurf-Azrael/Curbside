@@ -13,10 +13,23 @@ const addListing = async (req: Request, res: Response, next: NextFunction): Prom
   }
 };
 
-const getListings = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+interface GetListingQueryParams {
+  offset: string,
+  radius: string,
+  tags?: string,
+  maxPrice?: string,
+  minPrice: string,
+  sortBy: string,
+  condition: string
+}
+
+const getListings = async (req: Request<unknown, unknown, unknown, GetListingQueryParams>, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const listings:IListing[] = await listingsModel.getListings();
-    res.status(200).send({ listings });
+    const queryParams = req.query;
+    console.log(queryParams);
+    // const listings:IListing[] = await listingsModel.getListings();
+    res.status(200).send({ hello: 'world' });
+    // res.status(200).send({ listings });
   } catch (error) {
     next(error);
   }
