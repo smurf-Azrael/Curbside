@@ -1,8 +1,10 @@
 
 import React, { FormEvent, useState } from 'react';
 import { Form, Button, Card } from 'react-bootstrap';
+import { useApi } from '../contexts/ApiProvider';
 import InputField from '../components/InputField';
 import Map from '../components/SetProfileMap';
+import { useNavigate } from 'react-router-dom';
 
 export default function SetProfileView() {
   const nameRef = React.useRef<HTMLInputElement>(null);
@@ -10,9 +12,12 @@ export default function SetProfileView() {
   const [formErrors, setFormErrors] = useState<{[key:string]:string}>({});
   const [position, setPosition] = useState({lng:13.39, lat:52.51})
 
-  const handleSubmit = (event: FormEvent) => {
-    console.log('is in handleSubmit');
+  const api = useApi();
+  const navigate = useNavigate();
+
+  async function handleSubmit (event: FormEvent) {
     event.preventDefault();
+    console.log('is in handleSubmit');
     const name = nameRef.current?.value;
     const lastName = lastNameRef.current?.value;
     const errors: {[key:string]:string} = {};
@@ -29,10 +34,26 @@ export default function SetProfileView() {
       return;
     }
     if (name && lastName) {
-      console.log('add functionality to update profile here');
-      console.log({position});
+      const additionalUserInfo = {
+        firstName: name,
+        lastName: lastName,
+        city: 'Berlin',
+        longitude: position.lng,
+        latitude:position.lat
+      };
+      console.log({additionalUserInfo});
+
+      const res = await api.patch(`/users/${'4f4442a7-aa22-490b-9945-34763d9fa0d9'}`, additionalUserInfo);
+      if (res.ok) {
+        navigate('/explore')
+      } else {
+        // Need to add notification to customer
+        console.log('ERROR')
+      }
+
     }
   }
+
 
   return (
     <>
@@ -54,9 +75,10 @@ export default function SetProfileView() {
               fieldref={lastNameRef}
               error={formErrors.lastName}
             />
-          </Form>
+          <p>My Location</p>
           <Map position={position} setPosition={setPosition}/>
           <Button type="submit" className="w-100" >Submit</Button>
+          </Form>
         </Card.Body>
       </Card>
     </>

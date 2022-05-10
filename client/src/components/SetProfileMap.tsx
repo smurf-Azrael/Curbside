@@ -18,7 +18,7 @@ function Map({position, setPosition}) {
         center={{lng:13.38, lat:52.51}}
         zoom={11}
         scrollWheelZoom={true}
-        style={{ height: '300px', width: '50%' }}
+        style={{ height: '300px', width: '100%' }}
       >
         <TileLayer
           // @ts-ignore:next-line
