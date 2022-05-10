@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "cd server && npm test && cd ../client && npm test",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "install": "cd server && npm install && cd ../client && npm install"
   },
   "repository": {
     "type": "git",

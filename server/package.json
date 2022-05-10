@@ -5,7 +5,8 @@
   "main": "index.ts",
   "scripts": {
     "test": "cross-env NODE_ENV=test jest",
-    "start": "cross-env NODE_ENV=dev nodemon"
+    "start": "cross-env NODE_ENV=dev nodemon",
+    "db": "cross-env NODE_ENV=test prisma migrate dev"
   },
   "author": "",
   "license": "ISC",
