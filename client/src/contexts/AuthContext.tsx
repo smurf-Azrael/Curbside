@@ -29,7 +29,7 @@ export default function AuthProvider({ children }: { children: any }) {
     //   .then(() => {console.log('userFirebase', userFirebase); sendVerificationAgain()})
     //   .catch(e => console.log('error in promise', e))
     (async () => new Promise(resolve => setUserFirebase(userCredential)))()
-      .then(() => {console.log('userFirebase', userFirebase); sendVerificationAgain()})
+      .then(() => {console.log('userFirebase', userFirebase); return sendVerificationAgain()})
 
     console.log('signUp / post setstate')
     // await sendVerificationAgain();
