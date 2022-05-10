@@ -46,6 +46,17 @@ export const createListing = async (listingDetails: AddListingDTO): Promise<ILis
   return listing;
 };
 
+export const getListingsByUserId = async (userId: string):Promise<IListing[]> => {
+  const dbListings = await prisma.listing.findMany({
+    where: {
+      userId
+    }
+  });
+  const listings = dbListings.map(convertDataBaseListingToListing);
+  return listings;
+};
+
 export default {
-  createListing
+  createListing,
+  getListingsByUserId
 };
