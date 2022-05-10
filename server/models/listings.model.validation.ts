@@ -25,8 +25,6 @@ export const addListingInputValidation = async (listingDetails: AddListingDTO): 
   if (typeof listingDetails.priceInCents !== 'number' || listingDetails.priceInCents < 0 || listingDetails.priceInCents > 10000000) {
     errorMessages.priceInCents = listingsModelErrorMessages.invalidPrice;
   }
-  console.log('unparsed urls: ', listingDetails.photoUrls);
-  console.log('parsed urls: ', JSON.parse(listingDetails.photoUrls));
   if (listingDetails.photoUrls === undefined || JSON.parse(listingDetails.photoUrls).length === 0) {
     errorMessages.photoUrls = listingsModelErrorMessages.invalidPhotos;
   }
