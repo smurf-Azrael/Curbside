@@ -9,11 +9,13 @@ export default function ListingPreview ({listing}: {[key:string]:any}) {
   }
 
   let croppedTitle = '';
-  if(listing.title.length > 17) {
+  if(listing.title.length > 20) {
     croppedTitle = `${listing.title.slice(0, 20)}...`;
   } else {
     croppedTitle = listing.title;
   }
+  const price = (listing.price / 100).toLocaleString('en-US', { style: 'currency', currency: 'EUR' });
+ 
 
   return (
     <div className='card-product-content'>
@@ -21,7 +23,7 @@ export default function ListingPreview ({listing}: {[key:string]:any}) {
         <img src={listing.images[0]} alt='product sold' width='200' />
       </div>
       <div className='card-product-product-info'>
-        <span className='product-info-price'>{listing.price} EUR</span>
+        <span className='product-info-price'>{price}</span>
         <span className='product-info-title'>{croppedTitle}</span>
         <span className='product-info-description'>{croppedDescription}</span>
       </div>
