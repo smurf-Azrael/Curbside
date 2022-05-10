@@ -1,6 +1,7 @@
 import { useApi } from "../contexts/ApiProvider"
 import { useEffect, useState, useRef, useCallback } from "react"
 import { mocks } from '../mocks';
+import ListingPreview from "../components/ListingPreview";
 export default function HomeView () {
   const api = useApi()
 
@@ -15,13 +16,14 @@ export default function HomeView () {
   const conditionField = useRef<HTMLSelectElement>(null);
 
   const getListings = useCallback(async (offset:number) => {
-    const tags = Object.values(tagsField.current).join('+');
+    const tagString = Object.values(tagsField.current).join('+');
+    const tags = tagString !== '' ? tagString : undefined;
     const radius = radiusField.current?.value || 10;
     const maxPrice = maxPriceField.current?.value || undefined;
     const minPrice = minPriceField.current?.value || 0;
     const sortBy = sortByField.current?.value || 'closest';
     const condition = conditionField.current?.value || 'all';
-    const query = {offset:offset, radius, condition, tags: tags !== '' ? tags : undefined, maxPrice, minPrice, sortBy};
+    const query = {offset:offset, radius, condition, tags, maxPrice, minPrice, sortBy};
     return  await api.get('/listings', query);
   }, [api])
 
@@ -61,8 +63,8 @@ export default function HomeView () {
   }, [api, getListings]) 
   
   return (
-    <ul>
-      {listings.length > 0 && listings.map(listing => <li key={listing.id}>{listing.title}</li>)}
-    </ul>
+    <>
+      {listings.length > 0 && listings.map(listing => <ListingPreview key={listing.id} listing={listing}/>)}
+    </>
   )
 }
