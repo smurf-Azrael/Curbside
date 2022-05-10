@@ -1,0 +1,51 @@
+ .body-background {
+   width: 100%;
+   background-color: rgba(230, 225, 225, 0.801);
+ }
+
+ .body-frame {
+   width: 100%;
+ }
+
+ .search-buttons-group {
+   width: 80vw;
+   max-width: 500px;
+   margin: auto;
+ }
+
+ p {
+   margin: 0;
+   display: flex;
+   gap: 20px;
+   justify-content: center;
+ }
+
+ .search-btn {
+   background-color: white;
+   color: var(--main-green-color);
+   border: 1.5px solid var(--main-green-color);
+   width: 50%;
+ }
+
+ .search-location-button {
+   background-color: white;
+   color: var(--main-green-color);
+   border-top-left-radius: 5px;
+   border-bottom-left-radius: 5px;
+ }
+
+ .search-filter-button {
+   border-left: none;
+   border-top-right-radius: 5px;
+   border-bottom-right-radius: 5px;
+
+ }
+
+ .listings-container {
+   border: 1px solid blue;
+   display: flex;
+   flex-wrap: wrap;
+   max-width: 500px;
+   justify-content: center;
+   margin: auto;
+ }
