@@ -115,7 +115,7 @@ export default function AddListingView() {
                 error={formErrors.description}
                 fieldref={priceField}
               />
-              <div className='location-div-container'>
+              {/* <div className='location-div-container'>
                 <div className='location-input-div'>
                   <InputField
                     name="location"
@@ -130,7 +130,8 @@ export default function AddListingView() {
                     <i className="bi bi-geo-fill"></i>
                   </button>
                 </div>
-              </div>
+              </div> */}
+
               <div className="add-item-buttons">
                 <button type='submit' style={{border:'none', padding:'0'}}>
                   <ButtonWide content={"Create"} fill={true} />
