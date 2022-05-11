@@ -1,15 +1,22 @@
- .body-background {
+ .body-content-background {
    width: 100%;
    background-color: rgba(230, 225, 225, 0.801);
+   padding: 15px;
  }
 
  .body-frame {
-   width: 100%;
+   max-width: 500px;
+   border: 2px solid pink;
+   /* margin: auto; */
+   display: flex;
+   flex-direction: column;
+   margin: 0px auto;
+   gap: 30px;
  }
 
  .search-buttons-group {
-   width: 80vw;
-   max-width: 500px;
+   width: 90%;
+
    margin: auto;
  }
 
@@ -18,6 +25,14 @@
    display: flex;
    gap: 20px;
    justify-content: center;
+ }
+
+ .global-search-area {
+   border: 1px solid blue;
+   width: 100%
+ }
+ .global-search-area input{
+   width: 60%;
  }
 
  .search-btn {
@@ -45,6 +60,7 @@
    border: 1px solid blue;
    display: flex;
    flex-wrap: wrap;
+   width:96%;
    max-width: 500px;
    justify-content: center;
    margin: auto;

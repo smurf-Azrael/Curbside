@@ -13,7 +13,7 @@ export default function HomeView() {
 
   const [listings, setListings] = useState<any[]>([]);
   const [FiltersAreVisible, setFiltersAreVisible] = useState(false);
-
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const offset = useRef<number>(0);
   const radiusField = useRef<HTMLInputElement>(null); // for geo modal
@@ -34,7 +34,7 @@ export default function HomeView() {
     const sortBy = sortByField.current?.value || 'closest';
     const condition = conditionField.current?.value || 'all';
     const query = { offset: offset, radius, condition, tags, maxPrice, minPrice, sortBy };
-    return await api.get('/listings', query);
+    return await api.get('/next/listings', query);
   }, [api])
 
 
@@ -60,6 +60,7 @@ export default function HomeView() {
     if (res.ok) {
       offset.current = res.body.data.offset;
       setListings(res.body.data.listings);
+
     } else {
       //handleError
     }
@@ -79,10 +80,12 @@ export default function HomeView() {
     loadData();
   }, [api, getListings])
 
+  
+
   return (
-    <>
+    <div className="body-page">
       <Header />
-      <div className="body-background">
+      <div className="body-content-background">
         <div className="body-frame">
           <div className="global-search-area">
             <input></input>
@@ -108,11 +111,13 @@ export default function HomeView() {
             fields={fields}
           />
           <div className='listings-container' >
-            {listings.length > 0 && listings.map(listing => <ListingPreview key={listing.id} listing={listing} />)}
+            {listings.map(listing => <ListingPreview key={listing.id} listing={listing} />)}
           </div>
         </div>
       </div>
-      <Footer />
-    </>
+      <div className='body-footer-container'>
+        <Footer />
+      </div>
+    </div>
   )
 }
