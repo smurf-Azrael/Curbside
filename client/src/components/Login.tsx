@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import { Form, Button, Card } from 'react-bootstrap';
 import InputField from './InputField';
 import { useAuth } from '../contexts/AuthContext';
@@ -9,9 +9,15 @@ export default function Login() {
   const emailRef = React.useRef<HTMLInputElement>(null);
   const passwordRef = React.useRef<HTMLInputElement | null>(null);
   const [formErrors, setFormErrors] = useState<LogInError>({})
-  const { logIn, sendVerificationAgain } = useAuth();
+  const { currentUser, logIn } = useAuth();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(()=> {
+    if (currentUser) {
+      navigate('/')
+    }
+  }, [currentUser, navigate])
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>): Promise<void> {
     setFormErrors({});
@@ -30,14 +36,13 @@ export default function Login() {
     if (Object.keys(errors).length > 0) {
       return;
     }
-    try {
-      setFormErrors({});
-      setLoading(true);
-      const firebaseLogIn = await logIn(emailRef.current!.value, passwordRef.current!.value)
-      const userToken = firebaseLogIn.user.multiFactor.user.accessToken;
-      localStorage.setItem("userToken", JSON.stringify(userToken));
+    setFormErrors({});
+    setLoading(true);
+    const res = await logIn(emailRef.current!.value, passwordRef.current!.value)
+    if (res.ok) {
       navigate('/')
-    } catch (error: any) {
+    } else {
+      const error = res.error;
       if (error.code === 'auth/too-many-requests') {
         setFormErrors({ globalError: "Too many requests, try again later" })
       } else if (error.code === 'auth/wrong-password') {
@@ -46,9 +51,10 @@ export default function Login() {
         })
       } else {
         setFormErrors({ globalError: "Failed to log in" })
-
+  
       }
     }
+
     setLoading(false);
   }
 
