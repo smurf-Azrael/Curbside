@@ -1,21 +1,26 @@
-import React, { useState, FormEvent } from 'react';
+import React, { useState, FormEvent, useEffect } from 'react';
 import { Form, Button, Card } from 'react-bootstrap';
 import InputField from './InputField';
 import { useAuth } from '../contexts/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { SignUpError } from '../interfaces/AuthenticationError';
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useApi } from '../contexts/ApiProvider';
 
 export default function Signup() {
   const emailRef = React.useRef<HTMLInputElement>(null);
   const passwordRef = React.useRef<HTMLInputElement | null>(null);
   const passwordConfirmRef = React.useRef<HTMLInputElement | null>(null);
   const [formErrors, setFormErrors] = useState<SignUpError>({})
-  const { signUp } = useAuth();
+  const { signUp, currentUser } = useAuth();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const api = useApi();
+
+  useEffect(()=> {
+    if (currentUser) {
+      navigate('/home')
+    }
+  }, [currentUser, navigate])
+
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>): Promise<void> {
     setFormErrors({});
@@ -38,21 +43,14 @@ export default function Signup() {
     if (Object.keys(errors).length > 0) {
       return;
     }
-    try {
-      setFormErrors({});
-      setLoading(true);
-      const firebaseSignUp = await signUp(emailRef.current!.value, passwordRef.current!.value);
-      const userToken = firebaseSignUp.user.multiFactor.user.accessToken;
-      localStorage.setItem("userToken", userToken);
-      const body = {
-        id: firebaseSignUp.user.multiFactor.user.uid,
-        email:firebaseSignUp.user.multiFactor.user.email,
-        emailVerified: true
-      };
-      await api.post('/users', body);
+
+    setFormErrors({});
+    setLoading(true);
+    const res = await signUp(emailRef.current!.value, passwordRef.current!.value);
+    if (res.ok) {
       navigate("/set-profile");
-      // navigate("/verify") // check later
-    } catch (error: any) {
+    } else {
+      const error = res.error
       if (error.code === 'auth/email-already-in-use') {
         setFormErrors({
           globalError: "Failed to create an account",
