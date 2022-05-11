@@ -49,8 +49,8 @@ export default class CurbsideApiClient {
 
     try {
       res.body = response.status !== 204 ? await response.json() : null
-    } catch (e){
-      res.body.data.errors = e
+    } catch (error ){
+      res.body = error; // this should follow a format/
     }
     return res;
   }
