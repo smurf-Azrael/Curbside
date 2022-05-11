@@ -18,8 +18,8 @@ function App() {
         <ApiProvider>
           <AuthProvider>
             <Routes>
-              <Route path="/" element={<HomeView />}/>
-              <Route path="/home" element={<HomeView />}/>
+              <Route path="/" element={<HomeView />} />
+              <Route path="/home" element={<HomeView />} />
               <Route path="/learn-more" />
               <Route path="/login" element={<LoginView />} />
               <Route path="/signup" element={<SignupView />} />
