@@ -111,8 +111,8 @@ model Tag {
 model Rating {
   id       String @id @default(cuid())
   seller   User   @relation(name: "sellerRating", fields: [sellerId], references: [id])
-  sellerId String @unique
+  sellerId String 
   buyer    User   @relation(name: "buyerRating", fields: [buyerId], references: [id])
-  buyerId  String @unique
+  buyerId  String 
   rating   Int
 }
