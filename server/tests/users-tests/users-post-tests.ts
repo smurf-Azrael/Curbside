@@ -30,10 +30,10 @@ export const usersPostTests = (): void => {
         .expect('Content-Type', /json/)
         .send(mockInitialUserInput)
         .expect(200);
-      expect(body.user.id).toEqual(mockInitialUserInput.id);
-      expect(body.user.email).toEqual(mockInitialUserInput.email);
-      expect(body.user.emailVerified).toEqual(mockInitialUserInput.emailVerified);
-      expect(body.user).toHaveProperty('createdAt');
+      expect(body.data.user.id).toEqual(mockInitialUserInput.id);
+      expect(body.data.user.email).toEqual(mockInitialUserInput.email);
+      expect(body.data.user.emailVerified).toEqual(mockInitialUserInput.emailVerified);
+      expect(body.data.user).toHaveProperty('createdAt');
       expect(await prisma.user.findUnique({ where: { id: mockInitialUserInput.id } })).not.toBeNull();
     });
 

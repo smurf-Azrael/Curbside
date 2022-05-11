@@ -4,15 +4,7 @@
    padding: 15px;
  }
 
- .body-frame {
-   max-width: 500px;
-   border: 2px solid pink;
-   /* margin: auto; */
-   display: flex;
-   flex-direction: column;
-   margin: 0px auto;
-   gap: 30px;
- }
+ 
 
  .search-buttons-group {
    width: 90%;

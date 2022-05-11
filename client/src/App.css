@@ -1,8 +1,8 @@
 :root{
   --main-green-color: #13C1AC;
+  --main-background-color: #efeded;
   --header-height: 60px;
   --footer-height: 50px;
-  --main-font:‘Inter’, sans-serif;
 }
 .App {
   text-align: center;
@@ -21,8 +21,21 @@
 .body-content-background{
   min-height: calc(100vh - var(--header-height) - var(--footer-height) );
 }
+.body-frame {
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  margin: 0px auto;
+  gap: 30px;
+}
 .body-footer-container{
   margin-top: auto;
   position: sticky;
   bottom:-1px;
+}
+.body-frame-padding {
+  margin-top: 20px;
+  background-color: white;
+  padding:20px;
+  border-radius: 10px;
 }
