@@ -7,7 +7,7 @@ const addListing = async (req: Request, res: Response, next: NextFunction): Prom
   try {
     const listingDetails: AddListingDTO = req.body;
     const listing = await listingsModel.addListing(listingDetails);
-    res.status(200).send({ listing });
+    res.status(200).send({ data: { listing } });
   } catch (error) {
     next(error);
   }
@@ -30,7 +30,7 @@ const getListings = async (req: Request<unknown, unknown, unknown, GetListingQue
     const queryParams = req.query;
     // @ts-ignore
     const listings:IListing[] = await listingsModel.getListings(req.user?.uid, queryParams);
-    res.status(200).send({ listings });
+    res.status(200).send({ data: { listings } });
   } catch (error) {
     next(error);
   }

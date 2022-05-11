@@ -39,10 +39,10 @@ export const usersPatchTests = (): void => {
         .expect('Content-Type', /json/)
         .send(mockFinalizeUserInput)
         .expect(200);
-      expect(body.user.emailVerified).toEqual(mockFinalizeUserInput.emailVerified);
-      expect(body.user).toHaveProperty('id');
-      expect(body.user).toHaveProperty('email');
-      expect(body.user).toHaveProperty('createdAt');
+      expect(body.data.user.emailVerified).toEqual(mockFinalizeUserInput.emailVerified);
+      expect(body.data.user).toHaveProperty('id');
+      expect(body.data.user).toHaveProperty('email');
+      expect(body.data.user).toHaveProperty('createdAt');
     });
 
     it('Should send a custom error to the client if something goes wrong', async () => {
