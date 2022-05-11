@@ -1,10 +1,7 @@
 import { Request, Response, Router } from 'express';
 import usersController from './controllers/users.controller';
 import listingsController from './controllers/listings.controller';
-<<<<<<< HEAD
 import { getListingByListingId } from './controllers/listingsById.controller';
-=======
->>>>>>> 208bd9918396b4b62e0c03af372a332a4990abff
 import { loginRequired } from './middlewares/login-required.middleware';
 import { PAGE_NOT_FOUND } from './errors/SharedErrorMessages';
 
@@ -16,11 +13,8 @@ router.patch('/users/:id', loginRequired, usersController.finalizeUser);
 
 router.post('/listings', loginRequired, listingsController.addListing);
 
-<<<<<<< HEAD
 router.get('/listings/:id', getListingByListingId);
-=======
 router.get('/listings', listingsController.getListings);
->>>>>>> 208bd9918396b4b62e0c03af372a332a4990abff
 
 router.get('/users/:id', usersController.getUserProfile);
 

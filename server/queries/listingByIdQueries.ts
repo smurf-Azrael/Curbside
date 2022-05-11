@@ -37,6 +37,7 @@ export const getListingsByListingId = async (id: string):Promise<IListing | null
     }
   });
   const listings = dbListing ? (convertDataBaseListingToListing(dbListing)) : dbListing;
+  console.log('listings', listings);
   return listings;
 };
 
