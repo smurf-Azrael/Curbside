@@ -21,7 +21,7 @@ router.get('/login', loginRequired, (req: Request, res: Response) => {
     data: {
       user: {
         // @ts-ignore
-        id: req.user.id,
+        id: req.user.uid,
         // @ts-ignore
         email: req.user.email
       }
