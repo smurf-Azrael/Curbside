@@ -30,7 +30,7 @@ const getListings = async (req: Request<unknown, unknown, unknown, GetListingQue
     const queryParams = req.query;
     // @ts-ignore
     const listings:IListing[] = await listingsModel.getListings(req.user?.uid, queryParams);
-    res.status(200).send({ data: { listings } });
+    res.status(200).send({ data: { listings, offset: +queryParams.offset + listings.length } });
   } catch (error) {
     next(error);
   }
