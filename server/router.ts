@@ -16,6 +16,19 @@ router.get('/listings', listingsController.getListings);
 
 router.get('/users/:id', usersController.getUserProfile);
 
+router.get('/login', loginRequired, (req: Request, res: Response) => {
+  res.send({
+    data: {
+      user: {
+        // @ts-ignore
+        id: req.user.uid,
+        // @ts-ignore
+        email: req.user.email
+      }
+    }
+  });
+});
+
 router.get('*', (req: Request, res: Response) => {
   res.status(404).send({ error: PAGE_NOT_FOUND });
 });
