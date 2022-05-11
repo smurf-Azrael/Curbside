@@ -2,7 +2,6 @@ import { useApi } from "../contexts/ApiProvider"
 import { useEffect, useState, useRef, useCallback } from "react"
 import { mocks } from '../mocks';
 import ListingPreview from "../components/ListingPreview";
-import { ReactComponent as FiltersIcon } from "../assets/filters.svg";
 import FiltersComponent from "../components/FiltersComponent";
 import Header from '../components/Header';
 import Footer from "../components/Footer";
@@ -80,11 +79,14 @@ export default function HomeView() {
       if (res.ok) {
         offset.current = res.body.data.offset;
         setListings(res.body.data.listings);
+        setLoadingError(false);
       } else {
-        console.log('error', res.body)
+        console.log('error', res.body);
         // handleErrors
-        setListings(mocks.listings)
+        setListings(mocks.listings);
+        setLoadingError(false);
       }
+      setIsLoading(false);
     }
     loadData();
   }, [api, getListings])
@@ -121,9 +123,9 @@ export default function HomeView() {
             fields={fields}
           />
           <div className='listings-container' >
-            {/* {isLoading && <img style={{ height: '20vw',maxHeight: '200px', borderRadius: '20px' }} src={loader} alt="Loading..." />}
-            {loadingError && <p>Couldn't load listings :/</p>} */}
             {listings.map(listing => <ListingPreview key={listing.id} listing={listing} />)}
+            {loadingError && <p>Couldn't load listings :/</p>}
+            {isLoading && <img style={{ height: '20vw',maxHeight: '200px', borderRadius: '20px' }} src={loader} alt="Loading..." />}
           </div>
         </div>
       </div>
