@@ -65,7 +65,7 @@ export const listingsPostTests = (): void => {
         .post('/listings')
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/)
-        .send({ ...mockAddListing, photoUrls: JSON.stringify([]) });
+        .send({ ...mockAddListing, photoUrls: [] });
       expect(statusCode).toBeGreaterThanOrEqual(400);
       expect(body).toHaveProperty('error');
       expect(JSON.parse(body.error).photoUrls).toEqual(listingsModelErrorMessages.invalidPhotos);

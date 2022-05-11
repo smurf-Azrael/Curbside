@@ -1,3 +1,4 @@
+import { ITag } from './tag.interface';
 
 export enum IListingCondition {
   new = 'new',
@@ -17,4 +18,5 @@ export interface IListing {
   latitude: number,
   status: string,
   createdAt: Date,
+  tags?: ITag[]
 }
