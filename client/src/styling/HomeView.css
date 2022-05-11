@@ -20,11 +20,32 @@
  }
 
  .global-search-area {
-   border: 1px solid blue;
-   width: 100%
+   /* border: 1px solid blue; */
+   width: 100%;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   gap:20px;
  }
- .global-search-area input{
-   width: 60%;
+ .search-bar-container{
+   display: flex;
+   width: 90%;
+   border-radius: 5px;
+   border: 1px solid var(--main-green-color);
+   background-color: white;
+  }
+  .search-bar-container button {
+    border: none;
+    background-color: transparent;
+    width: 8%;
+  }
+  .search-bar-container i {
+    margin-top: 5px;
+  }
+  .search-bar-container input {
+    width: 90%;
+    height:35px;
+    border: none;
  }
 
  .search-btn {

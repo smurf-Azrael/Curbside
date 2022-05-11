@@ -1,5 +1,5 @@
 import { useApi } from "../contexts/ApiProvider"
-import { useEffect, useState, useRef, useCallback } from "react"
+import { useEffect, useState, useRef, useCallback, KeyboardEvent } from "react"
 import { mocks } from '../mocks';
 import ListingPreview from "../components/ListingPreview";
 import FiltersComponent from "../components/FiltersComponent";
@@ -36,7 +36,8 @@ export default function HomeView() {
     const minPrice = minPriceField.current?.value || 0;
     const sortBy = sortByField.current?.value || 'closest';
     const condition = conditionField.current?.value || 'all';
-    const query = {offset:offset, radius, condition, tags, maxPrice, minPrice, sortBy};
+    const query = { offset: offset, radius, condition, tags, maxPrice, minPrice, sortBy };
+    // add 'search' to query
     const res = await api.get('/listings', query)
     return res;
   }, [api])
@@ -90,6 +91,12 @@ export default function HomeView() {
   }, [api, getListings])
 
 
+  function pressEnter(event: KeyboardEvent<HTMLInputElement>): any {
+    if (event.key === 'Enter') {
+      getListings(0);
+    }
+  }
+
 
   return (
     <div className="body-page">
@@ -97,8 +104,12 @@ export default function HomeView() {
       <div className="body-content-background">
         <div className="body-frame">
           <LocationPreviewComponent />{/*Empty for now, but will possibly show preview of your location  */}
+
           <div className="global-search-area">
-            <input></input>
+            <div className='search-bar-container'>
+              <button onClick={() => getListings(0)}><i className="bi bi-search"></i></button>
+              <input className="main-input" placeholder="Search.." onKeyPress={(e) => pressEnter(e)} />
+            </div>
             <div className='search-buttons-group' >
               <button className="search-location-button search-btn" onClick={openFiltersModal}>
                 <p>
@@ -114,6 +125,7 @@ export default function HomeView() {
               </button>
             </div>
           </div>
+
           <FiltersComponent
             filtersAreVisible={FiltersAreVisible}
             closeFiltersModal={closeFiltersModal}
@@ -123,7 +135,7 @@ export default function HomeView() {
           <div className='listings-container' >
             {listings.map(listing => <ListingPreview key={listing.id} listing={listing} />)}
             {loadingError && <p>Couldn't load listings :/</p>}
-            {isLoading && <img style={{ height: '20vw',maxHeight: '200px', borderRadius: '20px' }} src={loader} alt="Loading..." />}
+            {isLoading && <img style={{ height: '20vw', maxHeight: '200px', borderRadius: '20px' }} src={loader} alt="Loading..." />}
           </div>
         </div>
       </div>
