@@ -2,10 +2,15 @@
   margin-top: 10px;
   display: flex;
   flex-direction: column;
-  padding: 10px;
+}
+
+.profile-page-wrapper p {
+  padding-left: 13px;
+  margin: 0;
 }
 
 .profile-about-info-wrapper {
+  padding: 13px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -17,12 +22,17 @@
   margin-right: 2px;
 }
 
+.profile-image-wrapper img {
+  border-radius: 50%;
+}
+
 .profile-basic-info-edit-wrapper {
   padding: 5px;
   width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: flex-start;
 }
 
 .profile-favorites-wrapper {
@@ -38,4 +48,6 @@
   flex-direction: row;
   justify-content: flex-start;
   flex-wrap: wrap;
+  background-color: #F4F5F7;
+  padding: 7px;
 }
