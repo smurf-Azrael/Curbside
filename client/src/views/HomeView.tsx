@@ -8,13 +8,15 @@ import Header from '../components/Header';
 import Footer from "../components/Footer";
 import '../styling/HomeView.css';
 import LocationPreviewComponent from "../components/LocationPreviewComponent";
+import loader from '../assets/loader.gif';
 
 export default function HomeView() {
   const api = useApi()
 
   const [listings, setListings] = useState<any[]>([]);
   const [FiltersAreVisible, setFiltersAreVisible] = useState(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [loadingError, setLoadingError] = useState<boolean>(false)
 
   const offset = useRef<number>(0);
 
@@ -35,8 +37,9 @@ export default function HomeView() {
     const minPrice = minPriceField.current?.value || 0;
     const sortBy = sortByField.current?.value || 'closest';
     const condition = conditionField.current?.value || 'all';
-    const query = { offset: offset, radius, condition, tags, maxPrice, minPrice, sortBy };
-    return await api.get('/next/listings', query);
+    const query = {offset:offset, radius, condition, tags, maxPrice, minPrice, sortBy};
+    const res = await api.get('/listings', query)
+    return res;
   }, [api])
 
 
@@ -71,13 +74,17 @@ export default function HomeView() {
 
   useEffect(() => {
     const loadData = async () => {
+
+      console.log('heeeeere')
       const res = await getListings(0);
       if (res.ok) {
+        console.log('hello')
         offset.current = res.body.data.offset;
         setListings(res.body.data.listings);
       } else {
-        setListings(mocks.listings)
+        console.log('error', res.body)
         // handleErrors
+        setListings(mocks.listings)
       }
     }
     loadData();
@@ -115,6 +122,8 @@ export default function HomeView() {
             fields={fields}
           />
           <div className='listings-container' >
+            {/* {isLoading && <img style={{ height: '20vw',maxHeight: '200px', borderRadius: '20px' }} src={loader} alt="Loading..." />}
+            {loadingError && <p>Couldn't load listings :/</p>} */}
             {listings.map(listing => <ListingPreview key={listing.id} listing={listing} />)}
           </div>
         </div>

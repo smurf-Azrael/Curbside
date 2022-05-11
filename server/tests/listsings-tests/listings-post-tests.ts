@@ -53,11 +53,11 @@ export const listingsPostTests = (): void => {
         .expect('Content-Type', /json/)
         .send(mockAddListing)
         .expect(200);
-      expect(body.listing.title).toEqual(mockAddListing.title);
-      expect(body.listing.description).toEqual(mockAddListing.description);
-      expect(body.listing).toHaveProperty('id');
-      expect(body.listing).toHaveProperty('createdAt');
-      expect(await prisma.listing.findUnique({ where: { id: body.listing.id } })).not.toBeNull();
+      expect(body.data.listing.title).toEqual(mockAddListing.title);
+      expect(body.data.listing.description).toEqual(mockAddListing.description);
+      expect(body.data.listing).toHaveProperty('id');
+      expect(body.data.listing).toHaveProperty('createdAt');
+      expect(await prisma.listing.findUnique({ where: { id: body.data.listing.id } })).not.toBeNull();
     });
 
     it('Should send a custom error to the client if the validation fails', async () => {
@@ -65,7 +65,7 @@ export const listingsPostTests = (): void => {
         .post('/listings')
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/)
-        .send({ ...mockAddListing, photoUrls: JSON.stringify([]) });
+        .send({ ...mockAddListing, photoUrls: [] });
       expect(statusCode).toBeGreaterThanOrEqual(400);
       expect(body).toHaveProperty('error');
       expect(JSON.parse(body.error).photoUrls).toEqual(listingsModelErrorMessages.invalidPhotos);
