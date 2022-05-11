@@ -25,14 +25,9 @@ export const addInitialUserInputValidation = async (userDetails: InitialUserDTO)
   if (typeof userDetails.email !== 'string') {
     errorMessages.email = usersModelErrorMessages.wrongEmailFormat;
   } else {
-    const regex = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
-    if (!userDetails.email.match(regex)?.length) {
-      errorMessages.email = usersModelErrorMessages.wrongEmailFormat;
-    } else {
-      const userDoesNotExist = await userQueries.getUserByEmail(userDetails.email);
-      if (userDoesNotExist !== null) {
-        throw new CustomError(usersModelErrorMessages.emailExists, 400);
-      }
+    const userDoesNotExist = await userQueries.getUserByEmail(userDetails.email);
+    if (userDoesNotExist !== null) {
+      throw new CustomError(usersModelErrorMessages.emailExists, 400);
     }
   }
   if (Object.keys(errorMessages).length) {
@@ -42,9 +37,9 @@ export const addInitialUserInputValidation = async (userDetails: InitialUserDTO)
 
 export const finalizeUserInputValidation = async (userId: string, userDetails: FinalizeUserDTO): Promise<void> => {
   const errorMessages: CustomErrorMessageObject = {};
-  if (userDetails.emailVerified === undefined) {
-    errorMessages.emailVerified = usersModelErrorMessages.noEmailVerified;
-  }
+  // if (userDetails.emailVerified === undefined) {
+  //   errorMessages.emailVerified = usersModelErrorMessages.noEmailVerified;
+  // }
   if (!_nameVerification(userDetails.firstName)) {
     errorMessages.firstName = usersModelErrorMessages.invalidFirstName;
   }
