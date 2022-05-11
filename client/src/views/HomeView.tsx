@@ -7,6 +7,7 @@ import FiltersComponent from "../components/FiltersComponent";
 import Header from '../components/Header';
 import Footer from "../components/Footer";
 import '../styling/HomeView.css';
+import LocationPreviewComponent from "../components/LocationPreviewComponent";
 
 export default function HomeView() {
   const api = useApi()
@@ -16,9 +17,10 @@ export default function HomeView() {
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const offset = useRef<number>(0);
+
   const radiusField = useRef<HTMLInputElement>(null); // for geo modal
 
-  const tagsField = useRef<{ [key: string]: string }>({})
+  const tagsField = useRef<{ [key: string]: string }>({}) // categories need to be decided {catName: false, }
   const sortByField = useRef<HTMLSelectElement>(null);
   const maxPriceField = useRef<HTMLInputElement>(null);
   const minPriceField = useRef<HTMLInputElement>(null);
@@ -55,6 +57,7 @@ export default function HomeView() {
     closeFiltersModal();
     console.log(conditionField.current?.value)
     console.log(sortByField.current?.value)
+    console.log(maxPriceField.current?.value)
 
     const res = await getListings(0);
     if (res.ok) {
@@ -80,13 +83,14 @@ export default function HomeView() {
     loadData();
   }, [api, getListings])
 
-  
+
 
   return (
     <div className="body-page">
       <Header />
       <div className="body-content-background">
         <div className="body-frame">
+          <LocationPreviewComponent />{/*Empty for now, but will possibly show preview of your location  */}
           <div className="global-search-area">
             <input></input>
             <div className='search-buttons-group' >
