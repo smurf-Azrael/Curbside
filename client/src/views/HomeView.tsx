@@ -4,27 +4,32 @@ import { mocks } from '../mocks';
 import ListingPreview from "../components/ListingPreview";
 import { ReactComponent as FiltersIcon } from "../assets/filters.svg";
 import FiltersComponent from "../components/FiltersComponent";
+import Header from '../components/Header';
+import Footer from "../components/Footer";
+import '../styling/HomeView.css';
 import LocationPreviewComponent from "../components/LocationPreviewComponent";
+import loader from '../assets/loader.gif';
 
-export default function HomeView () {
+export default function HomeView() {
   const api = useApi()
 
   const [listings, setListings] = useState<any[]>([]);
   const [FiltersAreVisible, setFiltersAreVisible] = useState(false);
-
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [loadingError, setLoadingError] = useState<boolean>(false)
 
   const offset = useRef<number>(0);
 
   const radiusField = useRef<HTMLInputElement>(null); // for geo modal
 
-  const tagsField = useRef<{[key:string]:string}>({}) // categories need to be decided {catName: false, }
+  const tagsField = useRef<{ [key: string]: string }>({}) // categories need to be decided {catName: false, }
   const sortByField = useRef<HTMLSelectElement>(null);
   const maxPriceField = useRef<HTMLInputElement>(null);
-  const minPriceField =  useRef<HTMLInputElement>(null); 
+  const minPriceField = useRef<HTMLInputElement>(null);
   const conditionField = useRef<HTMLSelectElement>(null);
   const fields = { tagsField, sortByField, maxPriceField, minPriceField, conditionField }
 
-  const getListings = useCallback(async (offset:number) => {
+  const getListings = useCallback(async (offset: number) => {
     const tagString = Object.values(tagsField.current).join('+');
     const tags = tagString !== '' ? tagString : undefined;
     const radius = radiusField.current?.value || 10;
@@ -38,9 +43,9 @@ export default function HomeView () {
   }, [api])
 
 
-  
+
   async function handleScroll() {
-    const res = await getListings(offset.current); 
+    const res = await getListings(offset.current);
     if (res.ok) {
       offset.current = res.body.data.offset;
       setListings(res.body.data.listings);
@@ -57,19 +62,23 @@ export default function HomeView () {
     console.log(sortByField.current?.value)
     console.log(maxPriceField.current?.value)
 
-    const res = await getListings(0); 
+    const res = await getListings(0);
     if (res.ok) {
       offset.current = res.body.data.offset;
       setListings(res.body.data.listings);
+
     } else {
       //handleError
     }
   }
 
-  useEffect(()=> {
+  useEffect(() => {
     const loadData = async () => {
+
+      console.log('heeeeere')
       const res = await getListings(0);
       if (res.ok) {
+        console.log('hello')
         offset.current = res.body.data.offset;
         setListings(res.body.data.listings);
       } else {
@@ -79,19 +88,49 @@ export default function HomeView () {
       }
     }
     loadData();
-  }, [api, getListings]) 
-  
+  }, [api, getListings])
+
+
+
   return (
-    <>
-      <LocationPreviewComponent />{/*Empty for now, but will possibly show preview of your location  */}
-      <button onClick={ openFiltersModal }><FiltersIcon /></button>
-        <FiltersComponent
-          filtersAreVisible={FiltersAreVisible}
-          closeFiltersModal={closeFiltersModal}
-          applyFilters={applyFilters}
-          fields={fields}
-        />
-      {listings.length > 0 && listings.map(listing => <ListingPreview key={listing.id} listing={listing}/>)}
-    </>
+    <div className="body-page">
+      <Header />
+      <div className="body-content-background">
+        <div className="body-frame">
+          <LocationPreviewComponent />{/*Empty for now, but will possibly show preview of your location  */}
+          <div className="global-search-area">
+            <input></input>
+            <div className='search-buttons-group' >
+              <button className="search-location-button search-btn" onClick={openFiltersModal}>
+                <p>
+                  <i className="bi bi-geo-alt"></i>
+                  Location
+                </p>
+              </button>
+              <button className="search-filter-button search-btn" onClick={openFiltersModal}>
+                <p>
+                  Filter
+                  <i className="bi bi-sliders"></i>
+                </p>
+              </button>
+            </div>
+          </div>
+          <FiltersComponent
+            filtersAreVisible={FiltersAreVisible}
+            closeFiltersModal={closeFiltersModal}
+            applyFilters={applyFilters}
+            fields={fields}
+          />
+          <div className='listings-container' >
+            {/* {isLoading && <img style={{ height: '20vw',maxHeight: '200px', borderRadius: '20px' }} src={loader} alt="Loading..." />}
+            {loadingError && <p>Couldn't load listings :/</p>} */}
+            {listings.map(listing => <ListingPreview key={listing.id} listing={listing} />)}
+          </div>
+        </div>
+      </div>
+      <div className='body-footer-container'>
+        <Footer />
+      </div>
+    </div>
   )
 }

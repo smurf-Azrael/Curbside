@@ -7,7 +7,7 @@ import SetProfileView from './views/SetProfileView';
 import LoginView from './views/LoginView';
 import VerifyView from './views/VerifyView';
 import AuthProvider from './contexts/AuthContext';
-import ListingView from './views/ListingView';
+import AddListingView from './views/AddListingView';
 import HomeView from './views/HomeView';
 
 function App() {
@@ -30,7 +30,7 @@ function App() {
               <Route path="/favorites" />
               <Route path="chats" />
               <Route path="/chats/:id" />
-              <Route path="/add-listing" element={<ListingView />} />
+              <Route path="/add-listing" element={<AddListingView />} />
             </Routes>
           </AuthProvider>
         </ApiProvider>

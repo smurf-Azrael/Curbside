@@ -1,14 +1,41 @@
 :root{
   --main-green-color: #13C1AC;
+  --main-background-color: #efeded;
   --header-height: 60px;
-  --main-font:‘Inter’, sans-serif;
+  --footer-height: 50px;
 }
 .App {
   text-align: center;
   min-height: 100vh;
+  min-width:250px;
   margin: auto;
   text-align: center;
   display: flex;
   flex-direction: column;
   font-family: 'Inter', 'Quicksand', 'Raleway', sans-serif  ;
+}
+.body-page{
+  min-height: 100vh;
+  /* border: 1px solid black; */
+}
+.body-content-background{
+  min-height: calc(100vh - var(--header-height) - var(--footer-height) );
+}
+.body-frame {
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  margin: 0px auto;
+  gap: 30px;
+}
+.body-footer-container{
+  margin-top: auto;
+  position: sticky;
+  bottom:-1px;
+}
+.body-frame-padding {
+  margin-top: 20px;
+  background-color: white;
+  padding:20px;
+  border-radius: 10px;
 }
