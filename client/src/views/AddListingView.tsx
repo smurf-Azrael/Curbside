@@ -56,8 +56,8 @@ export default function AddListingView() {
         "https://images.unsplash.com/photo-1611464908623-07f19927264e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8Z3JlZW4lMjBjaGFpcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60",
         "https://images.unsplash.com/photo-1571977796766-578d484a6c25?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8Z3JlZW4lMjBjaGFpcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60"
       ],
-      longitude: 52.5200,
-      latitude: 13.4050,
+      latitude: 52.5200,
+      longitude: 13.4050,
       title, description, condition, priceInCents,
     }
     console.log(newListing)
