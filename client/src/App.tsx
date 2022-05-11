@@ -9,6 +9,7 @@ import VerifyView from './views/VerifyView';
 import AuthProvider from './contexts/AuthContext';
 import AddListingView from './views/AddListingView';
 import HomeView from './views/HomeView';
+import ProfileView from './views/ProfileView';
 
 function App() {
 
@@ -26,7 +27,7 @@ function App() {
               <Route path="/verify" element={<VerifyView />} />
               <Route path="/set-profile" element={<SetProfileView />} />
               <Route path="/listing/:id" />
-              <Route path="/profile/:id" />
+              <Route path="/profile/:id" element={<ProfileView/>}/>
               <Route path="/favorites" />
               <Route path="chats" />
               <Route path="/chats/:id" />
