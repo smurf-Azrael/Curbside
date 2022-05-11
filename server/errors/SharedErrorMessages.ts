@@ -5,3 +5,4 @@ export const LISTING_PARSING_ERROR = 'Unable to parse listing.';
 
 export const USER_NOT_AUTHENTICATED = 'User not authenticated.';
 export const USER_NOT_FOUND = 'User not found.';
+export const PAGE_NOT_FOUND = 'PAGE not found.';

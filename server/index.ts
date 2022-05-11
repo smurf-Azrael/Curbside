@@ -19,5 +19,6 @@ app.use(logger('dev'));
 app.use(authMiddleware);
 app.use('/api', router);
 app.use(router);
+
 app.use(errorHandler);
 export const server = app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT} 🚀`));
