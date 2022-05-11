@@ -7,7 +7,7 @@ const addInitialUser = async (req: Request, res: Response, next: NextFunction): 
   try {
     const userDetails: InitialUserDTO = req.body;
     const user = await usersModel.addInitialUser(userDetails);
-    res.status(200).send({ user });
+    res.status(200).send({ data: { user } });
   } catch (error) {
     next(error);
   }
@@ -18,7 +18,7 @@ const finalizeUser = async (req: Request, res: Response, next: NextFunction): Pr
     const userDetails: FinalizeUserDTO = req.body;
     const userId: string = req.params.id;
     const user = await usersModel.finalizeUser(userId, userDetails);
-    res.status(200).send({ user });
+    res.status(200).send({ data: { user } });
   } catch (error) {
     next(error);
   }
@@ -29,7 +29,7 @@ const getUserProfile = async (req: Request, res: Response, next: NextFunction): 
     const userId = req.params.id;
     // @ts-ignore
     const { user, listings }: ProfileDTO = await usersModel.getUser(req.user?.uid, userId);
-    res.status(200).send({ user, listings });
+    res.status(200).send({ data: { user, listings } });
   } catch (error) {
     next(error);
   }

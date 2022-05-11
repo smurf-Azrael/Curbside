@@ -31,7 +31,7 @@ export const usersGetTests = (): void => {
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/)
         .expect(200);
-      expect({ ...body.user, createdAt: new Date(body.user.createdAt) }).toEqual(mockUserInput);
+      expect({ ...body.data.user, createdAt: new Date(body.data.user.createdAt) }).toEqual(mockUserInput);
     });
 
     it('Should get ONLY public user data and listings if requesting user is target user', async () => {
@@ -54,17 +54,17 @@ export const usersGetTests = (): void => {
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/)
         .expect(200);
-      expect(body.user.id).toEqual(mockUserInputForeign.id);
-      expect(body.user.firstName).toEqual(mockUserInputForeign.firstName);
-      expect(body.user.lastName).toEqual(mockUserInputForeign.lastName);
-      expect(new Date(body.user.createdAt)).toEqual(mockUserInputForeign.createdAt);
-      expect(body.user.photoUrl).toEqual(mockUserInputForeign.photoUrl);
-      expect(body.user.city).toBeUndefined();
-      expect(body.user.longitude).toBeUndefined();
-      expect(body.user.latitude).toBeUndefined();
-      expect(body.user.emailVerified).toBeUndefined();
-      expect(body.user.email).toBeUndefined();
-      expect(body.listings.length).toEqual(1);
+      expect(body.data.user.id).toEqual(mockUserInputForeign.id);
+      expect(body.data.user.firstName).toEqual(mockUserInputForeign.firstName);
+      expect(body.data.user.lastName).toEqual(mockUserInputForeign.lastName);
+      expect(new Date(body.data.user.createdAt)).toEqual(mockUserInputForeign.createdAt);
+      expect(body.data.user.photoUrl).toEqual(mockUserInputForeign.photoUrl);
+      expect(body.data.user.city).toBeUndefined();
+      expect(body.data.user.longitude).toBeUndefined();
+      expect(body.data.user.latitude).toBeUndefined();
+      expect(body.data.user.emailVerified).toBeUndefined();
+      expect(body.data.user.email).toBeUndefined();
+      expect(body.data.listings.length).toEqual(1);
     });
 
     it('Should send a custom error to the client if something goes wrong', async () => {
