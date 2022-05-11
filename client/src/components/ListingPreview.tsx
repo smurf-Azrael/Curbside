@@ -14,13 +14,13 @@ export default function ListingPreview ({listing}: {[key:string]:any}) {
   } else {
     croppedTitle = listing.title;
   }
-  const price = (listing.price / 100).toLocaleString('en-US', { style: 'currency', currency: 'EUR' });
+  const price = (listing.priceInCents / 100).toLocaleString('en-US', { style: 'currency', currency: 'EUR' });
  
 
   return (
     <div className='card-product-content'>
       <div className='card-product-image-holder'>
-        <img src={listing.images[0]} alt='product sold' width='200' />
+        <img src={listing.photoUrls[0]} alt='product sold' width='200' />
       </div>
       <div className='card-product-product-info'>
         <span className='product-info-price'>{price}</span>

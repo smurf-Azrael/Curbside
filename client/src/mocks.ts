@@ -67,7 +67,7 @@ export const mocks = {
       userId: '4f4442a7-aa22-490b-9945-34763d9fa0d9',
       title: 'The bestest most awesomest chair',
       description: "Dawgs, you don't even know about how cool this chair is. It has a cushion. And it's green. Nuff said.",
-      images: [
+      photoUrls: [
         'https://secure.img1-ag.wfcdn.com/im/54089193/resize-h600-w600%5Ecompr-r85/1231/123110031/Daulton+20%27%27+Wide+Velvet+Side+Chair.jpg',
         "https://images.unsplash.com/photo-1611464908623-07f19927264e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8Z3JlZW4lMjBjaGFpcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60",
         "https://images.unsplash.com/photo-1571977796766-578d484a6c25?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8Z3JlZW4lMjBjaGFpcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60"
@@ -78,14 +78,14 @@ export const mocks = {
       createdAt: '2022-05-09T09:43:37.047Z',
       updatedAt: '2022-05-09T010:43:37.047Z',
       condition: 'gently used',
-      price: 4350,
+      priceInCents: 4350,
     },
     {
       id: 2,
       userId: '4f4442a7-aa22-490b-9945-34763d9fa0d9',
       title: 'Dog Bed for chihuahas',
       description: "Super cozy dog bed, hasn't been used that much. peed on a few times. But we washed it with Tide",
-      images: [
+      photoUrls: [
         'https://images.unsplash.com/photo-1515128846479-18e4c135a914?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8Y2hpaHVhaHVhJTIwaW4lMjBkb2clMjBiZWR8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60',
         "https://images.unsplash.com/photo-1499974184468-5a2967a6f4ed?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTd8fGNoaWh1YWh1YSUyMGluJTIwZG9nJTIwYmVkfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60",
         "https://images.unsplash.com/photo-1595098350345-bf0b9c00efb9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjB8fGNoaWh1YWh1YSUyMGluJTIwZG9nJTIwYmVkfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60",
@@ -97,14 +97,14 @@ export const mocks = {
       createdAt: '2022-05-09T09:43:37.047Z',
       updatedAt: '2022-05-09T010:43:37.047Z',
       condition: 'gently used',
-      price: 2010,
+      priceInCents: 2010,
     },
     {
       id: 3,
       userId: 'b4ff39f3-ad3b-432e-9359-a56ccea8c5ef',
       title: 'Racing Bike',
       description: "Moving out of berlin and selling my bike. It's really fast, recently changed tires and chains.",
-      images: [
+      photoUrls: [
         'https://images.unsplash.com/photo-1534320553678-50d748b1cd74?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8cmFjaW5nJTIwYmlrZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60',
         "https://images.unsplash.com/photo-1541024565616-3a4add50ea72?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fHJhY2luZyUyMGJpa2V8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60",
         "https://images.unsplash.com/photo-1531608139434-1912ae0713cd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTV8fHJhY2luZyUyMGJpa2V8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60",
@@ -116,14 +116,14 @@ export const mocks = {
       createdAt: '2022-05-09T09:43:37.047Z',
       updatedAt: '2022-05-09T010:43:37.047Z',
       condition: 'gently used',
-      price: 154010,
+      priceInCents: 154010,
     },
     {
       id: 4,
       userId: 'b4ff39f3-ad3b-432e-9359-a56ccea8c5ef',
       title: 'Original Pabel Picaso Painting',
       description: "Finally willing to part with my prized painting. I've hit on some tough times and wouldn't be selling this anyways. I got it in a market. The seller didn't even know what he had and tried to tell me it was a fake. ",
-      images: [
+      photoUrls: [
         'https://images.unsplash.com/photo-1635472797289-2718476aa21b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cGljYXNzb3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60',
         "https://images.unsplash.com/photo-1608752688799-e8b3ca69785e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cGljYXNzb3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60",
         "https://images.unsplash.com/photo-1644526284291-d896f208555e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fHBpY2Fzc298ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60",
@@ -134,14 +134,14 @@ export const mocks = {
       createdAt: '2022-05-09T09:43:37.047Z',
       updatedAt: '2022-05-09T010:43:37.047Z',
       condition: 'gently used',
-      price: 1354010,
+      priceInCents: 1354010,
     },
     {
       id: 5,
       userId: '931d461e-bab4-4c7a-be90-e5e1ab611c0f',
       title: 'Scratching post for cats',
       description: "Our cat didn't love this too much, and it takes up too much space.",
-      images: [
+      photoUrls: [
         'https://images.unsplash.com/photo-1636543459630-8975a3548121?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8c2NyYXRjaGluZyUyMHBvc3R8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60',
         "https://images.unsplash.com/photo-1636543459633-53c7216fee3c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8c2NyYXRjaGluZyUyMHBvc3R8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60",
         "https://images.unsplash.com/photo-1636543459622-52a3a0f953b6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8c2NyYXRjaGluZyUyMHBvc3R8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60",
@@ -152,14 +152,14 @@ export const mocks = {
       createdAt: '2022-05-09T09:43:37.047Z',
       updatedAt: '2022-05-09T010:43:37.047Z',
       condition: 'gently used',
-      price: 1410,
+      priceInCents: 1410,
     },
     {
       id: 6,
       userId: '931d461e-bab4-4c7a-be90-e5e1ab611c0f',
       title: 'Custom Pocket Watch',
       description: "The one Bruce Willis had",
-      images: [
+      photoUrls: [
         'https://images.unsplash.com/photo-1509048191080-d2984bad6ae5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cG9ja2V0JTIwd2F0Y2h8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60',
         "https://images.unsplash.com/photo-1605143185597-9fe1a8065fbb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8cG9ja2V0JTIwd2F0Y2h8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60",
         "https://images.unsplash.com/photo-1563103311-860aee557af8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8cG9ja2V0JTIwd2F0Y2h8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60",
@@ -170,14 +170,14 @@ export const mocks = {
       createdAt: '2022-05-09T09:43:37.047Z',
       updatedAt: '2022-05-09T010:43:37.047Z',
       condition: 'gently used',
-      price: 6410,
+      priceInCents: 6410,
     },
     {
       id: 7,
       userId: '931d461e-bab4-4c7a-be90-e5e1ab611c0f',
       title: 'Blank notebooks',
       description: "Super nice, notebooks with archival paper.",
-      images: [
+      photoUrls: [
         'https://images.unsplash.com/photo-1501618669935-18b6ecb13d6d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8bm90ZWJvb2t8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60',
         "https://images.unsplash.com/photo-1554757387-fa0367573d09?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8bm90ZWJvb2t8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60",
         "https://images.unsplash.com/photo-1531346680769-a1d79b57de5c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fG5vdGVib29rfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60",
@@ -189,14 +189,14 @@ export const mocks = {
       createdAt: '2022-05-09T09:43:37.047Z',
       updatedAt: '2022-05-09T010:43:37.047Z',
       condition: 'gently used',
-      price: 510,
+      priceInCents: 510,
     },
     {
       id: 8,
       userId: '931d461e-bab4-4c7a-be90-e5e1ab611c0f',
       title: 'Penguin Costume',
       description: "So real, you won't be able to tell the difference",
-      images: [
+      photoUrls: [
         'https://images.unsplash.com/photo-1600527890363-b637a0a82eba?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cGVuZ3VpbiUyMGNvc3R1bWV8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60',
         "https://images.unsplash.com/photo-1462888210965-cdf193fb74de?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8cGVuZ3VpbiUyMGNvc3R1bWV8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60",
         "https://images.unsplash.com/photo-1475874619827-b5f0310b6e6f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8cGVuZ3VpbiUyMGNvc3R1bWV8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60",
@@ -208,14 +208,14 @@ export const mocks = {
       createdAt: '2022-05-09T09:43:37.047Z',
       updatedAt: '2022-05-09T010:43:37.047Z',
       condition: 'gently used',
-      price: 2599,
+      priceInCents: 2599,
     },
     {
       id: 9,
       userId: '931d461e-bab4-4c7a-be90-e5e1ab611c0f',
       title: 'Unused Diapers',
       description: "My baby's potty trained now!",
-      images: [
+      photoUrls: [
         'https://images.unsplash.com/photo-1584839404042-8bc21d240e91?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8ZGlhcGVyc3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60',
       ],
       status: 'available',
@@ -224,7 +224,7 @@ export const mocks = {
       createdAt: '2022-05-09T09:43:37.047Z',
       updatedAt: '2022-05-09T010:43:37.047Z',
       condition: 'gently used',
-      price: 100,
+      priceInCents: 100,
     },
   ]
 }
