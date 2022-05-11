@@ -28,8 +28,8 @@ model User {
   seller        Transaction? @relation("seller")
   sellerchat    Chat?        @relation("sellerChat")
   buyerchat     Chat?        @relation("buyerChat")
-  sellerRating  Rating?      @relation("sellerRating")
-  buyerRating   Rating?      @relation("buyerRating")
+  sellerRating  Rating[]      @relation("sellerRating")
+  buyerRating   Rating[]      @relation("buyerRating")
 
 }
 

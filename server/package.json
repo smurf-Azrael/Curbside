@@ -6,7 +6,7 @@
   "scripts": {
     "test": "npm run db:upgrade:test && cross-env NODE_ENV=test jest",
     "start": "npm run db:upgrade:dev && cross-env NODE_ENV=dev nodemon",
-    "db:upgrade:dev": "dotenv -e config/dev.env -- prisma migrate dev",
+    "db:upgrade:dev": "dotenv -e config/dev.env -- prisma db push",
     "db:upgrade:test": "dotenv -e config/test.env -- prisma migrate dev"
 
   },
