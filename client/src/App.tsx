@@ -7,8 +7,9 @@ import SetProfileView from './views/SetProfileView';
 import LoginView from './views/LoginView';
 import VerifyView from './views/VerifyView';
 import AuthProvider from './contexts/AuthContext';
-import ListingView from './views/ListingView';
+import AddListingView from './views/AddListingView';
 import HomeView from './views/HomeView';
+import ProfileView from './views/ProfileView';
 
 function App() {
 
@@ -18,19 +19,19 @@ function App() {
         <ApiProvider>
           <AuthProvider>
             <Routes>
-              <Route path="/" element={<HomeView />}/>
-              <Route path="/home" element={<HomeView />}/>
+              <Route path="/" element={<HomeView />} />
+              <Route path="/home" element={<HomeView />} />
               <Route path="/learn-more" />
               <Route path="/login" element={<LoginView />} />
               <Route path="/signup" element={<SignupView />} />
               <Route path="/verify" element={<VerifyView />} />
               <Route path="/set-profile" element={<SetProfileView />} />
               <Route path="/listing/:id" />
-              <Route path="/profile/:id" />
+              <Route path="/profile/:id" element={<ProfileView/>}/>
               <Route path="/favorites" />
               <Route path="chats" />
               <Route path="/chats/:id" />
-              <Route path="/add-listing" element={<ListingView />} />
+              <Route path="/add-listing" element={<AddListingView />} />
             </Routes>
           </AuthProvider>
         </ApiProvider>

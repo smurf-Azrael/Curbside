@@ -1,0 +1,122 @@
+import { useRef, useState, FormEvent, useEffect } from "react"
+import InputField from "../components/InputField"
+import { useAuth } from "../contexts/AuthContext";
+import { useApi } from "../contexts/ApiProvider";
+import { useNavigate } from "react-router-dom";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+
+export default function AddListingView() {
+  const titleField = useRef<HTMLInputElement>(null);
+  const descriptionField = useRef<HTMLTextAreaElement>(null);
+  const conditionField = useRef<HTMLSelectElement>(null);
+  const priceField = useRef<HTMLInputElement>(null);
+  const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({})
+
+  const api = useApi();
+  const navigate = useNavigate();
+  const {currentUser} = useAuth();
+
+  useEffect(()=>{
+    if (!currentUser){
+      navigate('/')
+    }
+  },[navigate, currentUser])
+
+  const onSubmit = async (event: FormEvent) => {
+
+    event.preventDefault();
+
+    const title = titleField.current?.value;
+    const description = descriptionField.current?.value;
+    const condition = conditionField.current?.value;
+    const price = priceField.current?.value;
+    const errors: { [key: string]: string } = {}
+    if (!title) {
+      errors.title = 'Title is required'
+    }
+    if (!description) {
+      errors.description = 'Description is required'
+    }
+    if (!price) {
+      errors.price = 'Price is required'
+    }
+
+    setFormErrors(errors)
+
+    if (Object.keys(errors).length > 0) {
+      return;
+    }
+    const priceInCents = parseFloat(price as string) * 100;
+    const newListing = {
+      userId: currentUser?.id,
+      currency: 'eur',
+      photoUrls: [
+        'https://secure.img1-ag.wfcdn.com/im/54089193/resize-h600-w600%5Ecompr-r85/1231/123110031/Daulton+20%27%27+Wide+Velvet+Side+Chair.jpg',
+        "https://images.unsplash.com/photo-1611464908623-07f19927264e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8Z3JlZW4lMjBjaGFpcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60",
+        "https://images.unsplash.com/photo-1571977796766-578d484a6c25?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8Z3JlZW4lMjBjaGFpcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60"
+      ],
+      longitude: 52.5200,
+      latitude: 13.4050,
+      title, description, condition, priceInCents,
+    }
+    console.log(newListing)
+    const res = await api.post('/listings', newListing);
+    if (res.ok) {
+      navigate('/')
+    } else {
+      //should have errors
+      console.log('ERRRORR')
+    }
+
+  }
+  return (
+    <div className="body-page" >
+      <Header />
+      <div className="body-content-background">
+        <div className="body-frame">
+          <div className="body-frame-padding">
+            <form onSubmit={onSubmit}>
+              <p className='form-title' >List an item</p>
+              <InputField
+                name="title"
+                placeholder="title"
+                label="Title"
+                error={formErrors.title}
+                fieldref={titleField}
+              />
+              <div>
+                <label>Description</label>
+                <textarea ref={descriptionField}></textarea>
+                <p>{formErrors.description}</p>
+              </div>
+              <div>
+                <label>Condition</label>
+                <select ref={conditionField}>
+                  <option value="new">New</option>
+                  <option value="gentlyUsed">Gently Used</option>
+                  <option value="used">Used</option>
+                </select>
+                <p>{formErrors.condition}</p>
+              </div>
+              <InputField
+                name="price"
+                placeholder="Price"
+                type="number"
+                min={0}
+                step="any"
+                label="Price"
+                error={formErrors.price}
+                fieldref={priceField}
+              />
+              <input type='submit' value="Create" />
+            </form>
+          </div>
+        </div>
+      </div>
+      <div className='body-footer-container'>
+        <Footer />
+      </div>
+    </div>
+  )
+}

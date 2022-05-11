@@ -8,7 +8,7 @@ import { IListingCondition } from '../../interfaces/listing.interface';
 import { AddRatingsDTO } from '../../interfaces/ratings.interface.dto';
 
 export const getListingsByIdTests = (): void => {
-  describe.only('GET /listings/id', () => {
+  describe('GET /listings/id', () => {
     const mockInitialUserInput1: InitialUserDTO = {
       id: mocks.Users[0].id,
       email: mocks.Users[0].email,
