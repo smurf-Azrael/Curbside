@@ -23,6 +23,8 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
         // @ts-ignore
 
         req.user = user;
+        // @ts-ignore
+        req.user.emailVerified = true;
         next();
       } else {
         next();

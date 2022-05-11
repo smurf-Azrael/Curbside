@@ -93,7 +93,7 @@ export const spatialQueryListings = async (spatialQueryRes: {id:string}[], query
       ]
     },
     orderBy: { // sortBy
-      createdAt: queryParams.sortBy === 'newset' ? 'desc' : undefined,
+      createdAt: queryParams.sortBy === 'newest' ? 'desc' : undefined,
       priceInCents: queryParams.sortBy === 'price desc' ? 'desc' : queryParams.sortBy === 'price asc' ? 'asc' : undefined
     },
     include: {
