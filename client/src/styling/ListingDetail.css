@@ -1,0 +1,39 @@
+.listing-detail-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.listing-owner-info-wrapper {
+ display: flex;
+ flex: row;
+ justify-content: space-between;
+ padding: 10px;
+}
+
+.listing-owner-image-wrapper {
+  width: 100px;
+  height: 100px;
+  margin-right: 2px;
+}
+
+.listing-owner-image-wrapper img {
+  border-radius: 50%;
+}
+
+.listing-owner-name-buttons-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 75%;
+}
+
+.listing-chat-button-wrapper {
+  padding: 10px;
+  width: 100%;
+}
+
+.listing-details-data-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
