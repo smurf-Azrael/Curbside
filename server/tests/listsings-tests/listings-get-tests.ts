@@ -95,7 +95,6 @@ export const listingsGetTests = (): void => {
       expect(body.data.listings.length);
       const sortedListings = body.data.listings.slice()
         .sort((a: IListing, b: IListing) => b.priceInCents - a.priceInCents);
-      console.log('AFTER', body.data.listings.map(({ priceInCents }: {priceInCents: number}) => priceInCents));
       expect(sortedListings).toEqual(body.data.listings);
     });
 
