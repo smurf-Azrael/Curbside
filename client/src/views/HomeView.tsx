@@ -33,7 +33,8 @@ export default function HomeView () {
     const sortBy = sortByField.current?.value || 'closest';
     const condition = conditionField.current?.value || 'all';
     const query = {offset:offset, radius, condition, tags, maxPrice, minPrice, sortBy};
-    return  await api.get('/listings', query);
+    const res = await api.get('/listings', query)
+    return res;
   }, [api])
 
 
@@ -72,8 +73,9 @@ export default function HomeView () {
         offset.current = res.body.data.offset;
         setListings(res.body.data.listings);
       } else {
-        setListings(mocks.listings)
+        console.log('error', res.body)
         // handleErrors
+        setListings(mocks.listings)
       }
     }
     loadData();
