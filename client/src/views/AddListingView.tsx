@@ -1,5 +1,6 @@
-import { useRef, useState, FormEvent } from "react"
+import { useRef, useState, FormEvent, useEffect } from "react"
 import InputField from "../components/InputField"
+import { useAuth } from "../contexts/AuthContext";
 import { useApi } from "../contexts/ApiProvider";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
@@ -8,21 +9,28 @@ import Footer from "../components/Footer";
 export default function AddListingView() {
   const titleField = useRef<HTMLInputElement>(null);
   const descriptionField = useRef<HTMLTextAreaElement>(null);
-  const conditionField = useRef<HTMLInputElement>(null);
+  const conditionField = useRef<HTMLSelectElement>(null);
   const priceField = useRef<HTMLInputElement>(null);
   const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({})
 
   const api = useApi();
   const navigate = useNavigate();
+  const {currentUser} = useAuth();
+
+  useEffect(()=>{
+    if (!currentUser){
+      navigate('/')
+    }
+  },[navigate, currentUser])
 
   const onSubmit = async (event: FormEvent) => {
+
     event.preventDefault();
 
     const title = titleField.current?.value;
     const description = descriptionField.current?.value;
     const condition = conditionField.current?.value;
     const price = priceField.current?.value;
-
     const errors: { [key: string]: string } = {}
     if (!title) {
       errors.title = 'Title is required'
@@ -40,9 +48,8 @@ export default function AddListingView() {
       return;
     }
     const priceInCents = parseFloat(price as string) * 100;
-
     const newListing = {
-      userId: '4f4442a7-aa22-490b-9945-34763d9fa0d9',
+      userId: currentUser?.id,
       currency: 'eur',
       photoUrls: [
         'https://secure.img1-ag.wfcdn.com/im/54089193/resize-h600-w600%5Ecompr-r85/1231/123110031/Daulton+20%27%27+Wide+Velvet+Side+Chair.jpg',
@@ -53,10 +60,10 @@ export default function AddListingView() {
       latitude: 13.4050,
       title, description, condition, priceInCents,
     }
-
+    console.log(newListing)
     const res = await api.post('/listings', newListing);
     if (res.ok) {
-      navigate('/explore')
+      navigate('/')
     } else {
       //should have errors
       console.log('ERRRORR')
@@ -85,9 +92,9 @@ export default function AddListingView() {
               </div>
               <div>
                 <label>Condition</label>
-                <select>
+                <select ref={conditionField}>
                   <option value="new">New</option>
-                  <option value="gently used">Gently Used</option>
+                  <option value="gentlyUsed">Gently Used</option>
                   <option value="used">Used</option>
                 </select>
                 <p>{formErrors.condition}</p>

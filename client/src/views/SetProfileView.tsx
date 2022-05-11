@@ -1,7 +1,8 @@
 
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import { Form, Button, Card } from 'react-bootstrap';
 import { useApi } from '../contexts/ApiProvider';
+import { useAuth } from '../contexts/AuthContext';
 import InputField from '../components/InputField';
 import Map from '../components/SetProfileMap';
 import { useNavigate } from 'react-router-dom';
@@ -13,7 +14,13 @@ export default function SetProfileView() {
   const [position, setPosition] = useState({lng:13.39, lat:52.51})
 
   const api = useApi();
+  const {currentUser} = useAuth();
   const navigate = useNavigate();
+  useEffect(()=>{
+    if (!currentUser) {
+      navigate('/')
+    }
+  }, [currentUser, navigate])
 
   async function handleSubmit (event: FormEvent) {
     event.preventDefault();
@@ -43,9 +50,9 @@ export default function SetProfileView() {
       };
       console.log({additionalUserInfo});
 
-      const res = await api.patch(`/users/${'4f4442a7-aa22-490b-9945-34763d9fa0d9'}`, additionalUserInfo);
+      const res = await api.patch(`/users/${currentUser?.id}`, additionalUserInfo);
       if (res.ok) {
-        navigate('/explore')
+        navigate('/')
       } else {
         // Need to add notification to customer
         console.log('ERROR')
