@@ -7,6 +7,7 @@
 .profile-page-wrapper p {
   padding-left: 13px;
   margin: 0;
+  font-weight: bolder;
 }
 
 .profile-about-info-wrapper {
@@ -33,6 +34,11 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
+}
+
+.profile-info-button-wrapper {
+  display: flex;
+  flex-direction: column;
 }
 
 .profile-favorites-wrapper {

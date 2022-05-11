@@ -6,6 +6,7 @@ import ButtonSmall from '../components/ButtonSmall';
 // import { useNavigate } from 'react-router-dom';
 import { mocks } from '../mocks'
 import ListingPreview from '../components/ListingPreview';
+import { Link } from 'react-router-dom';
 
 function ProfileView() {
   const [userListings, setUserListings] = useState([])
@@ -49,11 +50,15 @@ function ProfileView() {
         </div>
         <div className='profile-basic-info-edit-wrapper'>
           <p style={{fontWeight:"bold"}}>{nameToDisplay}</p>
-          <ButtonSmall content={'Edit'} fill={true}/>
+          <Link to='/set-profile'>
+            <ButtonSmall content={'Edit'} fill={true}/>
+          </Link>
         </div>
       </div>
       <div className='profile-favorites-wrapper'>
-        <ButtonSmall content={'My favorites'} fill={false}/>
+        <Link to='/favorites'>
+          <ButtonSmall content={'My favorites'} fill={false}/>
+        </Link>
       </div>
       <p style={{textAlign:"left"}}>My listings</p>
       <div className='profile-my-listings-wrapper'>
