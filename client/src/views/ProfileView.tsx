@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import '../styling/Profile.css';
 import ButtonSmall from '../components/ButtonSmall';
 // import { useApi } from '../contexts/ApiProvider';
-// import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import { mocks } from '../mocks'
 import ListingPreview from '../components/ListingPreview';
 import { Link } from 'react-router-dom';
@@ -12,10 +12,10 @@ function ProfileView() {
   const [userListings, setUserListings] = useState([])
 
   // const api = useApi();
-  // const navigate =useNavigate();
-
+  const {currentUser} = useAuth();
   // User id used for moc
-  const USER_ID = '4f4442a7-aa22-490b-9945-34763d9fa0d9';
+  const USER_ID = '4f4442a7-aa22-490b-9945-34763d9fa0d9'
+  const profileImageTEMP = "https://gradient-avatar.glitch.me/" + currentUser.id
 
   // User name for display
   const mockUserData = mocks.Users.filter(user => user.id === USER_ID)[0];
@@ -46,7 +46,7 @@ function ProfileView() {
     <section className='profile-page-wrapper'>
       <div className='profile-about-info-wrapper'>
         <div className='profile-image-wrapper'>
-          <img src={mockUserData.photoUrl} alt={'user'} />
+          <img src={profileImageTEMP} alt={'user'} />
         </div>
         <div className='profile-basic-info-edit-wrapper'>
           <p style={{fontWeight:"bold"}}>{nameToDisplay}</p>

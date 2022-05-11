@@ -74,11 +74,8 @@ export default function HomeView() {
 
   useEffect(() => {
     const loadData = async () => {
-
-      console.log('heeeeere')
       const res = await getListings(0);
       if (res.ok) {
-        console.log('hello')
         offset.current = res.body.data.offset;
         setListings(res.body.data.listings);
       } else {
