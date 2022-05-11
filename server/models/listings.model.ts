@@ -70,8 +70,8 @@ const getListings = async (userId: string | undefined, params: GetListingQueryPa
     if (params.sortBy === 'closest') {
       const sortedByDistanceListings = [...listings]
         .sort((a, b) =>
-          _getDistance([a.longitude, a.latitude], [long!, lat!]) -
-           _getDistance([b.longitude, b.latitude], [long!, lat!])
+          getDistance([a.longitude, a.latitude], [long!, lat!]) -
+           getDistance([b.longitude, b.latitude], [long!, lat!])
         );
       listings = sortedByDistanceListings;
     }
@@ -85,7 +85,7 @@ const getListings = async (userId: string | undefined, params: GetListingQueryPa
     throw new CustomError(UNKNOWN_SERVER_ERROR, 500);
   }
 };
-const _getDistance = (start: number[], end: number[]): number => {
+export const getDistance = (start: number[], end: number[]): number => {
   const xDistance = start[0] - end[0];
   const yDistance = start[1] - end[1];
   const sqx = xDistance * xDistance;

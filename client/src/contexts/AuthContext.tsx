@@ -1,24 +1,49 @@
 import { createContext, useState, useContext, useEffect } from "react";
-import { User as fUser } from '@firebase/auth-types';
+import { useNavigate } from "react-router-dom";
 import { auth } from '../firebase';
-import { AuthContextType } from '../interfaces/AuthContextInterface';
+import { AuthContextType, User } from '../interfaces/AuthContextInterface';
+import { useApi } from "./ApiProvider";
 // import { sendEmailVerification } from 'firebase/auth';
 
-const AuthContext = createContext<any | undefined>(undefined);
+const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 export function useAuth() {
   return useContext(AuthContext);
 }
 
 export default function AuthProvider({ children }: { children: any }) {
 
-  // const [currentUser, setCurrentUser] = useState<fUser | null>(); // React.useState<string | undefined>(undefined);
-  const [currentUser, setCurrentUser] = useState<any>(); // React.useState<string | undefined>(undefined);
-  const [loading, setLoading] = useState(true);
+  const api = useApi();
+  const navigate = useNavigate()
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
 
   async function signUp(email: string, password: string): Promise<any> {
-    const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-    setCurrentUser(userCredential);
-    return userCredential;
+    try {
+      const fUser = await auth.createUserWithEmailAndPassword(email, password); 
+      //@ts-ignore
+      const userData = fUser.user.multiFactor.user 
+      if (!userData) { throw new Error('Something went wrong.') }
+      const userToken = userData.accessToken;
+      localStorage.setItem("userToken", userToken);
+      const body = {
+        id: userData.uid,
+        email:userData.email,
+        emailVerified: true
+      }
+      const res = await api.post('/users', body);
+      const user = {
+        id: userData.uid, 
+        email: email
+      }
+      setCurrentUser(user);
+
+      return { ok: res.ok }
+
+    } catch (error) {
+      return {
+        ok: false,
+        error:error
+      }
+    }
   }
   //! Verify email later
     // async function sendVerification(firebaseUser: any): Promise<any> {
@@ -33,9 +58,25 @@ export default function AuthProvider({ children }: { children: any }) {
     // }
 
   async function logIn(email: string, password: string): Promise<any> {
-    const userCredential = await auth.signInWithEmailAndPassword(email, password);
-    setCurrentUser(userCredential);
-    return userCredential;
+    try {
+      const fUser = await auth.signInWithEmailAndPassword(email, password);
+      //@ts-ignore
+      const userData = fUser.user.multiFactor.user 
+      if (!userData) { throw new Error('Something went wrong.') }
+      const userToken = userData.accessToken;
+      localStorage.setItem("userToken", userToken);
+      const user = {
+        id: userData.uid, 
+        email: email
+      }
+      setCurrentUser(user);
+      return {ok: true}
+    } catch (error) {
+      return {
+        ok: false,
+        error:error
+      }
+    }
   }
 
   async function logOut() {
@@ -45,15 +86,18 @@ export default function AuthProvider({ children }: { children: any }) {
   };
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(async (user) => {
-      setCurrentUser(user);
-      setLoading(false);
-    })
-    return unsubscribe
-  }, [])
+    const verifyUser = async () => {
+      const res = await api.get('/login');
+      if (res.ok) {
+        setCurrentUser(res.body.data.user);
+      } 
+    }
+    verifyUser();
+  }, [api, navigate])
 
   const value: AuthContextType = {
     currentUser,
+    setCurrentUser,
     // sendVerification,
     signUp,
     logIn,
@@ -62,7 +106,7 @@ export default function AuthProvider({ children }: { children: any }) {
 
   return (
     <AuthContext.Provider value={value}>
-      {!loading && children}
+      {children}
     </AuthContext.Provider>
   );
 }

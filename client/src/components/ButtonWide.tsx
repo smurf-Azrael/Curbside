@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styling/CustomButton.css';
 
-export default function ButtonWide({ clickFunction,  content, fill }: { clickFunction: any, content: string, fill: boolean}) {
+export default function ButtonWide({ clickFunction,  content, fill }: { clickFunction?: any, content: string, fill: boolean}) {
   return (
     <button
       onClick={clickFunction}
