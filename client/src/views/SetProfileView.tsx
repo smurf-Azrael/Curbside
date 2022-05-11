@@ -11,7 +11,7 @@ export default function SetProfileView() {
   const nameRef = React.useRef<HTMLInputElement>(null);
   const lastNameRef = React.useRef<HTMLInputElement>(null);
   const [formErrors, setFormErrors] = useState<{[key:string]:string}>({});
-  const [position, setPosition] = useState({lng:13.39, lat:52.51})
+  const [position, setPosition] = useState({lng:13.405, lat:52.52})
 
   const api = useApi();
   const {currentUser} = useAuth();
