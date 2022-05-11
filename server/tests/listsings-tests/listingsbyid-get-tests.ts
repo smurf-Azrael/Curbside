@@ -1,28 +1,34 @@
-// import { server } from '../../index';
-// import request from 'supertest';
+import { server, app } from '../../index';
+import request from 'supertest';
 import { prisma } from '../../prisma/client';
 import { InitialUserDTO } from '../../interfaces/users.interface.dto';
 import { mocks } from '../../../mocks';
 import { AddListingDTO } from '../../interfaces/listings.interface.dto';
 import { IListingCondition } from '../../interfaces/listing.interface';
 import { AddRatingsDTO } from '../../interfaces/ratings.interface.dto';
+import { LISTING_NOT_FOUND } from '../../errors/SharedErrorMessages';
 
 export const getListingsByIdTests = (): void => {
-  describe('GET /listings/id', () => {
+  describe.only('GET /listings/id', () => {
     const mockInitialUserInput1: InitialUserDTO = {
       id: mocks.Users[0].id,
       email: mocks.Users[0].email,
-      emailVerified: mocks.Users[0].emailVerified
+      emailVerified: mocks.Users[0].emailVerified,
+      photoUrl: mocks.Users[0].photoUrl
     };
     const mockInitialUserInput2: InitialUserDTO = {
       id: mocks.Users[1].id,
       email: mocks.Users[1].email,
-      emailVerified: mocks.Users[1].emailVerified
+      emailVerified: mocks.Users[1].emailVerified,
+      photoUrl: mocks.Users[1].photoUrl
+
     };
     const mockInitialUserInput3: InitialUserDTO = {
       id: mocks.Users[2].id,
       email: mocks.Users[2].email,
-      emailVerified: mocks.Users[2].emailVerified
+      emailVerified: mocks.Users[2].emailVerified,
+      photoUrl: mocks.Users[2].photoUrl
+
     };
 
     const mockAddListing: AddListingDTO = {
@@ -50,21 +56,38 @@ export const getListingsByIdTests = (): void => {
       rating: 5
     };
 
+    let listingFromDb: any;
+
     beforeAll(async () => {
       await prisma.user.create({ data: mockInitialUserInput1 });
       await prisma.user.create({ data: mockInitialUserInput2 });
       await prisma.user.create({ data: mockInitialUserInput3 });
-      await prisma.listing.create({ data: mockAddListing });
+      listingFromDb = await prisma.listing.create({ data: mockAddListing });
       await prisma.rating.create({ data: mockAddRating1 });
       await prisma.rating.create({ data: mockAddRating2 });
     });
 
+    afterAll(async () => {
+      await prisma.$disconnect();
+      server.close();
+    });
+
     it('Should find listings and return it with the userPhoto and rating', async () => {
-    // const { body } = await request(server)
-    //   .get('/listing/IDWILLGOHERE')
-    //   .expect(200);
-    // expect(body.listing.id).toEqual();
-      expect(true).toBe(true);
+      const id = listingFromDb.id;
+      const { body, statusCode } = await request(app)
+        .get(`/listings/${id}`);
+
+      expect(statusCode).toEqual(200);
+      expect(body.listing.id).toEqual(id);
+      expect(body.listing.rating).toEqual(4);
+      expect(body.listing.userPhotoUrl).toEqual(mockInitialUserInput1.photoUrl);
+    });
+    it('Should send 404 if listing can be found', async () => {
+      const { body, statusCode } = await request(app)
+        .get('/listings/NONE');
+      console.log('body', body);
+      expect(statusCode).toEqual(404);
+      expect(body.error).toEqual(LISTING_NOT_FOUND);
     });
   });
 };
