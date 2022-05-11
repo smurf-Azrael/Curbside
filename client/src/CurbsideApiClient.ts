@@ -11,7 +11,9 @@ export default class CurbsideApiClient {
   async request(options:options) {
     const userToken = await localStorage.getItem('userToken');
     let auth = userToken !== null ? {'Authorization': `Bearer ${userToken}`} : undefined;
-    Object.keys(options.query).forEach(key => options.query[key] === undefined && delete options.query[key])
+    if (options.query) {
+      Object.keys(options.query).forEach(key => options.query[key] === undefined && delete options.query[key])
+    }
     let query = new URLSearchParams(options.query || {}).toString();
     if (query !== '') {
       query = '?' + query;
@@ -40,11 +42,17 @@ export default class CurbsideApiClient {
       };
     }
 
-    return {
-      ok: response.ok, 
+    const res : {ok:boolean, status:number, body?:any} = {
+      ok: response.ok,
       status: response.status,
-      body: response.status !== 204 ? await response.json() : null
     }
+
+    try {
+      res.body = response.status !== 204 ? await response.json() : null
+    } catch (e){
+      res.body.data.errors = e
+    }
+    return res;
   }
 
   async get(url:string, query?:query, options?:options) {
