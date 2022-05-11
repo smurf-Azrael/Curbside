@@ -1,3 +1,14 @@
+:root{
+  --main-green-color: #13C1AC;
+  --header-height: 60px;
+  --main-font:‘Inter’, sans-serif;
+}
 .App {
   text-align: center;
+  min-height: 100vh;
+  margin: auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Inter', 'Quicksand', 'Raleway', sans-serif  ;
 }

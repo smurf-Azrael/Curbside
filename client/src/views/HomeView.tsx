@@ -2,18 +2,27 @@ import { useApi } from "../contexts/ApiProvider"
 import { useEffect, useState, useRef, useCallback } from "react"
 import { mocks } from '../mocks';
 import ListingPreview from "../components/ListingPreview";
+import { ReactComponent as FiltersIcon } from "../assets/filters.svg";
+import FiltersComponent from "../components/FiltersComponent";
+import LocationPreviewComponent from "../components/LocationPreviewComponent";
+
 export default function HomeView () {
   const api = useApi()
 
   const [listings, setListings] = useState<any[]>([]);
-  
+  const [FiltersAreVisible, setFiltersAreVisible] = useState(false);
+
+
   const offset = useRef<number>(0);
-  const tagsField = useRef<{[key:string]:string}>({})
-  const radiusField = useRef<HTMLInputElement>(null);
+
+  const radiusField = useRef<HTMLInputElement>(null); // for geo modal
+
+  const tagsField = useRef<{[key:string]:string}>({}) // categories need to be decided {catName: false, }
   const sortByField = useRef<HTMLSelectElement>(null);
   const maxPriceField = useRef<HTMLInputElement>(null);
   const minPriceField =  useRef<HTMLInputElement>(null); 
   const conditionField = useRef<HTMLSelectElement>(null);
+  const fields = { tagsField, sortByField, maxPriceField, minPriceField, conditionField }
 
   const getListings = useCallback(async (offset:number) => {
     const tagString = Object.values(tagsField.current).join('+');
@@ -28,6 +37,7 @@ export default function HomeView () {
   }, [api])
 
 
+  
   async function handleScroll() {
     const res = await getListings(offset.current); 
     if (res.ok) {
@@ -37,8 +47,15 @@ export default function HomeView () {
       //handleError
     }
   }
+  const openFiltersModal = () => setFiltersAreVisible(true)
+  const closeFiltersModal = () => setFiltersAreVisible(false)
 
   async function applyFilters() {
+    closeFiltersModal();
+    console.log(conditionField.current?.value)
+    console.log(sortByField.current?.value)
+    console.log(maxPriceField.current?.value)
+
     const res = await getListings(0); 
     if (res.ok) {
       offset.current = res.body.data.offset;
@@ -64,6 +81,14 @@ export default function HomeView () {
   
   return (
     <>
+      <LocationPreviewComponent />{/*Empty for now, but will possibly show preview of your location  */}
+      <button onClick={ openFiltersModal }><FiltersIcon /></button>
+        <FiltersComponent
+          filtersAreVisible={FiltersAreVisible}
+          closeFiltersModal={closeFiltersModal}
+          applyFilters={applyFilters}
+          fields={fields}
+        />
       {listings.length > 0 && listings.map(listing => <ListingPreview key={listing.id} listing={listing}/>)}
     </>
   )

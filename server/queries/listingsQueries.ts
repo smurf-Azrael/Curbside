@@ -1,4 +1,5 @@
 import { Listing, ListingCondition } from '@prisma/client';
+import { GetListingQueryParams } from '../controllers/listings.controller';
 import { CustomError } from '../errors/CustomError.class';
 import { LISTING_PARSING_ERROR } from '../errors/SharedErrorMessages';
 import { IListing, IListingCondition } from '../interfaces/listing.interface';
@@ -46,14 +47,15 @@ export const createListing = async (listingDetails: AddListingDTO): Promise<ILis
   return listing;
 };
 
-export const spatialQuery = async (longitude: number, latitude: number, radius:number): Promise<any> => {
+export const spatialQuery = async (longitude: number, latitude: number, radius:number): Promise<{id: string}[]> => {
   const rawQueryRes = await prisma.$queryRaw<{id: string}[]>`SELECT id FROM "Listing" WHERE ST_DWithin(ST_MakePoint(longitude, latitude), ST_MakePoint(${longitude}, ${latitude})::geography, ${radius} *1000)` as any;
+  console.log(rawQueryRes);
   return rawQueryRes;
 };
 
-export const spatialQueryListings = async (spatialQueryRes: any): Promise<any> => {
+export const spatialQueryListings = async (spatialQueryRes: {id:string}[], queryParams: GetListingQueryParams): Promise<any> => {
   const dbListings = await prisma.listing.findMany({
-    skip: 50, // offset
+    skip: +queryParams.offset, // offset
     where: {
       AND: [
         {
@@ -63,19 +65,39 @@ export const spatialQueryListings = async (spatialQueryRes: any): Promise<any> =
         },
         {
           priceInCents: {
-            gte: 0, // minPrice
-            lte: 10000 // maxPrice
+            gte: +queryParams.minPrice, // minPrice
+            lte: queryParams.maxPrice ? +queryParams.maxPrice : 10000000 // maxPrice
           }
+        },
+        {
+          OR:
+          [
+            {
+              condition: {
+                in: queryParams.condition === 'all' ? ['gentlyUsed', 'new', 'used'] : undefined
+              }
+            },
+            {
+              condition: {
+                equals: queryParams.condition === 'gently used'
+                  ? 'gentlyUsed'
+                  : queryParams.condition === 'new'
+                    ? 'new'
+                    : queryParams.condition === 'used'
+                      ? 'used'
+                      : undefined
+              }
+            }
+          ]
         }
       ]
     },
-    orderBy: {
-      createdAt: undefined, // sortBy
-      priceInCents: undefined
+    orderBy: { // sortBy
+      createdAt: queryParams.sortBy === 'newset' ? 'desc' : undefined,
+      priceInCents: queryParams.sortBy === 'price desc' ? 'desc' : queryParams.sortBy === 'price asc' ? 'asc' : undefined
     }
   });
   return dbListings.map(convertDataBaseListingToListing);
-  // TODO filter by tags in javascript
 };
 
 export const getListingsByUserId = async (userId: string):Promise<IListing[]> => {
