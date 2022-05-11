@@ -16,7 +16,7 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
     services:
       postgres:
-        image: postgis:10-2.5-alpine
+        image: postgis/postgis:10-2.5-alpine
         env:
           POSTGRES_USER: ${{secrets.PG_USER}}
           POSTGRES_PASSWORD: ${{secrets.PG_PW}}
