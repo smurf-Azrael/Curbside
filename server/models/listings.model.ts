@@ -3,6 +3,7 @@ import { CustomError } from '../errors/CustomError.class';
 import { UNKNOWN_SERVER_ERROR } from '../errors/SharedErrorMessages';
 import { IListing } from '../interfaces/listing.interface';
 import { AddListingDTO } from '../interfaces/listings.interface.dto';
+import { ITag } from '../interfaces/tag.interface';
 import listingsQueries, { spatialQuery, spatialQueryListings } from '../queries/listingsQueries';
 import { getUserById } from '../queries/userQueries';
 import { addListingInputValidation } from './listings.model.validation';
@@ -48,18 +49,34 @@ const getListings = async (userId: string | undefined, params: GetListingQueryPa
       }
     }
     const listingsInRangeIds: {id: string}[] = await spatialQuery(long, lat, +params.radius);
-    const listings: IListing[] = await spatialQueryListings(listingsInRangeIds, params);
+    let listings: IListing[] = await spatialQueryListings(listingsInRangeIds, params);
     // filter for tags
-    // if (params.tags !== undefined) {
-    //   const tags = params.tags.split(' ');
-    //   const result: IListing[] = [];
-    //   for (let listing of listings){
-    //     for (let tag of tags){
-    //       if (listing.tag)
-    //     }
-    //   }
-    // }
-    return listings;
+    if (params.tags !== undefined) {
+      const tags = params.tags.split(' ');
+      const result: IListing[] = [];
+      for (const listing of listings) {
+        for (const tag of tags) {
+          // if tag is included in listing.tags
+          //    push to result and continue
+          if (listing.tags?.map<string>((listingsTag: ITag) => listingsTag.title).includes(tag)) {
+            result.push(listing);
+            continue;
+          }
+        }
+      }
+      listings = result;
+    }
+    // sort by closest
+    if (params.sortBy === 'closest') {
+      const sortedByDistanceListings = [...listings]
+        .sort((a, b) =>
+          _getDistance([a.longitude, a.latitude], [long!, lat!]) -
+           _getDistance([b.longitude, b.latitude], [long!, lat!])
+        );
+      listings = sortedByDistanceListings;
+    }
+    //  skip offset
+    return listings.slice(+params.offset);
   } catch (error) {
     console.log('/models/users.model getListings ERROR', error);
     if (error instanceof CustomError) {
@@ -68,7 +85,15 @@ const getListings = async (userId: string | undefined, params: GetListingQueryPa
     throw new CustomError(UNKNOWN_SERVER_ERROR, 500);
   }
 };
-
+const _getDistance = (start: number[], end: number[]): number => {
+  const xDistance = start[0] - end[0];
+  const yDistance = start[1] - end[1];
+  const sqx = xDistance * xDistance;
+  const sqy = yDistance * yDistance;
+  const distSum = sqx + sqy;
+  const sqrtDist = Math.sqrt(distSum);
+  return sqrtDist;
+};
 export default {
   addListing,
   getListings
