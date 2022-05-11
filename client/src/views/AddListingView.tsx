@@ -1,15 +1,19 @@
-import { useRef, useState, FormEvent } from "react"
+// @ts-nocheck
+import { useRef, useState } from "react"
 import InputField from "../components/InputField"
 import { useApi } from "../contexts/ApiProvider";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import '../styling/AddListingView.css';
+import ButtonWide from "../components/ButtonWide";
+import { FormEvent, FormSelect, Form } from "react-bootstrap";
 
 export default function AddListingView() {
   const titleField = useRef<HTMLInputElement>(null);
-  const descriptionField = useRef<HTMLTextAreaElement>(null);
-  const conditionField = useRef<HTMLInputElement>(null);
   const priceField = useRef<HTMLInputElement>(null);
+  const conditionField = useRef<HTMLInputElement>(null);
+  const descriptionField = useRef<HTMLTextAreaElement>(null);
   const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({})
 
   const api = useApi();
@@ -63,6 +67,8 @@ export default function AddListingView() {
     }
 
   }
+
+
   return (
     <div className="body-page" >
       <Header />
@@ -70,7 +76,7 @@ export default function AddListingView() {
         <div className="body-frame">
           <div className="body-frame-padding">
             <form onSubmit={onSubmit}>
-              <p className='form-title' >List an item</p>
+              <h3 className='form-title' >List an item</h3>
               <InputField
                 name="title"
                 placeholder="title"
@@ -78,20 +84,6 @@ export default function AddListingView() {
                 error={formErrors.title}
                 fieldref={titleField}
               />
-              <div>
-                <label>Description</label>
-                <textarea ref={descriptionField}></textarea>
-                <p>{formErrors.description}</p>
-              </div>
-              <div>
-                <label>Condition</label>
-                <select>
-                  <option value="new">New</option>
-                  <option value="gently used">Gently Used</option>
-                  <option value="used">Used</option>
-                </select>
-                <p>{formErrors.condition}</p>
-              </div>
               <InputField
                 name="price"
                 placeholder="Price"
@@ -102,7 +94,49 @@ export default function AddListingView() {
                 error={formErrors.price}
                 fieldref={priceField}
               />
-              <input type='submit' value="Create" />
+              <p style={{ justifyContent: 'flex-start', marginBottom: '10px' }}>Condition</p>
+              <div style={{marginBottom: '15px'}}>
+
+                <Form.Group>
+                  <FormSelect >
+                    <option value='closest'>New</option>
+                    <option value='newest'>Gently Used</option>
+                    <option value='price asc'>Used</option>
+                  </FormSelect>
+                </Form.Group>
+
+                <p>{formErrors.condition}</p>
+              </div>
+              <InputField
+                name="description"
+                placeholder="Description"
+                min={0}
+                label="Description"
+                error={formErrors.description}
+                fieldref={priceField}
+              />
+              <div className='location-div-container'>
+                <div className='location-input-div'>
+                  <InputField
+                    name="location"
+                    placeholder="Location"
+                    label="Location"
+                    error={formErrors.location}
+                  // fieldref={locationField}
+                  />
+                </div>
+                <div className='location-picker-btn-div'>
+                  <button className='location-picker-btn'>
+                    <i className="bi bi-geo-fill"></i>
+                  </button>
+                </div>
+              </div>
+              <div className="add-item-buttons">
+                <button type='submit' style={{border:'none', padding:'0'}}>
+                  <ButtonWide content={"Create"} fill={true} />
+                </button>
+                <ButtonWide clickFunction={() => navigate('/')} content={"Cancel"} fill={false} />
+              </div>
             </form>
           </div>
         </div>
