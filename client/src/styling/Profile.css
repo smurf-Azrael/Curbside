@@ -1,0 +1,41 @@
+.profile-page-wrapper {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.profile-about-info-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.profile-image-wrapper {
+  width: 100px;
+  height: 100px;
+  margin-right: 2px;
+}
+
+.profile-basic-info-edit-wrapper {
+  padding: 5px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.profile-favorites-wrapper {
+  height: 60px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-my-listings-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
