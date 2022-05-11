@@ -19,7 +19,6 @@
     "firebase-admin": "^10.2.0",
     "latest": "^0.2.0",
     "morgan": "^1.10.0",
-    "n": "^8.2.0",
     "node-fetch": "^2.6.7",
     "path": "^0.12.7"
   },
@@ -28,7 +27,6 @@
     "@types/express": "^4.17.13",
     "@types/jest": "^27.5.0",
     "@types/morgan": "^1.9.3",
-    "@types/node": "^17.0.29",
     "@types/supertest": "^2.0.12",
     "cross-env": "^7.0.3",
     "dotenv": "^16.0.0",
