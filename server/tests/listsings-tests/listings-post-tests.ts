@@ -10,13 +10,13 @@ import { listingsModelErrorMessages } from '../../models/listings.model.validati
 export const listingsPostTests = (): void => {
   describe('POST /listings', () => {
     const mockInitialUserInput: InitialUserDTO = {
-      id: mocks.Users[0].id,
+      id: process.env.SECRET_UID!,
       email: mocks.Users[0].email,
       emailVerified: mocks.Users[0].emailVerified
     };
 
     const mockAddListing: AddListingDTO = {
-      userId: mocks.listings[0].userId,
+      userId: process.env.SECRET_UID!,
       title: mocks.listings[0].title,
       description: mocks.listings[0].description,
       priceInCents: mocks.listings[0].price,

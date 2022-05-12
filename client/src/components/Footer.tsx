@@ -22,7 +22,7 @@ const { currentUser } = useAuth();
           <i className="bi bi-person"></i>
         </div>
         <div onClick={() => navigate('/settings')} className='footer-div-button'>
-          <i className="bi bi-list"></i>
+        <i className="bi bi-gear"></i>
         </div>
       </div>
     </div>

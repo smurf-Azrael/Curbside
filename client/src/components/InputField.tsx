@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { ElementType } from 'react';
 import { MutableRefObject } from "react";
 import Form from 'react-bootstrap/Form';
 import '../styling/InputField.css';
 
 export default function InputField(
-  { name, label, type, placeholder, error, fieldref, required, min, max, value, step }: inputInterface
+  { name, label, type, placeholder, error, fieldref, as, required, min, max, value, step }: inputInterface
 ) {
   return (
     <Form.Group controlId={name} className="InputField">
@@ -13,6 +13,7 @@ export default function InputField(
         type={type || 'text'}
         placeholder={placeholder}
         ref={fieldref}
+        as={as}
         required={required}
         step={step}
         min={min}
@@ -25,12 +26,13 @@ export default function InputField(
 }
 
 interface inputInterface {
-  name: string,
-  label?: string,
-  type?: string,
-  placeholder?: string,
-  error?: string,
-  fieldref?: MutableRefObject<HTMLInputElement | null>;
+  name: string
+  label?: string
+  type?: string
+  placeholder?: string
+  error?: string
+  fieldref?: MutableRefObject<HTMLInputElement | null>
+  as?: ElementType<any> | undefined
   required?:boolean
   min?:number
   max?:number
