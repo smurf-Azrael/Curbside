@@ -1,5 +1,8 @@
+import { auth } from "./firebase";
+
 const BASE_API_URL = process.env.REACT_APP_BASE_API_URL;
 if (!BASE_API_URL) throw new Error('add env vars for REACT_APP_BASE_API_URL')
+
 
 export default class CurbsideApiClient {
   base_url: string;
@@ -9,8 +12,12 @@ export default class CurbsideApiClient {
   }
 
   async request(options:options) {
-    const userToken = await localStorage.getItem('userToken');
-    let auth = userToken !== null ? {'Authorization': `Bearer ${userToken}`} : undefined;
+
+    const userToken = await auth.currentUser?.getIdToken(true);
+    const authHeaders: {'Authorization'?:string} = {};
+    if (userToken){
+      authHeaders.Authorization = `Bearer ${userToken}`
+    }
     if (options.query) {
       Object.keys(options.query).forEach(key => options.query[key] === undefined && delete options.query[key])
     }
@@ -24,8 +31,8 @@ export default class CurbsideApiClient {
       response = await fetch(this.base_url + options.url + query, {
         method: options.method,
         headers: {
-          'Content-Type': 'application/json', 
-          ...auth, 
+          'Content-Type': 'application/json',
+          ...authHeaders,
           ...options.headers
         },
         body: options.body ? JSON.stringify(options.body) : null,
