@@ -4,6 +4,7 @@ import listingsController from './controllers/listings.controller';
 import { loginRequired } from './middlewares/login-required.middleware';
 import { PAGE_NOT_FOUND, USER_NOT_AUTHENTICATED } from './errors/SharedErrorMessages';
 import { patchListingByListingId } from './controllers/listingsByIdPatch.controller';
+import chatsController from './controllers/chats.controller';
 
 export const router = Router();
 
@@ -16,16 +17,16 @@ router.post('/users', (req: Request, res: Response, next: NextFunction): void =>
   }
 }, usersController.addInitialUser);
 
+router.get('/users/:id', usersController.getUserProfile);
 router.patch('/users/:id', loginRequired, usersController.finalizeUser);
 
+router.get('/listings', listingsController.getListings);
 router.post('/listings', loginRequired, listingsController.addListing);
 
 router.get('/listings/:id', listingsController.getListingByListingId);
 router.patch('/listings/:id', loginRequired, patchListingByListingId);
-router.get('/listings/:id', listingsController.getListingByListingId);
-router.get('/listings', listingsController.getListings);
 
-router.get('/users/:id', usersController.getUserProfile);
+router.get('/chats/:id', loginRequired, chatsController.getChatsByUserId);
 
 router.get('/login', loginRequired, (req: Request, res: Response) => {
   res.send({
