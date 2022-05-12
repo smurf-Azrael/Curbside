@@ -5,7 +5,7 @@ import { FinalizeUserDTO } from '../../interfaces/users.interface.dto';
 import { prisma } from '../../prisma/client';
 import { getTestIdToken } from '../test-helpers';
 export const usersPatchTests = (): void => {
-  describe('PATCH /users', () => {
+  describe('PATCH /users/:id', () => {
     const mockFinalizeUserInput: FinalizeUserDTO = {
       firstName: mocks.Users[0].firstName,
       lastName: mocks.Users[0].lastName,

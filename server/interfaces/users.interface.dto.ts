@@ -3,7 +3,6 @@ export interface InitialUserDTO {
   email: string;
   emailVerified: boolean;
   photoUrl?: string;
-
 }
 
 export interface FinalizeUserDTO {
