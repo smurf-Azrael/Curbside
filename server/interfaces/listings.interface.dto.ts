@@ -11,3 +11,16 @@ export interface AddListingDTO {
   longitude: number,
   latitude: number,
 }
+
+export interface GetListingQueryParams {
+  offset: string,
+  radius: string,
+  tags?: string,
+  maxPrice?: string,
+  minPrice: string,
+  sortBy: string,
+  condition: string,
+  longitude?:string,
+  latitude?:string,
+  search?:string,
+}

@@ -1,10 +1,3 @@
- .body-content-background {
-   width: 100%;
-   background-color: rgba(230, 225, 225, 0.801);
-   padding: 15px;
- }
-
- 
 
  .search-buttons-group {
    width: 90%;
@@ -47,7 +40,9 @@
     height:35px;
     border: none;
  }
-
+ .search-bar-container input:focus-visible {
+  outline: none;
+ }
  .search-btn {
    background-color: white;
    color: var(--main-green-color);
