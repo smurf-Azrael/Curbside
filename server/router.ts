@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import usersController from './controllers/users.controller';
 import listingsController from './controllers/listings.controller';
-import { getListingByListingId } from './controllers/listingsById.controller';
 import { loginRequired } from './middlewares/login-required.middleware';
 import { PAGE_NOT_FOUND, USER_NOT_AUTHENTICATED } from './errors/SharedErrorMessages';
 import { patchListingByListingId } from './controllers/listingsByIdPatch.controller';
@@ -21,8 +20,12 @@ router.patch('/users/:id', loginRequired, usersController.finalizeUser);
 
 router.post('/listings', loginRequired, listingsController.addListing);
 
+<<<<<<< HEAD
 router.get('/listings/:id', getListingByListingId);
 router.patch('/listings/:id', patchListingByListingId);
+=======
+router.get('/listings/:id', listingsController.getListingByListingId);
+>>>>>>> 019cdeb9b34e99a4f3cb6fc22c0aa90b735116b8
 router.get('/listings', listingsController.getListings);
 
 router.get('/users/:id', usersController.getUserProfile);

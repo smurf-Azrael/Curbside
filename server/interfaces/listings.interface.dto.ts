@@ -22,3 +22,16 @@ export interface FinalizeListingDTO {
   latitude: number,
   status: IListingStatus
 }
+
+export interface GetListingQueryParams {
+  offset: string,
+  radius: string,
+  tags?: string,
+  maxPrice?: string,
+  minPrice: string,
+  sortBy: string,
+  condition: string,
+  longitude?:string,
+  latitude?:string,
+  search?:string,
+}

@@ -27,3 +27,20 @@ export interface IListing {
   createdAt: Date,
   tags?: ITag[]
 }
+
+export interface IListingPackage{
+  id: string,
+  userId: string,
+  title: string,
+  description: string,
+  priceInCents: number,
+  currency: string,
+  condition: IListingCondition,
+  photoUrls: string[],
+  longitude: number,
+  latitude: number,
+  status: string,
+  createdAt: Date,
+  userPhotoUrl: string,
+  rating: number
+}
