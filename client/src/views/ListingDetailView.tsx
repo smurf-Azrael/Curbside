@@ -16,9 +16,8 @@ const ListingDetailView = () => {
   useEffect(() => {
     const loadListingData = async () => {
       const res = await api.get(`/listings/${id}`);
-      console.log(res)
       if (res.ok) {
-        setListing(res.body.listing);
+        setListing(res.body.data.listing);
       } else {
         console.log('failing to load listing data');
         // handleErrors
