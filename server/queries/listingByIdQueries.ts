@@ -42,7 +42,8 @@ const convertDataBaseListingToListing = (dbListing: Listing): IListing => {
         : dbListing.status === 'reserved'
           ? IListingStatus.reserved
           : IListingStatus.sold,
-      createdAt: dbListing.createdAt
+      createdAt: dbListing.createdAt,
+      tags: dbListing.tags
     };
     return listing;
   } catch (error) {
