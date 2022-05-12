@@ -1,5 +1,6 @@
 :root{
-  --main-green-color: #13C1AC;
+  /* --main-green-color: #13C1AC; */
+  --main-green-color: #357960;
   --main-background-color: #efeded;
   --header-height: 60px;
   --footer-height: 50px;
@@ -20,6 +21,10 @@
 }
 .body-content-background{
   min-height: calc(100vh - var(--header-height) - var(--footer-height) );
+  width: 100%;
+  background-color: rgba(230, 225, 225, 0.801);
+  padding-top: 25px;
+  padding-bottom: 25px;
 }
 .body-frame {
   max-width: 500px;
@@ -27,6 +32,12 @@
   flex-direction: column;
   margin: 0px auto;
   gap: 30px;
+}
+.body-header-container {
+  margin-top: auto;
+  position: sticky;
+  top:0;
+  z-index: 1;
 }
 .body-footer-container{
   margin-top: auto;
