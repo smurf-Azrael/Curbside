@@ -1,4 +1,4 @@
-import { IListingCondition } from './listing.interface';
+import { IListingCondition, IListingStatus } from './listing.interface';
 
 export interface AddListingDTO {
   userId: string,
@@ -10,6 +10,17 @@ export interface AddListingDTO {
   photoUrls: string, // JSON array
   longitude: number,
   latitude: number,
+}
+
+export interface FinalizeListingDTO {
+  title: string,
+  description: string,
+  priceInCents: number,
+  condition: IListingCondition,
+  photoUrls: string, // JSON array
+  longitude: number,
+  latitude: number,
+  status: IListingStatus
 }
 
 export interface GetListingQueryParams {

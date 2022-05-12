@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { IListing } from '../interfaces/listing.interface';
+import { IListing, IListingPackage } from '../interfaces/listing.interface';
 import { AddListingDTO, GetListingQueryParams } from '../interfaces/listings.interface.dto';
 import listingsModel, { getListingByListingIdModel } from '../models/listings.model';
 
@@ -27,8 +27,8 @@ const getListings = async (req: Request<unknown, unknown, unknown, GetListingQue
 export const getListingByListingId = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const id : string = req.params.id;
-    const listing: IListing | null = await getListingByListingIdModel(id);
-    res.status(200).send({ listing });
+    const listing: IListingPackage | null = await getListingByListingIdModel(id);
+    res.status(200).send({ data: { listing } });
   } catch (error) {
     next(error);
   }
