@@ -10,6 +10,7 @@ export interface AddListingDTO {
   photoUrls: string, // JSON array
   longitude: number,
   latitude: number,
+  tags: string
 }
 
 export interface FinalizeListingDTO {
