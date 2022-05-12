@@ -2,6 +2,7 @@
 import React from 'react'
 import '../styling/ListingDetail.css';
 import ButtonSmall from '../components/ButtonSmall';
+import SimpleMap from '../components/SimpleMap';
 // import {mocks} from '../mocks';
 
 const ListingDetailView = () => {
@@ -24,7 +25,7 @@ const ListingDetailView = () => {
         <p>Description: </p>
         <p>Location: </p>
       </section>
-      {/* Map component goes here */}
+      <SimpleMap />
     </section>
   )
 }

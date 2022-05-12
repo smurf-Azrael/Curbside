@@ -1,6 +1,7 @@
 .listing-detail-container {
   display: flex;
   flex-direction: column;
+  padding: 15px;
 }
 
 .listing-owner-info-wrapper {
@@ -36,4 +37,11 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+}
+
+.leaflet-touch .leaflet-bar a {
+  width: 17px;
+  height: 17px;
+  line-height: 14px;
+  font-size: 16px;
 }
