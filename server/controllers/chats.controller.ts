@@ -4,8 +4,8 @@ import chatModel from '../models/chats.model';
 const createChat = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const createChatDetails: CreateChatInputDTO = req.body;
-    const chatRoom = await chatModel.createChat(createChatDetails);
-    res.status(200).send({ data: chatRoom });
+    const chat = await chatModel.createChat(createChatDetails);
+    res.status(200).send({ data: chat });
   } catch (error) {
     next(error);
   }

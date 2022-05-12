@@ -8,6 +8,7 @@ describe('Backend Server End-To-End Tests', () => {
   beforeAll(async () => {
     await prisma.listing.deleteMany();
     await prisma.rating.deleteMany();
+    await prisma.chat.deleteMany();
     await prisma.user.deleteMany();
   });
 

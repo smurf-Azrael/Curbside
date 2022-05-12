@@ -1,6 +1,7 @@
+import { chatPostTests } from './chat-post-tests';
 
 export const chatTests = (): void => {
-  it('should work', () => {
-    expect(1 + 1).toBe(2);
+  describe('/chat', () => {
+    chatPostTests();
   });
 };

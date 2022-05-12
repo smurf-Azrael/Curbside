@@ -5,7 +5,7 @@ import { prisma } from '../prisma/client';
 
 const createChat = async (inputDetails: CreateChatInputDTO): Promise<IChat> => {
   const dbChat: Chat = await prisma.chat.create({ data: inputDetails });
-  return { id: dbChat.id, buyerId: dbChat.buyerId, sellerId: dbChat.sellerId, listingId: dbChat.listingId, messages: [] };
+  return { id: dbChat.id, buyerId: dbChat.buyerId, sellerId: dbChat.sellerId, listingId: dbChat.listingId, createdAt: dbChat.createdAt, updatedAt: dbChat.updatedAt, messages: [] };
 };
 
 export default { createChat };
