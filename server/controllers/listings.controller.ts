@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { IListing } from '../interfaces/listing.interface';
-import { AddListingDTO } from '../interfaces/listings.interface.dto';
-import listingsModel from '../models/listings.model';
+import { AddListingDTO, GetListingQueryParams } from '../interfaces/listings.interface.dto';
+import listingsModel, { getListingByListingIdModel } from '../models/listings.model';
 
 const addListing = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
@@ -12,18 +12,6 @@ const addListing = async (req: Request, res: Response, next: NextFunction): Prom
     next(error);
   }
 };
-
-export interface GetListingQueryParams {
-  offset: string,
-  radius: string,
-  tags?: string,
-  maxPrice?: string,
-  minPrice: string,
-  sortBy: string,
-  condition: string,
-  longitude?:string,
-  latitude?:string,
-}
 
 const getListings = async (req: Request<unknown, unknown, unknown, GetListingQueryParams>, res: Response, next: NextFunction): Promise<void> => {
   try {
@@ -36,7 +24,18 @@ const getListings = async (req: Request<unknown, unknown, unknown, GetListingQue
   }
 };
 
+export const getListingByListingId = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const id : string = req.params.id;
+    const listing: IListing | null = await getListingByListingIdModel(id);
+    res.status(200).send({ listing });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   addListing,
-  getListings
+  getListings,
+  getListingByListingId
 };

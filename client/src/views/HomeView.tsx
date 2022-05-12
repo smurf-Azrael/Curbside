@@ -28,7 +28,13 @@ export default function HomeView() {
   const conditionField = useRef<HTMLSelectElement>(null);
   const fields = { tagsField, sortByField, maxPriceField, minPriceField, conditionField }
 
+  const latitudeField = useRef<HTMLSelectElement>(null);
+  const longitudeField = useRef<HTMLSelectElement>(null);
+  const searchField = useRef<HTMLInputElement>(null);
+
   const getListings = useCallback(async (offset: number) => {
+    const longitude = 13.405 //CHANGE TO PULL FROM SOMEWHERE
+    const latitude = 52.52 // CHANGE TO PULL FROM SOMEWHERE
     const tagString = Object.values(tagsField.current).join('+');
     const tags = tagString !== '' ? tagString : undefined;
     const radius = radiusField.current?.value || 10;
@@ -36,7 +42,10 @@ export default function HomeView() {
     const minPrice = minPriceField.current?.value || 0;
     const sortBy = sortByField.current?.value || 'closest';
     const condition = conditionField.current?.value || 'all';
-    const query = { offset: offset, radius, condition, tags, maxPrice, minPrice, sortBy };
+    // const latitude = latitudeField.current?.value || 'all';
+    // const longitude = longitudeField.current?.value || 'all';
+    const search = searchField.current?.value || undefined;
+    const query = { search, offset, radius, condition, tags, maxPrice, minPrice, sortBy, latitude, longitude };
     // add 'search' to query
     const res = await api.get('/listings', query)
     return res;
@@ -72,35 +81,38 @@ export default function HomeView() {
     }
   }
 
-  useEffect(() => {
-    const loadData = async () => {
-      const res = await getListings(0);
-      if (res.ok) {
-        offset.current = res.body.data.offset;
-        setListings(res.body.data.listings);
-        setLoadingError(false);
-      } else {
-        console.log('error', res.body);
-        // handleErrors
-        setListings(mocks.listings);
-        setLoadingError(false);
-      }
-      setIsLoading(false);
+  const loadData = async () => {
+    const res = await getListings(0);
+    if (res.ok) {
+      offset.current = res.body.data.offset;
+      setListings(res.body.data.listings);
+      setLoadingError(false);
+      console.log('hi here')
+      searchField.current!.value = "";
+    } else {
+      // handleErrors
+      setListings(mocks.listings);
+      setLoadingError(false);
     }
+    setIsLoading(false);
+  }
+  useEffect(() => {
     loadData();
   }, [api, getListings])
 
 
   function pressEnter(event: KeyboardEvent<HTMLInputElement>): any {
     if (event.key === 'Enter') {
-      getListings(0);
+      loadData();
     }
   }
 
 
   return (
     <div className="body-page">
-      <Header />
+      <div className='body-header-container' >
+        <Header />
+      </div>
       <div className="body-content-background">
         <div className="body-frame">
           <LocationPreviewComponent />{/*Empty for now, but will possibly show preview of your location  */}
@@ -108,7 +120,7 @@ export default function HomeView() {
           <div className="global-search-area">
             <div className='search-bar-container'>
               <button onClick={() => getListings(0)}><i className="bi bi-search"></i></button>
-              <input className="main-input" placeholder="Search.." onKeyPress={(e) => pressEnter(e)} />
+              <input ref={searchField} className="main-input" placeholder="Search.." onKeyPress={(e) => pressEnter(e)} />
             </div>
             <div className='search-buttons-group' >
               <button className="search-location-button search-btn" onClick={openFiltersModal}>

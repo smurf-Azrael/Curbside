@@ -1,8 +1,8 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
 }
 
 datasource db {
@@ -28,8 +28,8 @@ model User {
   seller        Transaction? @relation("seller")
   sellerchat    Chat?        @relation("sellerChat")
   buyerchat     Chat?        @relation("buyerChat")
-  sellerRating  Rating?      @relation("sellerRating")
-  buyerRating   Rating?      @relation("buyerRating")
+  sellerRating  Rating[]      @relation("sellerRating")
+  buyerRating   Rating[]      @relation("buyerRating")
 
 }
 
@@ -71,8 +71,8 @@ model Transaction {
   listingId String
   buyerId   String   @unique
   sellerId  String   @unique
-  buyer     User     @relation(name: "buyer", fields: [buyerId], references: [id])
-  seller    User     @relation(name: "seller", fields: [sellerId], references: [id])
+  buyer     User     @relation(name: "buyer", fields: [buyerId], references: [id], onDelete: Cascade)
+  seller    User     @relation(name: "seller", fields: [sellerId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
 }
 
@@ -80,9 +80,9 @@ model Chat {
   id        String     @id @default(cuid())
   listing   Listing    @relation(fields: [listingId], references: [id])
   listingId String
-  seller    User       @relation(name: "sellerChat", fields: [sellerId], references: [id])
+  seller    User       @relation(name: "sellerChat", fields: [sellerId], references: [id], onDelete: Cascade)
   sellerId  String     @unique
-  buyer     User       @relation(name: "buyerChat", fields: [buyerId], references: [id])
+  buyer     User       @relation(name: "buyerChat", fields: [buyerId], references: [id], onDelete: Cascade)
   buyerId   String     @unique
   status    ChatStatus @default(open)
   messages  Message[]
@@ -109,9 +109,9 @@ model Tag {
 
 model Rating {
   id       String @id @default(cuid())
-  seller   User   @relation(name: "sellerRating", fields: [sellerId], references: [id])
-  sellerId String @unique
-  buyer    User   @relation(name: "buyerRating", fields: [buyerId], references: [id])
-  buyerId  String @unique
+  seller   User   @relation(name: "sellerRating", fields: [sellerId], references: [id], onDelete: Cascade)
+  sellerId String 
+  buyer    User   @relation(name: "buyerRating", fields: [buyerId], references: [id], onDelete: Cascade)
+  buyerId  String 
   rating   Int
 }
