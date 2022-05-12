@@ -1,8 +1,7 @@
-import { GetListingQueryParams } from '../controllers/listings.controller';
 import { CustomError } from '../errors/CustomError.class';
 import { UNKNOWN_SERVER_ERROR } from '../errors/SharedErrorMessages';
 import { IListing } from '../interfaces/listing.interface';
-import { AddListingDTO } from '../interfaces/listings.interface.dto';
+import { AddListingDTO, GetListingQueryParams } from '../interfaces/listings.interface.dto';
 import { ITag } from '../interfaces/tag.interface';
 import listingsQueries, { spatialQuery, spatialQueryListings } from '../queries/listingsQueries';
 import { getUserById } from '../queries/userQueries';
