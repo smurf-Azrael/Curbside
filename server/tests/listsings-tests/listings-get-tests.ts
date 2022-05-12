@@ -60,13 +60,13 @@ export const listingsGetTests = (): void => {
     it('Should sort listings by closest', async () => {
       const coords = [52.52, 13.0405];
       const { body } = await request(server)
-        .get(`/listings?offset=0&radius=100&minPrice=0&sortBy=closest&longitude=${coords[0]}&latitude=${coords[1]}`)
+        .get(`/listings?offset=0&radius=100&minPrice=0&sortBy=closest&longitude=${coords[1]}&latitude=${coords[0]}`)
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/)
         .expect(200);
       expect(body.data.listings.length).toBeTruthy();
       const sortedListings = body.data.listings.slice()
-        .sort((a: IListing, b: IListing) => getDistance(coords, [a.longitude, a.latitude]) - getDistance(coords, [b.longitude, b.latitude]));
+        .sort((a: IListing, b: IListing) => getDistance(coords, [a.latitude, a.longitude]) - getDistance(coords, [b.latitude, b.longitude]));
       expect(sortedListings).toEqual(body.data.listings);
     });
 
@@ -161,8 +161,8 @@ const addRandomMockListing = async (ownerId: string, odd: boolean): Promise<void
       'https://images.unsplash.com/photo-1571977796766-578d484a6c25?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8Z3JlZW4lMjBjaGFpcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60'
     ]),
     priceInCents: getRandomInt(100, 10000),
-    latitude: getRandomArbitrary(13.3, 13.5),
-    longitude: getRandomArbitrary(52.4, 52.6),
+    longitude: getRandomArbitrary(13.3, 13.5),
+    latitude: getRandomArbitrary(52.4, 52.6),
     condition: [IListingCondition.gentlyUsed, IListingCondition.new, IListingCondition.used][getRandomInt(0, 3)]
     // addTag
   };
