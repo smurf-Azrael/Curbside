@@ -1,17 +1,23 @@
-// const { PrismaClient } = require('@prisma/client');
+const { PrismaClient } = require('@prisma/client');
 const users = require('../mocks/mockUsers.json');
 const listings = require('../mocks/mockListings.json');
 
-// const prisma = new PrismaClient();
+const prisma = new PrismaClient();
 
-async function main () {
+async function main (): Promise<void> {
+  for (const user of users) {
+    await prisma.user.create({ data: user });
+  };
 
-  for (const u of users) {
-    console.log(u);
-  }
-
-  for (const l of listings) {
-    console.log(l);
-  }
+  for (const listing of listings) {
+    await prisma.listing.create({ data: listing });
+  };
 }
-main();
+main()
+  .catch((e)=> {
+    console.error(e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
