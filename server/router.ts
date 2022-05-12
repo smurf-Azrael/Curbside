@@ -3,7 +3,7 @@ import usersController from './controllers/users.controller';
 import listingsController from './controllers/listings.controller';
 import { loginRequired } from './middlewares/login-required.middleware';
 import { PAGE_NOT_FOUND, USER_NOT_AUTHENTICATED } from './errors/SharedErrorMessages';
-import chatController from './controllers/chats.controller';
+// import chatController from './controllers/chats.controller';
 export const router = Router();
 
 router.post('/users', (req: Request, res: Response, next: NextFunction): void => {
@@ -38,7 +38,9 @@ router.get('/login', loginRequired, (req: Request, res: Response) => {
   });
 });
 
-router.post('/chat', loginRequired, chatController.createChat);
+// router.post('/chat', loginRequired, chatController.createChat);
+
+// router.get('/chat/:id', loginRequired, chatController.getChat);
 
 router.get('*', (req: Request, res: Response) => {
   res.status(404).send({ error: PAGE_NOT_FOUND });

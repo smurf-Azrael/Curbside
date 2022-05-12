@@ -14,7 +14,7 @@ describe('Backend Server End-To-End Tests', () => {
 
   usersTests();
   listingsTests();
-  chatTests();
+  // chatTests();
   afterAll(async () => {
     server.close();
   });
