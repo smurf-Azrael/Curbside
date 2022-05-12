@@ -1,8 +1,24 @@
 import { Listing } from '@prisma/client';
 import { CustomError } from '../errors/CustomError.class';
 import { LISTING_PARSING_ERROR, USER_NOT_FOUND } from '../errors/SharedErrorMessages';
-import { IListing, IListingCondition } from '../interfaces/listing.interface';
+import { IListing, IListingCondition, IListingStatus } from '../interfaces/listing.interface';
+import { IUserInfoSelect } from '../interfaces/user.interface';
 import { prisma } from '../prisma/client';
+
+interface IdbSelectUserDetails{
+  firstName: string| null,
+  lastName: string| null,
+  photoUrl: string | null
+}
+
+const convertDBSelectUserDetailsToDetails = (dbSelectUserDetails: IdbSelectUserDetails): IUserInfoSelect => {
+  const reformatedSelectUserDetails = {
+    userFirstName: dbSelectUserDetails.firstName!,
+    userLastName: dbSelectUserDetails.lastName!,
+    userPhotoUrl: dbSelectUserDetails.photoUrl
+  };
+  return reformatedSelectUserDetails;
+};
 
 const convertDataBaseListingToListing = (dbListing: Listing): IListing => {
   try {
@@ -21,7 +37,11 @@ const convertDataBaseListingToListing = (dbListing: Listing): IListing => {
       photoUrls: dbListing.photoUrls,
       longitude: dbListing.longitude,
       latitude: dbListing.latitude,
-      status: dbListing.status,
+      status: dbListing.status === 'available'
+        ? IListingStatus.available
+        : dbListing.status === 'reserved'
+          ? IListingStatus.reserved
+          : IListingStatus.sold,
       createdAt: dbListing.createdAt
     };
     return listing;
@@ -41,18 +61,20 @@ export const getListingsByListingId = async (id: string):Promise<IListing | null
   return listings;
 };
 
-export const getUserPhotoByUserId = async (userId: string): Promise<string> => {
-  const dbUserImage: {photoUrl:string |null} | null = await prisma.user.findFirst({
+export const getSelectUserInfoByUserId = async (userId: string): Promise<IUserInfoSelect> => {
+  const dbUserInfo: IdbSelectUserDetails | null = await prisma.user.findFirst({
     where: {
       id: userId
     },
     select: {
+      firstName: true,
+      lastName: true,
       photoUrl: true
     }
 
   });
-  if (dbUserImage === null || undefined) { throw new CustomError(USER_NOT_FOUND, 404); }
-  return dbUserImage.photoUrl as string;
+  if (dbUserInfo === null || undefined) { throw new CustomError(USER_NOT_FOUND, 404); }
+  return convertDBSelectUserDetailsToDetails(dbUserInfo);
 };
 
 export const getUserRatingByUserId = async (userId: string): Promise<number> => {

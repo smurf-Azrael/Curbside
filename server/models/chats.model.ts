@@ -1,19 +1,17 @@
-// import { IChat } from '../interfaces/chat.interface';
-// import { CreateChatInputDTO } from '../interfaces/chat.interface.dto';
-// import chatQueries from '../queries/chatQueries';
-// import { addChatInputValidation } from './chats.model.validation';
+import { CustomError } from '../errors/CustomError.class';
+import { USER_NOT_FOUND } from '../errors/SharedErrorMessages';
+import { IChat } from '../interfaces/chat.interface';
+import chatQueries from '../queries/chatQueries';
+import { getUserById } from '../queries/userQueries';
+const getChatsByUserId = async (userId: string): Promise<IChat[]> => {
+  const user = await getUserById(userId);
+  if (!user) {
+    throw new CustomError(USER_NOT_FOUND, 404);
+  }
+  const chats = await chatQueries.getChatsByUserId(userId);
+  return chats;
+};
 
-// const createChat = async (createChatDetails: CreateChatInputDTO): Promise<IChat> => {
-//   await addChatInputValidation(createChatDetails);
-//   const chat: IChat = await chatQueries.createChat(createChatDetails);
-//   return chat;
-// };
-
-// const getChat = async (chatId: string): Promise<IChat> => {
-//   const chat: IChat = await chatQueries.getChat(chatId);
-//   return chat;
-// };
-
-// export default {
-//   createChat, getChat
-// };
+export default {
+  getChatsByUserId
+};

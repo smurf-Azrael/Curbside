@@ -3,10 +3,12 @@ import { LISTING_NOT_FOUND, UNKNOWN_SERVER_ERROR } from '../errors/SharedErrorMe
 import { IListing, IListingPackage } from '../interfaces/listing.interface';
 import { AddListingDTO, GetListingQueryParams } from '../interfaces/listings.interface.dto';
 import { ITag } from '../interfaces/tag.interface';
-import { getListingsByListingId, getUserPhotoByUserId, getUserRatingByUserId } from '../queries/listingByIdQueries';
+import { IUserInfoSelect } from '../interfaces/user.interface';
+import { getListingsByListingId, getSelectUserInfoByUserId, getUserRatingByUserId } from '../queries/listingByIdQueries';
 import listingsQueries, { spatialQuery, spatialQueryListings } from '../queries/listingsQueries';
 import { getUserById } from '../queries/userQueries';
 import { addListingInputValidation } from './listings.model.validation';
+
 const addListing = async (listingDetails: AddListingDTO): Promise<IListing> => {
   try {
     await addListingInputValidation(listingDetails);
@@ -85,14 +87,13 @@ const getListings = async (userId: string | undefined, params: GetListingQueryPa
     throw new CustomError(UNKNOWN_SERVER_ERROR, 500);
   }
 };
-
 export const getListingByListingIdModel = async (id:string) : Promise<IListingPackage | null> => {
   try {
     const listing: IListing | null = await getListingsByListingId(id);
     if (listing === null || undefined) { throw new CustomError(LISTING_NOT_FOUND, 404); }
-    const userPhotoUrl: string | null = await getUserPhotoByUserId(listing.userId);
+    const userInfo: IUserInfoSelect | null = await getSelectUserInfoByUserId(listing.userId);
     const rating: number | null = await getUserRatingByUserId(listing.userId);
-    const listingPackage: IListingPackage = { ...listing, userPhotoUrl, rating };
+    const listingPackage: IListingPackage = { ...listing, ...userInfo, rating };
     return listingPackage;
   } catch (error) {
     console.log('/models/listingsById.model getListingByIdModel ERROR', error);

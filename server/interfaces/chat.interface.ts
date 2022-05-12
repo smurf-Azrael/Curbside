@@ -1,11 +1,16 @@
+import { IListingStatus } from './listing.interface';
 import { IMessage } from './message.interface';
 
 export interface IChat {
   id: string,
-  listingId: string,
   sellerId: string,
   buyerId: string,
-  messages: IMessage[],
+  listingId: string,
+  listingPhotoUrl?: string,
+  listingStatus: IListingStatus,
+  priceInCents: number,
+  currency: string,
+  lastMessage: IMessage,
   createdAt: Date,
   updatedAt: Date
 }

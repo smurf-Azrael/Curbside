@@ -35,7 +35,7 @@ model User {
 
 model Listing {
   id            String           @id @default(cuid())
-  user          User             @relation(fields: [userId], references: [id])
+  user          User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId        String
   transactionId String           @default(cuid())
   priceInCents  Int
@@ -98,7 +98,7 @@ enum ChatStatus {
 model Message {
   id        String   @id @default(cuid())
   senderId  String
-  chat      Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  chat      Chat     @relation(fields: [chatId], references: [id])
   chatId    String   @default(cuid())
   body      String
   createdAt DateTime @default(now())

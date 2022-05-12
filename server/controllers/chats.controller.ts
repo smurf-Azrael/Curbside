@@ -1,24 +1,17 @@
-// import { NextFunction, Request, Response } from 'express';
-// import { CreateChatInputDTO } from '../interfaces/chat.interface.dto';
-// import chatModel from '../models/chats.model';
-// const createChat = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-//   try {
-//     const createChatDetails: CreateChatInputDTO = req.body;
-//     const chat = await chatModel.createChat(createChatDetails);
-//     res.status(200).send({ data: chat });
-//   } catch (error) {
-//     next(error);
-//   }
-// };
+import { Request, Response, NextFunction } from 'express';
+import chatsModel from '../models/chats.model';
 
-// const getChat = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-//   try {
-//     const chatId: string = req.params.id;
-//     const chat = await chatModel.getChat(chatId);
-//     res.status(200).send({ data: chat });
-//   } catch (error) {
-//     next(error);
-//   }
-// };
+const getChatsByUserId = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    // @ts-ignore
+    const userId = req.params.id;
+    const chats = await chatsModel.getChatsByUserId(userId);
+    res.status(200).send({ data: chats });
+  } catch (error) {
+    next(error);
+  }
+};
 
-// export default { createChat, getChat };
+export default {
+  getChatsByUserId
+};

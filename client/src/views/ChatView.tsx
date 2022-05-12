@@ -50,6 +50,7 @@ const ChatView = () => {
           })
 
         socket.on('messageResponse', (res: { ok: boolean, data: any }) => {
+          console.log('hello?')
           if (res.ok) {
             setMessages((messages) => {
               return [...messages, res.data.message]
