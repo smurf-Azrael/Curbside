@@ -28,8 +28,8 @@ model User {
   seller        Transaction? @relation("seller")
   sellerchat    Chat?        @relation("sellerChat")
   buyerchat     Chat?        @relation("buyerChat")
-  sellerRating  Rating[]      @relation("sellerRating")
-  buyerRating   Rating[]      @relation("buyerRating")
+  sellerRating  Rating[]     @relation("sellerRating")
+  buyerRating   Rating[]     @relation("buyerRating")
 
 }
 
@@ -86,6 +86,8 @@ model Chat {
   buyerId   String     @unique
   status    ChatStatus @default(open)
   messages  Message[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
 }
 
 enum ChatStatus {
@@ -94,11 +96,12 @@ enum ChatStatus {
 }
 
 model Message {
-  id       String @id @default(cuid())
-  senderId String
-  chat     Chat   @relation(fields: [chatId], references: [id])
-  chatId   String @default(cuid())
-  body     String
+  id        String   @id @default(cuid())
+  senderId  String
+  chat      Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  chatId    String   @default(cuid())
+  body      String
+  createdAt DateTime @default(now())
 }
 
 model Tag {
@@ -110,8 +113,8 @@ model Tag {
 model Rating {
   id       String @id @default(cuid())
   seller   User   @relation(name: "sellerRating", fields: [sellerId], references: [id], onDelete: Cascade)
-  sellerId String 
+  sellerId String
   buyer    User   @relation(name: "buyerRating", fields: [buyerId], references: [id], onDelete: Cascade)
-  buyerId  String 
+  buyerId  String
   rating   Int
 }

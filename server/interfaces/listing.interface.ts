@@ -5,6 +5,7 @@ export enum IListingCondition {
   gentlyUsed = 'gentlyUsed',
   used = 'used'
 }
+
 export interface IListing {
   id: string,
   userId: string,
