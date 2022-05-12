@@ -6,7 +6,7 @@ import curbside from './../assets/CurbsideSmall.png';
 import { useAuth } from '../contexts/AuthContext';
 export default function Header() {
   const navigate = useNavigate();
-  const currentUser = useAuth()
+  const {currentUser, logOut} = useAuth()
 
   return (
     <div className='header-container'>
@@ -14,11 +14,15 @@ export default function Header() {
         <button className="curbside-home" onClick={() => navigate('/')}>
           <img src={curbside} alt='Curbside' />
         </button>
-        <div className='header-login' onClick={() => navigate('/login')} >
-          <ButtonSmall content={currentUser ? 'Log Out': 'Log in'} fill={true} />
-        </div>
+        {currentUser ? 
+         ( <div className='header-login' onClick={() => logOut()} >
+            <ButtonSmall content={'Log Out'} fill={false} />
+          </div>) :
+        ( <div className='header-login' onClick={() => navigate('/login')} >
+        <ButtonSmall content={'Log in'} fill={true} />
+        </div>)
+        }
       </div>
-
     </div>
   )
 }
