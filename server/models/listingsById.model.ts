@@ -1,4 +1,4 @@
-import { IListing, IListingCondition } from '../interfaces/listing.interface';
+import { IListing, IListingCondition, IListingStatus } from '../interfaces/listing.interface';
 import { CustomError } from '../errors/CustomError.class';
 import { LISTING_NOT_FOUND } from '../errors/SharedErrorMessages';
 import { getListingsByListingId, getUserPhotoByUserId, getUserRatingByUserId } from '../queries/listingByIdQueries';
@@ -14,7 +14,7 @@ interface IListingPackage{
   photoUrls: string[],
   longitude: number,
   latitude: number,
-  status: string,
+  status: IListingStatus,
   createdAt: Date,
   userPhotoUrl: string,
   rating: number

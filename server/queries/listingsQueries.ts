@@ -2,7 +2,7 @@ import { Listing, ListingCondition, Tag } from '@prisma/client';
 import { GetListingQueryParams } from '../controllers/listings.controller';
 import { CustomError } from '../errors/CustomError.class';
 import { LISTING_PARSING_ERROR } from '../errors/SharedErrorMessages';
-import { IListing, IListingCondition } from '../interfaces/listing.interface';
+import { IListing, IListingCondition, IListingStatus } from '../interfaces/listing.interface';
 import { AddListingDTO } from '../interfaces/listings.interface.dto';
 import { ITag } from '../interfaces/tag.interface';
 import { prisma } from '../prisma/client';
@@ -24,7 +24,11 @@ const convertDataBaseListingToListing = (dbListing: Listing & {tags?: Tag[]}): I
       photoUrls: dbListing.photoUrls,
       longitude: dbListing.longitude,
       latitude: dbListing.latitude,
-      status: dbListing.status,
+      status: dbListing.status === 'available'
+        ? IListingStatus.available
+        : dbListing.status === 'reserved'
+          ? IListingStatus.reserved
+          : IListingStatus.sold,
       createdAt: dbListing.createdAt,
       tags: !dbListing.tags ? [] : dbListing.tags.map<ITag>((tag: Tag) => ({ id: tag.id, title: tag.title }))
     };

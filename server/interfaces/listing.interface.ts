@@ -5,6 +5,13 @@ export enum IListingCondition {
   gentlyUsed = 'gentlyUsed',
   used = 'used'
 }
+
+export enum IListingStatus{
+  available = 'available',
+  reserved = 'reserved',
+  sold = 'sold'
+}
+
 export interface IListing {
   id: string,
   userId: string,
@@ -16,7 +23,7 @@ export interface IListing {
   photoUrls: string[],
   longitude: number,
   latitude: number,
-  status: string,
+  status: IListingStatus,
   createdAt: Date,
   tags?: ITag[]
 }

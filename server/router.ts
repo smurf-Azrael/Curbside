@@ -4,6 +4,7 @@ import listingsController from './controllers/listings.controller';
 import { getListingByListingId } from './controllers/listingsById.controller';
 import { loginRequired } from './middlewares/login-required.middleware';
 import { PAGE_NOT_FOUND, USER_NOT_AUTHENTICATED } from './errors/SharedErrorMessages';
+import { patchListingByListingId } from './controllers/listingsByIdPatch.controller';
 
 export const router = Router();
 
@@ -21,6 +22,7 @@ router.patch('/users/:id', loginRequired, usersController.finalizeUser);
 router.post('/listings', loginRequired, listingsController.addListing);
 
 router.get('/listings/:id', getListingByListingId);
+router.patch('/listings/:id', patchListingByListingId);
 router.get('/listings', listingsController.getListings);
 
 router.get('/users/:id', usersController.getUserProfile);
