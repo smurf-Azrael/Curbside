@@ -19,6 +19,9 @@
 }
 
 .listing-owner-image-wrapper img {
+  height: 100px;
+  width: 100px;
+  object-fit: cover;
   border-radius: 50%;
 }
 

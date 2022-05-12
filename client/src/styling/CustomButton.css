@@ -1,7 +1,11 @@
-.custom-button-small{
+.custom-button-style{
   /* margin-top: 20px; */
   padding: 2px 15px 3px 15px;
   border-radius: 4px;
+  transition: 0.3s;
+}
+.custom-button-style:hover{
+  box-shadow: 0 0 5px 1px #c3bcbc;
 }
 .fill{
   background-color: var(--main-green-color);
