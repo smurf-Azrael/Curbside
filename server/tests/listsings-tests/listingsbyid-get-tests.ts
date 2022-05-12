@@ -81,6 +81,16 @@ export const getListingsByIdTests = (): void => {
       expect(body.listing.id).toEqual(id);
       expect(body.listing.rating).toEqual(4);
       expect(body.listing.userPhotoUrl).toEqual(mockInitialUserInput1.photoUrl);
+      expect(body.listing.userId).toEqual(listingFromDb.userId);
+      expect(body.listing.title).toEqual(listingFromDb.title);
+      expect(body.listing.description).toEqual(listingFromDb.description);
+      expect(body.listing.priceInCents).toEqual(listingFromDb.priceInCents);
+      expect(body.listing.condition).toEqual(listingFromDb.condition);
+      expect(body.listing.photoUrls).toEqual(listingFromDb.photoUrls);
+      expect(body.listing.longitude).toEqual(listingFromDb.longitude);
+      expect(body.listing.latitude).toEqual(listingFromDb.latitude);
+      expect(body.listing.status).toEqual('available');
+      expect(body.listing.createdAt).toEqual(listingFromDb.createdAt.toISOString());
     });
     it('Should send 404 if listing can be found', async () => {
       const { body, statusCode } = await request(app)
