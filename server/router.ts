@@ -21,7 +21,7 @@ router.patch('/users/:id', loginRequired, usersController.finalizeUser);
 router.post('/listings', loginRequired, listingsController.addListing);
 
 router.get('/listings/:id', listingsController.getListingByListingId);
-router.patch('/listings/:id', patchListingByListingId);
+router.patch('/listings/:id', loginRequired, patchListingByListingId);
 router.get('/listings/:id', listingsController.getListingByListingId);
 router.get('/listings', listingsController.getListings);
 
