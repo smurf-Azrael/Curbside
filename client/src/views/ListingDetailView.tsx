@@ -9,15 +9,12 @@ import { mocks } from '../mocks';
 const USER_ID = '931d461e-bab4-4c7a-be90-e5e1ab611c0f';
 const LISTING_ID = 5;
 const mockListing = mocks.listings.filter(listing => listing.userId === USER_ID && listing.id === LISTING_ID)[0];
-console.log({mockListing})
-console.log(typeof mockListing.longitude);
 // ---
 
 const position = {
   lng: mockListing.longitude,
   lat: mockListing.latitude
 };
-console.log('position in ListingDetailView component', position)
 
 
 const ListingDetailView = () => {
@@ -35,10 +32,10 @@ const ListingDetailView = () => {
       <ButtonSmall content={'Start a chat to buy'} fill={true} />
       {/* Image section to be added here */}
       <section className='listing-details-data-wrapper'>
-        <p style={{fontWeight:"bold"}}></p>
-        <p>Condition:</p>
-        <p>Description: </p>
-        <p>Location: </p>
+        <p style={{fontWeight:"bold"}}>{mockListing.title}</p>
+        <p><span style={{fontWeight:"bold", color:"gray"}}>Condition:</span>{mockListing.condition}</p>
+        <p><span style={{fontWeight:"bold", color:"gray"}}>Description: </span>{mockListing.description}</p>
+        <p style={{fontWeight:"bold", color:"gray"}}>Location: </p>
       </section>
       <SimpleMap position={position} />
     </section>

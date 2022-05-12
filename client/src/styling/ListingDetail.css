@@ -34,9 +34,20 @@
 }
 
 .listing-details-data-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  text-align: left;
+}
+.listing-details-data-wrapper p {
+  width: 100%;
+  justify-content: flex-start;
+}
+
+p {
+  display: inline-block;
+  margin-bottom: 9px;
+}
+
+span {
+  margin-right: 0.5rem;
 }
 
 .leaflet-touch .leaflet-bar a {
