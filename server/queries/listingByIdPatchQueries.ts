@@ -1,12 +1,11 @@
-import { Listing, Tag } from '@prisma/client';
+import { Listing } from '@prisma/client';
 import { CustomError } from '../errors/CustomError.class';
 import { LISTING_PARSING_ERROR } from '../errors/SharedErrorMessages';
 import { IListing, IListingCondition, IListingStatus } from '../interfaces/listing.interface';
 import { FinalizeListingDTO } from '../interfaces/listings.interface.dto';
-import { ITag } from '../interfaces/tag.interface';
 import { prisma } from '../prisma/client';
 
-const convertDataBaseListingToListing = (dbListing: Listing & {tags?: Tag[]}): IListing => {
+const convertDataBaseListingToListing = (dbListing: Listing): IListing => {
   try {
     const listing: IListing = {
       id: dbListing.id,
@@ -29,7 +28,7 @@ const convertDataBaseListingToListing = (dbListing: Listing & {tags?: Tag[]}): I
           ? IListingStatus.reserved
           : IListingStatus.sold,
       createdAt: dbListing.createdAt,
-      tags: !dbListing.tags ? [] : dbListing.tags.map<ITag>((tag: Tag) => ({ id: tag.id, title: tag.title }))
+      tags: dbListing.tags
     };
     return listing;
   } catch (err) {
