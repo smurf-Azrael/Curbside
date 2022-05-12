@@ -37,7 +37,7 @@ export default function HomeView() {
     const latitude = 52.52 // CHANGE TO PULL FROM SOMEWHERE
     const tagString = Object.values(tagsField.current).join('+');
     const tags = tagString !== '' ? tagString : undefined;
-    const radius = radiusField.current?.value || 10;
+    const radius = radiusField.current?.value || 55;
     const maxPrice = maxPriceField.current?.value || undefined;
     const minPrice = minPriceField.current?.value || 0;
     const sortBy = sortByField.current?.value || 'closest';
