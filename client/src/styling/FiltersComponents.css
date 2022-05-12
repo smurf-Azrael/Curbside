@@ -1,0 +1,14 @@
+.filter-frame {
+  margin-bottom: 10px;
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+}
+.auto-complete-search-frame{
+  display: flex;
+  gap: 6px;
+  flex-direction: column;
+}
+.auto-complete-search{
+  width: 100% !important;
+}

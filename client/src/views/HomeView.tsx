@@ -8,14 +8,19 @@ import Footer from "../components/Footer";
 import '../styling/HomeView.css';
 import LocationPreviewComponent from "../components/LocationPreviewComponent";
 import loader from '../assets/loader.gif';
+import { Autocomplete, TextField } from '@mui/material';
+import AutoCompleteSearch from '../components/AutoCompleteSearch';
 
 export default function HomeView() {
   const api = useApi()
 
   const [listings, setListings] = useState<any[]>([]);
   const [FiltersAreVisible, setFiltersAreVisible] = useState(false);
-  const [isLoading, setIsLoading] = useState<boolean>(true)
-  const [loadingError, setLoadingError] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [loadingError, setLoadingError] = useState<boolean>(false);
+  const [tagStack, SetTagStack] = useState<any[]>([]);
+
+  // setInterval(() => {console.log('tagStack', tagStack)}, 2000)
 
   const offset = useRef<number>(0);
 
@@ -137,6 +142,22 @@ export default function HomeView() {
               </button>
             </div>
           </div>
+          {/* <Autocomplete
+            multiple
+            limitTags={2}
+            id="multiple-limit-tags"
+            options={['hey','hello','good morning', 'good night']}
+            getOptionLabel={(option) => option}
+            // defaultValue={['hey', 'hello']}
+            renderInput={(params) => (
+              <TextField {...params} label="limitTags" placeholder="Favorites" />
+            )}
+            sx={{ width: '500px' }}
+          /> */}
+
+
+          <AutoCompleteSearch SetTagStack={SetTagStack} />
+
 
           <FiltersComponent
             filtersAreVisible={FiltersAreVisible}
