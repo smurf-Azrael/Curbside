@@ -1,4 +1,5 @@
 import { IListingStatus } from './listing.interface';
+import { IMessage } from './message.interface';
 
 export interface IChat {
   id: string,
@@ -9,4 +10,7 @@ export interface IChat {
   listingStatus: IListingStatus,
   priceInCents: number,
   currency: string,
+  lastMessage: IMessage,
+  createdAt: Date,
+  updatedAt: Date
 }
