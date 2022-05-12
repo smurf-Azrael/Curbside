@@ -11,6 +11,7 @@ import AddListingView from './views/AddListingView';
 import HomeView from './views/HomeView';
 import ProfileView from './views/ProfileView';
 import ChatView from './views/ChatView';
+import ListingDetailView from './views/ListingDetailView';
 
 function App() {
 
@@ -27,9 +28,9 @@ function App() {
               <Route path="/signup" element={<SignupView />} />
               <Route path="/verify" element={<VerifyView />} />
               <Route path="/set-profile" element={<SetProfileView />} />
-              <Route path="/listing/:id" />
               <Route path="/listing/:listingId/chat/:buyerId" element={<ChatView />}/>
               <Route path="/listing/:listingId/chat" element={<ChatView />}/>
+              <Route path="/listing/:id" element={<ListingDetailView />}/>
               <Route path="/profile/:id" element={<ProfileView/>}/>
               <Route path="/favorites" />
               <Route path="/chats" />
