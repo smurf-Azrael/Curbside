@@ -7,6 +7,7 @@ import { getListingsByListingId, getUserPhotoByUserId, getUserRatingByUserId } f
 import listingsQueries, { spatialQuery, spatialQueryListings } from '../queries/listingsQueries';
 import { getUserById } from '../queries/userQueries';
 import { addListingInputValidation } from './listings.model.validation';
+
 const addListing = async (listingDetails: AddListingDTO): Promise<IListing> => {
   try {
     await addListingInputValidation(listingDetails);

@@ -1,7 +1,7 @@
 import { Listing } from '@prisma/client';
 import { CustomError } from '../errors/CustomError.class';
 import { LISTING_PARSING_ERROR, USER_NOT_FOUND } from '../errors/SharedErrorMessages';
-import { IListing, IListingCondition } from '../interfaces/listing.interface';
+import { IListing, IListingCondition, IListingStatus } from '../interfaces/listing.interface';
 import { prisma } from '../prisma/client';
 
 const convertDataBaseListingToListing = (dbListing: Listing): IListing => {
@@ -21,7 +21,11 @@ const convertDataBaseListingToListing = (dbListing: Listing): IListing => {
       photoUrls: dbListing.photoUrls,
       longitude: dbListing.longitude,
       latitude: dbListing.latitude,
-      status: dbListing.status,
+      status: dbListing.status === 'available'
+        ? IListingStatus.available
+        : dbListing.status === 'reserved'
+          ? IListingStatus.reserved
+          : IListingStatus.sold,
       createdAt: dbListing.createdAt
     };
     return listing;
