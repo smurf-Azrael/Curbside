@@ -29,6 +29,8 @@ export default function HomeView() {
   const fields = { tagsField, sortByField, maxPriceField, minPriceField, conditionField }
 
   const getListings = useCallback(async (offset: number) => {
+    const longitude = 13.405 //CHANGE TO PULL FROM SOMEWHERE
+    const latitude = 52.52 // CHANGE TO PULL FROM SOMEWHERE
     const tagString = Object.values(tagsField.current).join('+');
     const tags = tagString !== '' ? tagString : undefined;
     const radius = radiusField.current?.value || 10;
@@ -36,7 +38,7 @@ export default function HomeView() {
     const minPrice = minPriceField.current?.value || 0;
     const sortBy = sortByField.current?.value || 'closest';
     const condition = conditionField.current?.value || 'all';
-    const query = {offset:offset, radius, condition, tags, maxPrice, minPrice, sortBy};
+    const query = {offset:offset, radius, condition, tags, maxPrice, minPrice, sortBy, longitude, latitude};
     const res = await api.get('/listings', query)
     return res;
   }, [api])
