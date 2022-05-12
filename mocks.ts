@@ -9,8 +9,8 @@ export const mocks =  {
       photoUrl:"https://gradient-avatar.glitch.me/4f4442a7-aa22-490b-9945-34763d9fa0d9",
       createdAt: '2022-05-09T09:43:37.047Z',
       city: 'Berlin', 
-      longitude: 52.5200,
-      latitude:13.4050
+      latitude: 52.5200,
+      longitude:13.4050
     }, 
     {
       id: '931d461e-bab4-4c7a-be90-e5e1ab611c0f', 
@@ -21,8 +21,8 @@ export const mocks =  {
       photoUrl:"https://gradient-avatar.glitch.me/931d461e-bab4-4c7a-be90-e5e1ab611c0f",
       createdAt: '2022-04-19T10:43:37.047Z',
       city: 'Berlin', 
-      longitude: 52.5200,
-      latitude:13.4050
+      latitude: 52.5200,
+      longitude:13.4050
     }, 
     {
       id: 'b4ff39f3-ad3b-432e-9359-a56ccea8c5ef', 
@@ -33,8 +33,8 @@ export const mocks =  {
       photoUrl:"https://gradient-avatar.glitch.me/b4ff39f3-ad3b-432e-9359-a56ccea8c5ef",
       createdAt: '2022-03-12T15:13:37.047Z',
       city: 'Berlin', 
-      longitude: 52.5200,
-      latitude:13.4050
+      latitude: 52.5200,
+      longitude:13.4050
     }, 
     {
       id: '0945243e-10ef-4940-80ba-0c5fa958544b', 
@@ -45,8 +45,8 @@ export const mocks =  {
       photoUrl:"https://gradient-avatar.glitch.me/0945243e-10ef-4940-80ba-0c5fa958544b",
       createdAt: '2021-12-10T04:13:37.047Z',
       city: 'Berlin', 
-      longitude: 52.5200,
-      latitude:13.4050
+      latitude: 52.5200,
+      longitude:13.4050
     }, 
     {
       id: '2f248f4c-e519-496a-9cb4-38ef6e5d8007', 
@@ -57,8 +57,8 @@ export const mocks =  {
       photoUrl:"https://gradient-avatar.glitch.me/2f248f4c-e519-496a-9cb4-38ef6e5d8007",
       createdAt: '2021-08-03T12:13:37.047Z',
       city: 'Berlin', 
-      longitude: 52.5200,
-      latitude:13.4050
+      latitude: 52.5200,
+      longitude:13.4050
     }, 
   ], 
   listings: [
@@ -73,8 +73,8 @@ export const mocks =  {
         "https://images.unsplash.com/photo-1571977796766-578d484a6c25?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8Z3JlZW4lMjBjaGFpcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60"
       ],
       status: 'available',
-      longitude:52.5200,
-      latitude: 13.4050,
+      latitude:52.5200,
+      longitude: 13.4050,
       createdAt: '2022-05-09T09:43:37.047Z',
       updatedAt: '2022-05-09T010:43:37.047Z',
       condition: 'gently used',
@@ -92,8 +92,8 @@ export const mocks =  {
         "https://images.unsplash.com/photo-1579044615232-620243088964?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTl8fGNoaWh1YWh1YSUyMGluJTIwZG9nJTIwYmVkfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60"
       ],
       status: 'available',
-      longitude:52.5200,
-      latitude: 13.4050,
+      latitude:52.5200,
+      longitude: 13.4050,
       createdAt: '2022-05-09T09:43:37.047Z',
       updatedAt: '2022-05-09T010:43:37.047Z',
       condition: 'gently used',
@@ -111,8 +111,8 @@ export const mocks =  {
         "https://images.unsplash.com/photo-1452573992436-6d508f200b30?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTl8fHJhY2luZyUyMGJpa2V8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60"
       ],
       status: 'available',
-      longitude:52.5200,
-      latitude: 13.4050,
+      latitude:52.5200,
+      longitude: 13.4050,
       createdAt: '2022-05-09T09:43:37.047Z',
       updatedAt: '2022-05-09T010:43:37.047Z',
       condition: 'gently used',
@@ -129,8 +129,8 @@ export const mocks =  {
         "https://images.unsplash.com/photo-1644526284291-d896f208555e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fHBpY2Fzc298ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60",
       ],
       status: 'available',
-      longitude:52.5200,
-      latitude: 13.4050,
+      latitude:52.5200,
+      longitude: 13.4050,
       createdAt: '2022-05-09T09:43:37.047Z',
       updatedAt: '2022-05-09T010:43:37.047Z',
       condition: 'gently used',
@@ -147,8 +147,8 @@ export const mocks =  {
         "https://images.unsplash.com/photo-1636543459622-52a3a0f953b6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8c2NyYXRjaGluZyUyMHBvc3R8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60",
       ],
       status: 'available',
-      longitude:52.5200,
-      latitude: 13.4050,
+      latitude:52.5200,
+      longitude: 13.4050,
       createdAt: '2022-05-09T09:43:37.047Z',
       updatedAt: '2022-05-09T010:43:37.047Z',
       condition: 'gently used',
@@ -165,8 +165,8 @@ export const mocks =  {
         "https://images.unsplash.com/photo-1563103311-860aee557af8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8cG9ja2V0JTIwd2F0Y2h8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60",
       ],
       status: 'available',
-      longitude:52.5200,
-      latitude: 13.4050,
+      latitude:52.5200,
+      longitude: 13.4050,
       createdAt: '2022-05-09T09:43:37.047Z',
       updatedAt: '2022-05-09T010:43:37.047Z',
       condition: 'gently used',
@@ -184,8 +184,8 @@ export const mocks =  {
         "https://images.unsplash.com/photo-1518226203301-8e7f833c6a94?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fG5vdGVib29rfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60"
       ],
       status: 'available',
-      longitude:52.5200,
-      latitude: 13.4050,
+      latitude:52.5200,
+      longitude: 13.4050,
       createdAt: '2022-05-09T09:43:37.047Z',
       updatedAt: '2022-05-09T010:43:37.047Z',
       condition: 'gently used',
@@ -203,8 +203,8 @@ export const mocks =  {
         "https://images.unsplash.com/photo-1595792419466-23cec2476fa6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzV8fHBlbmd1aW4lMjBjb3N0dW1lfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60"
       ],
       status: 'available',
-      longitude:52.5200,
-      latitude: 13.4050,
+      latitude:52.5200,
+      longitude: 13.4050,
       createdAt: '2022-05-09T09:43:37.047Z',
       updatedAt: '2022-05-09T010:43:37.047Z',
       condition: 'gently used',
@@ -219,8 +219,8 @@ export const mocks =  {
         'https://images.unsplash.com/photo-1584839404042-8bc21d240e91?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8ZGlhcGVyc3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60', 
       ],
       status: 'available',
-      longitude:52.5200,
-      latitude: 13.4050,
+      latitude:52.5200,
+      longitude: 13.4050,
       createdAt: '2022-05-09T09:43:37.047Z',
       updatedAt: '2022-05-09T010:43:37.047Z',
       condition: 'gently used',

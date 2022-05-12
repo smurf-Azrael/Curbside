@@ -7,7 +7,7 @@ const ImageCarousel = ({carouselItems}) => {
   return (
     <Carousel>
       {carouselItems.map(function(item) {
-        return <Carousel.Item>
+        return <Carousel.Item key={item}>
           <img
             className="d-block w-100"
             src={item}
