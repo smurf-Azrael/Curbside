@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import usersController from './controllers/users.controller';
 import listingsController from './controllers/listings.controller';
+import { getListingByListingId } from './controllers/listingsById.controller';
 import { loginRequired } from './middlewares/login-required.middleware';
 import { PAGE_NOT_FOUND, USER_NOT_AUTHENTICATED } from './errors/SharedErrorMessages';
 
@@ -19,6 +20,7 @@ router.patch('/users/:id', loginRequired, usersController.finalizeUser);
 
 router.post('/listings', loginRequired, listingsController.addListing);
 
+router.get('/listings/:id', getListingByListingId);
 router.get('/listings', listingsController.getListings);
 
 router.get('/users/:id', usersController.getUserProfile);
