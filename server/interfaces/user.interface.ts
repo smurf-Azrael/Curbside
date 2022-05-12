@@ -18,3 +18,9 @@ export interface IStrippedUser {
   photoUrl?: string,
   createdAt: Date,
 }
+
+export interface IUserInfoSelect{
+  userFirstName: string,
+  userLastName: string,
+  userPhotoUrl: string | null
+}
