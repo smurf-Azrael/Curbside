@@ -1,6 +1,6 @@
 import { IListing, IListingCondition } from '../interfaces/listing.interface';
 import { CustomError } from '../errors/CustomError.class';
-import { LISTING_NOT_FOUND, UNKNOWN_SERVER_ERROR } from '../errors/SharedErrorMessages';
+import { LISTING_NOT_FOUND } from '../errors/SharedErrorMessages';
 import { getListingsByListingId, getUserPhotoByUserId, getUserRatingByUserId } from '../queries/listingByIdQueries';
 
 interface IListingPackage{
@@ -30,9 +30,6 @@ export const getListingByListingIdModel = async (id:string) : Promise<IListingPa
     return listingPackage;
   } catch (error) {
     console.log('/models/listingsById.model getListingByIdModel ERROR', error);
-    if (error instanceof CustomError) {
-      throw error;
-    }
-    throw new CustomError(UNKNOWN_SERVER_ERROR, 500);
+    throw error;
   }
 };
