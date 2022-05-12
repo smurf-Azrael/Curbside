@@ -1,0 +1,71 @@
+.listing-detail-container {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+}
+
+.listing-owner-info-wrapper {
+ display: flex;
+ flex: row;
+ justify-content: space-between;
+ padding: 10px;
+ margin-bottom: 15px;
+}
+
+.listing-owner-image-wrapper {
+  width: 100px;
+  height: 100px;
+  margin-right: 15px;
+}
+
+.listing-owner-image-wrapper img {
+  height: 100px;
+  width: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.listing-owner-name-buttons-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 75%;
+}
+
+.listing-details-gallery-wrapper {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: row;
+}
+
+.item-for-sale-img{
+  height: 200px;
+  width: 200px;
+  overflow: hidden;
+}
+
+.listing-details-data-wrapper {
+  text-align: left;
+  margin-top: 15px;
+}
+
+.listing-details-data-wrapper p {
+  width: 100%;
+  justify-content: flex-start;
+}
+
+p {
+  display: inline-block;
+  margin-bottom: 7px;
+}
+
+span {
+  margin-right: 0.5rem;
+}
+
+.leaflet-touch .leaflet-bar a {
+  width: 17px;
+  height: 17px;
+  line-height: 14px;
+  font-size: 16px;
+}
