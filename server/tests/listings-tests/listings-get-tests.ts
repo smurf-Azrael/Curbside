@@ -163,7 +163,8 @@ const addRandomMockListing = async (ownerId: string, odd: boolean): Promise<void
     priceInCents: getRandomInt(100, 10000),
     longitude: getRandomArbitrary(13.3, 13.5),
     latitude: getRandomArbitrary(52.4, 52.6),
-    condition: [IListingCondition.gentlyUsed, IListingCondition.new, IListingCondition.used][getRandomInt(0, 3)]
+    condition: [IListingCondition.gentlyUsed, IListingCondition.new, IListingCondition.used][getRandomInt(0, 3)],
+    tags: 'car bike'
     // addTag
   };
   await prisma.listing.create({

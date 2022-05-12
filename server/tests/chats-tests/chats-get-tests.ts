@@ -31,7 +31,8 @@ export const getChatsByUserIdTests = (): void => {
         longitude: 13.405,
         photoUrls: JSON.stringify(['https://secure.img1-ag.wfcdn.com/im/54089193/resize-h600-w600%5Ecompr-r85/1231/123110031/Daulton+20%27%27+Wide+Velvet+Side+Chair.jpg']),
         priceInCents: 9090,
-        title: 'Mock Chat Listing'
+        title: 'Mock Chat Listing',
+        tags: 'bike car'
       };
 
       buyer = await prisma.user.create({ data: mockUser1 });

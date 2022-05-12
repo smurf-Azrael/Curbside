@@ -40,7 +40,8 @@ export const getListingsByIdTests = (): void => {
       condition: IListingCondition.new,
       photoUrls: JSON.stringify(mocks.listings[0].images),
       longitude: mocks.listings[0].longitude,
-      latitude: mocks.listings[0].latitude
+      latitude: mocks.listings[0].latitude,
+      tags: 'car bike'
     };
 
     const mockAddRating1: AddRatingsDTO = {
