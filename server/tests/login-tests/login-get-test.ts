@@ -1,11 +1,21 @@
 import { server } from '../../index';
 import request from 'supertest';
 import { getTestIdToken } from '../test-helpers';
+import { prisma } from '../../prisma/client';
+import { mocks } from '../../../mocks';
+import { InitialUserDTO } from '../../interfaces/users.interface.dto';
 
 export const loginTests = (): void => {
   describe('/login', () => {
+    const mockInitialUserInput: InitialUserDTO = {
+      id: process.env.SECRET_UID!,
+      email: mocks.Users[0].email,
+      emailVerified: mocks.Users[0].emailVerified
+    };
     let testToken: string|undefined;
-
+    beforeAll(async () => {
+      await prisma.user.create({ data: mockInitialUserInput });
+    });
     beforeEach(async () => {
       testToken = await getTestIdToken();
     });
