@@ -20,12 +20,9 @@ router.patch('/users/:id', loginRequired, usersController.finalizeUser);
 
 router.post('/listings', loginRequired, listingsController.addListing);
 
-<<<<<<< HEAD
-router.get('/listings/:id', getListingByListingId);
-router.patch('/listings/:id', patchListingByListingId);
-=======
 router.get('/listings/:id', listingsController.getListingByListingId);
->>>>>>> 019cdeb9b34e99a4f3cb6fc22c0aa90b735116b8
+router.patch('/listings/:id', patchListingByListingId);
+router.get('/listings/:id', listingsController.getListingByListingId);
 router.get('/listings', listingsController.getListings);
 
 router.get('/users/:id', usersController.getUserProfile);

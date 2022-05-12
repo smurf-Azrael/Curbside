@@ -72,7 +72,7 @@ export const getListingsByIdTests = (): void => {
       server.close();
     });
 
-    it('Should find listings and return it with the userPhoto and rating', async () => {
+    it('Should find listing and return it with the userPhoto and rating', async () => {
       const id = listingFromDb.id;
       const { body, statusCode } = await request(app)
         .get(`/listings/${id}`);
@@ -92,7 +92,7 @@ export const getListingsByIdTests = (): void => {
       expect(body.listing.status).toEqual('available');
       expect(body.listing.createdAt).toEqual(listingFromDb.createdAt.toISOString());
     });
-    it('Should send 404 if listing can be found', async () => {
+    it('Should send 404 if listing can\'t be found', async () => {
       const { body, statusCode } = await request(app)
         .get('/listings/NONE');
       console.log('body', body);
