@@ -78,19 +78,19 @@ export const getListingsByIdTests = (): void => {
         .get(`/listings/${id}`);
 
       expect(statusCode).toEqual(200);
-      expect(body.listing.id).toEqual(id);
-      expect(body.listing.rating).toEqual(4);
-      expect(body.listing.userPhotoUrl).toEqual(mockInitialUserInput1.photoUrl);
-      expect(body.listing.userId).toEqual(listingFromDb.userId);
-      expect(body.listing.title).toEqual(listingFromDb.title);
-      expect(body.listing.description).toEqual(listingFromDb.description);
-      expect(body.listing.priceInCents).toEqual(listingFromDb.priceInCents);
-      expect(body.listing.condition).toEqual(listingFromDb.condition);
-      expect(body.listing.photoUrls).toEqual(listingFromDb.photoUrls);
-      expect(body.listing.longitude).toEqual(listingFromDb.longitude);
-      expect(body.listing.latitude).toEqual(listingFromDb.latitude);
-      expect(body.listing.status).toEqual('available');
-      expect(body.listing.createdAt).toEqual(listingFromDb.createdAt.toISOString());
+      expect(body.data.listing.id).toEqual(id);
+      expect(body.data.listing.rating).toEqual(4);
+      expect(body.data.listing.userPhotoUrl).toEqual(mockInitialUserInput1.photoUrl);
+      expect(body.data.listing.userId).toEqual(listingFromDb.userId);
+      expect(body.data.listing.title).toEqual(listingFromDb.title);
+      expect(body.data.listing.description).toEqual(listingFromDb.description);
+      expect(body.data.listing.priceInCents).toEqual(listingFromDb.priceInCents);
+      expect(body.data.listing.condition).toEqual(listingFromDb.condition);
+      expect(body.data.listing.photoUrls).toEqual(listingFromDb.photoUrls);
+      expect(body.data.listing.longitude).toEqual(listingFromDb.longitude);
+      expect(body.data.listing.latitude).toEqual(listingFromDb.latitude);
+      expect(body.data.listing.status).toEqual('available');
+      expect(body.data.listing.createdAt).toEqual(listingFromDb.createdAt.toISOString());
     });
     it('Should send 404 if listing can\'t be found', async () => {
       const { body, statusCode } = await request(app)

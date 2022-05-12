@@ -28,7 +28,7 @@ export const getListingByListingId = async (req: Request, res: Response, next: N
   try {
     const id : string = req.params.id;
     const listing: IListingPackage | null = await getListingByListingIdModel(id);
-    res.status(200).send({ listing });
+    res.status(200).send({ data: { listing } });
   } catch (error) {
     next(error);
   }
