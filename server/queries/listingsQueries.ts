@@ -1,9 +1,8 @@
 import { Listing, ListingCondition, Tag } from '@prisma/client';
-import { GetListingQueryParams } from '../controllers/listings.controller';
 import { CustomError } from '../errors/CustomError.class';
 import { LISTING_PARSING_ERROR } from '../errors/SharedErrorMessages';
 import { IListing, IListingCondition } from '../interfaces/listing.interface';
-import { AddListingDTO } from '../interfaces/listings.interface.dto';
+import { AddListingDTO, GetListingQueryParams } from '../interfaces/listings.interface.dto';
 import { ITag } from '../interfaces/tag.interface';
 import { prisma } from '../prisma/client';
 
@@ -55,6 +54,8 @@ export const spatialQuery = async (longitude: number, latitude: number, radius:n
 };
 
 export const spatialQueryListings = async (spatialQueryRes: {id:string}[], queryParams: GetListingQueryParams): Promise<any> => {
+  // console.log('SEARCH TERMS', queryParams.search?.split(' ').join(' | '));
+  // console.log('SPATIAL QUERY IDS', spatialQueryRes);
   const dbListings = await prisma.listing.findMany({
     where: {
       AND: [
@@ -87,6 +88,18 @@ export const spatialQueryListings = async (spatialQueryRes: {id:string}[], query
                       ? 'used'
                       : undefined
               }
+            }
+          ]
+        },
+        {
+          OR: [
+            {
+              title: {
+                search: queryParams.search ? queryParams.search.split(' ').join(' | ') : undefined
+              }
+            },
+            {
+              description: { search: queryParams.search ? queryParams.search.split(' ').join(' | ') : undefined }
             }
           ]
         }

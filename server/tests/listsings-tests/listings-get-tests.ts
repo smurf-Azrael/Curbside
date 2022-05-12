@@ -21,7 +21,7 @@ export const listingsGetTests = (): void => {
     beforeAll(async () => {
       await prisma.user.create({ data: mockInitialUserInput });
       for (let i = 0; i < 50; i++) {
-        await addRandomMockListing(process.env.SECRET_UID!);
+        await addRandomMockListing(process.env.SECRET_UID!, i % 2 !== 0);
       }
     });
 
@@ -29,10 +29,8 @@ export const listingsGetTests = (): void => {
       testToken = await getTestIdToken();
     });
 
-    afterEach(async () => {
-      await prisma.listing.deleteMany();
-    });
     afterAll(async () => {
+      await prisma.listing.deleteMany();
       await prisma.user.deleteMany();
     });
 
@@ -43,8 +41,7 @@ export const listingsGetTests = (): void => {
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/)
         .expect(200);
-      expect(body.data.listings.length);
-
+      expect(body.data.listings.length).toBeTruthy();
       expect(body.data.offset).toBe(offset + body.data.listings.length);
     });
 
@@ -54,10 +51,9 @@ export const listingsGetTests = (): void => {
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/)
         .expect(200);
-      expect(body.data.listings.length);
-
+      expect(body.data.listings.length).toBeTruthy();
       const sortedListings = body.data.listings.slice()
-        .sort((a: IListing, b: IListing) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+        .sort((a: IListing, b: IListing) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
       expect(sortedListings).toEqual(body.data.listings);
     });
 
@@ -68,6 +64,7 @@ export const listingsGetTests = (): void => {
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/)
         .expect(200);
+      expect(body.data.listings.length).toBeTruthy();
       const sortedListings = body.data.listings.slice()
         .sort((a: IListing, b: IListing) => getDistance(coords, [a.longitude, a.latitude]) - getDistance(coords, [b.longitude, b.latitude]));
       expect(sortedListings).toEqual(body.data.listings);
@@ -79,7 +76,7 @@ export const listingsGetTests = (): void => {
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/)
         .expect(200);
-      expect(body.data.listings.length);
+      expect(body.data.listings.length).toBeTruthy();
       const sortedListings = body.data.listings.slice()
         .sort((a: IListing, b: IListing) => a.priceInCents - b.priceInCents);
       expect(sortedListings[0])
@@ -92,7 +89,7 @@ export const listingsGetTests = (): void => {
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/)
         .expect(200);
-      expect(body.data.listings.length);
+      expect(body.data.listings.length).toBeTruthy();
       const sortedListings = body.data.listings.slice()
         .sort((a: IListing, b: IListing) => b.priceInCents - a.priceInCents);
       expect(sortedListings).toEqual(body.data.listings);
@@ -105,13 +102,46 @@ export const listingsGetTests = (): void => {
         .expect('Content-Type', /json/)
         .expect(200);
       const listings: IListing[] = body.data.listings;
-      expect(listings.length);
+      expect(listings.length).toBeTruthy();
       expect(listings.filter((listing: IListing) => listing.condition === IListingCondition.new).length).toEqual(listings.length);
+    });
+
+    it('Should filter by search term in title', async () => {
+      const { body } = await request(server)
+        .get('/listings?offset=0&radius=100&minPrice=0&sortBy=price+desc&search=title')
+        .set('Authorization', 'Bearer ' + testToken)
+        .expect('Content-Type', /json/)
+        .expect(200);
+      const listings: IListing[] = body.data.listings;
+      expect(listings.length).toBeTruthy();
+      expect(listings.length).toEqual(25);
+    });
+
+    it('Should filter by search term in description', async () => {
+      const { body } = await request(server)
+        .get('/listings?offset=0&radius=100&minPrice=0&sortBy=price+desc&search=description')
+        .set('Authorization', 'Bearer ' + testToken)
+        .expect('Content-Type', /json/)
+        .expect(200);
+      const listings: IListing[] = body.data.listings;
+      expect(listings.length).toBeTruthy();
+      expect(listings.length).toEqual(25);
+    });
+
+    it('Should filter by search term in title and description', async () => {
+      const { body } = await request(server)
+        .get('/listings?offset=0&radius=100&minPrice=0&sortBy=price+desc&search=description+title')
+        .set('Authorization', 'Bearer ' + testToken)
+        .expect('Content-Type', /json/)
+        .expect(200);
+      const listings: IListing[] = body.data.listings;
+      expect(listings.length).toBeTruthy();
+      expect(listings.length).toEqual(25);
     });
   });
 };
 
-const addRandomMockListing = async (ownerId: string): Promise<void> => {
+const addRandomMockListing = async (ownerId: string, odd: boolean): Promise<void> => {
   function getRandomArbitrary (min: number, max: number): number {
     return Math.random() * (max - min) + min;
   }
@@ -122,8 +152,8 @@ const addRandomMockListing = async (ownerId: string): Promise<void> => {
   }
   const input: AddListingDTO = {
     userId: ownerId,
-    title: 'Test Title',
-    description: 'Test Description',
+    title: odd ? 'Car Parts' : 'Test Title',
+    description: odd ? 'Bike chain' : 'Test Description',
     currency: 'eur',
     photoUrls: JSON.stringify([
       'https://secure.img1-ag.wfcdn.com/im/54089193/resize-h600-w600%5Ecompr-r85/1231/123110031/Daulton+20%27%27+Wide+Velvet+Side+Chair.jpg',
