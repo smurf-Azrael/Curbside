@@ -44,8 +44,8 @@ const getListings = async (userId: string | undefined, params: GetListingQueryPa
         //    => grab it from the ip
         // if not possible
         //    => add default berlin coordinates
-        long = 52.5200;
-        lat = 13.4050;
+        long = 13.405;
+        lat = 52.52;
       }
     }
     const listingsInRangeIds: {id: string}[] = await spatialQuery(long, lat, +params.radius);
