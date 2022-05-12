@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React from 'react'
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import { Icon } from 'leaflet';
@@ -11,8 +10,7 @@ const customIcon = new Icon({
   iconSize: [17, 17]
 })
 
-const SimpleMap = ({position}) => {
-  console.log('position in SimpleMap component', position)
+const SimpleMap = ({position}: {position: {lat: number, lng: number}}) => {
 
   return (
     <section className='map-component' >
