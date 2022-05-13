@@ -1,9 +1,9 @@
-import { Listing } from '@prisma/client';
+import { Listing, User } from '@prisma/client';
 import { CustomError } from '../../errors/CustomError.class';
-import { LISTING_PARSING_ERROR } from '../../errors/SharedErrorMessages';
+import { LISTING_PARSING_ERROR, USER_PARSING_ERROR } from '../../errors/SharedErrorMessages';
 import { IListing, IListingCondition, IListingStatus } from '../../interfaces/listing.interface';
 import { IdbSelectUserDetails } from '../../interfaces/listings.interface.dto';
-import { IUserInfoSelect } from '../../interfaces/user.interface';
+import { IUser, IUserInfoSelect } from '../../interfaces/user.interface';
 
 export const convertDBSelectUserDetailsToDetails = (dbSelectUserDetails: IdbSelectUserDetails): IUserInfoSelect => {
   const reformatedSelectUserDetails = {
@@ -45,7 +45,28 @@ export const convertDataBaseListingToListing = (dbListing: Listing): IListing =>
   }
 };
 
+export const convertDataBaseUserToUser = (dbUser: User): IUser => {
+  try {
+    const user: IUser = {
+      id: dbUser.id,
+      email: dbUser.email,
+      emailVerified: dbUser.emailVerified,
+      createdAt: dbUser.createdAt,
+      city: dbUser.city ?? undefined,
+      firstName: dbUser.firstName ?? undefined,
+      lastName: dbUser.lastName ?? undefined,
+      latitude: dbUser.latitude ?? undefined,
+      longitude: dbUser.longitude ?? undefined,
+      photoUrl: dbUser.photoUrl ?? undefined
+    };
+    return user;
+  } catch (error) {
+    throw new CustomError(USER_PARSING_ERROR, 400);
+  }
+};
+
 export default {
   convertDBSelectUserDetailsToDetails,
-  convertDataBaseListingToListing
+  convertDataBaseListingToListing,
+  convertDataBaseUserToUser
 };
