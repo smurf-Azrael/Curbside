@@ -7,7 +7,7 @@ export default function ListingPreview ({listing}: {[key:string]:any}) {
   return (
     <div className='card-product-content'>
       <div className='card-product-image-holder'>
-        <img src={listing.photoUrls[0]} alt='product sold' width='200' />
+        <img src={listing.photoUrls[0]} alt='product sold' />
       </div>
       <div className='card-product-info'>
         <p className='product-info-price'>{price}</p>
