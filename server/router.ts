@@ -20,7 +20,7 @@ router.post('/listings', fullUserRequired, listingsController.addListing);
 router.get('/listings/:id', listingsController.getListingByListingId);
 router.patch('/listings/:id', fullUserRequired, patchListingByListingId);
 
-router.get('/chats/:id', fullUserRequired, chatsController.getChatsByUserId);
+router.get('/chats', fullUserRequired, chatsController.getChatsByUserId);
 
 router.post('/ratings', loginRequired, ratingsController.addRatings);
 
