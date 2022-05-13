@@ -5,6 +5,7 @@ import { loginRequired } from './middlewares/login-required.middleware';
 import { PAGE_NOT_FOUND, USER_NOT_AUTHENTICATED } from './errors/SharedErrorMessages';
 import { patchListingByListingId } from './controllers/listingsByIdPatch.controller';
 import chatsController from './controllers/chats.controller';
+import ratingsController from './controllers/ratings.controller';
 
 export const router = Router();
 
@@ -27,6 +28,8 @@ router.get('/listings/:id', listingsController.getListingByListingId);
 router.patch('/listings/:id', loginRequired, patchListingByListingId);
 
 router.get('/chats/:id', loginRequired, chatsController.getChatsByUserId);
+
+router.post('/ratings', loginRequired, ratingsController.addRatings);
 
 router.get('/login', loginRequired, (req: Request, res: Response) => {
   res.send({
