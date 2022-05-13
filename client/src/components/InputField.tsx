@@ -1,15 +1,29 @@
-import React, { ElementType } from 'react';
-import { MutableRefObject } from "react";
+import React, { ElementType, FormEvent } from 'react';
+import { MutableRefObject } from 'react';
 import Form from 'react-bootstrap/Form';
 import '../styling/InputField.css';
 
-export default function InputField(
-  { name, label, type, placeholder, error, fieldref, as, required, min, max, value, step }: inputInterface
-) {
+export default function InputField({
+  name,
+  label,
+  type,
+  placeholder,
+  error,
+  fieldref,
+  as,
+  required,
+  min,
+  max,
+  value,
+  step,
+  multiple = false,
+  onChange = (): void => {},
+}: inputInterface) {
   return (
     <Form.Group controlId={name} className="InputField">
       {label && <Form.Label>{label}</Form.Label>}
       <Form.Control
+        multiple={multiple}
         type={type || 'text'}
         placeholder={placeholder}
         ref={fieldref}
@@ -19,23 +33,26 @@ export default function InputField(
         min={min}
         max={max}
         value={value}
+        onChange={onChange}
       />
       <Form.Text className={'text-danger'}>{error}</Form.Text>
     </Form.Group>
-  )
+  );
 }
 
 interface inputInterface {
-  name: string
-  label?: string
-  type?: string
-  placeholder?: string
-  error?: string
-  fieldref?: MutableRefObject<HTMLInputElement | null>
-  as?: ElementType<any> | undefined
-  required?:boolean
-  min?:number
-  max?:number
-  step?:string
-  value?: number | string
+  name: string;
+  label?: string;
+  type?: string;
+  placeholder?: string;
+  error?: string;
+  fieldref?: MutableRefObject<HTMLInputElement | null>;
+  as?: ElementType<any> | undefined;
+  required?: boolean;
+  min?: number;
+  max?: number;
+  step?: string;
+  value?: number | string;
+  multiple?: boolean;
+  onChange?: (event: FormEvent) => void;
 }
