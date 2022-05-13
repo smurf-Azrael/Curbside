@@ -62,3 +62,10 @@ export const updateListingQuery = async (listingId:string, listingDetails:Finali
   const listing: IListing = converterHelpers.convertDataBaseListingToListing(dbListing);
   return listing;
 };
+
+export default {
+  getListingsByListingId,
+  getSelectUserInfoByUserId,
+  getUserRatingByUserId,
+  updateListingQuery
+};
