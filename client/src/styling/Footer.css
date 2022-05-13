@@ -1,4 +1,8 @@
-.footer-container{
+.Footer{
+  position: fixed;
+  z-index: 1000;
+  bottom: 0;
+  width: 100%;
   min-height: var(--footer-height);
   /* background-color: aquamarine; */
   background-color: var(--main-green-color);
