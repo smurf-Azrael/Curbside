@@ -6,12 +6,14 @@ import '../styling/ListingDetail.css';
 import ButtonWide from '../components/ButtonWide';
 import SimpleMap from '../components/SimpleMap';
 import ImageCarousel from '../components/ImageCarousel';
+import { useAuth } from '../contexts/AuthContext';
 // import { Listing } from '../interfaces/Listing';
 
 const ListingDetailView = () => {
   // Need to add heart button functionality
   const [listing, setListing] = useState();
   const api = useApi();
+  const { currentUser } = useAuth();
   const {id} = useParams();
 
   useEffect(() => {
@@ -38,11 +40,11 @@ const ListingDetailView = () => {
           <p className='listing-owner-name'>{`${listing.userFirstName} ${listing.userLastName.slice(0,1)}.`}</p>
         </section>
       </section>
-        <section className='listing-button-wrapper'>
+        {listing.userId !== currentUser.id ? (<section className='listing-button-wrapper'>
           <Link to={`/listing/${id}/chat`} >
             <ButtonWide content={'Start a chat to buy'} fill={true} />
           </Link>
-        </section>
+        </section>) : '' }
       <section className='listing-details-gallery-wrapper'>
         <ImageCarousel carouselItems={listing.photoUrls} />
       </section>
@@ -52,7 +54,7 @@ const ListingDetailView = () => {
           <i className="bi bi-heart-fill" style={{fontSize:"1.9rem", color:"gray"}}></i>
         </div>
         <h4 style={{fontWeight:"bold"}}>{listing.title}</h4>
-        <p><span style={{fontWeight:"bold", color:"gray"}}>Condition:</span>{listing.condition}</p>
+        <p><span style={{fontWeight:"bold", color:"gray"}}>Condition:</span>{listing.condition === 'gentlyUsed' ? 'gently used': listing.condition}</p>
         <p><span style={{fontWeight:"bold", color:"gray"}}>Description: </span>{listing.description}</p>
         <p style={{fontWeight:"bold", color:"gray"}}>Location: </p>
       </section>
