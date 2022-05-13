@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
-import { USER_NOT_AUTHENTICATED, USER_NOT_FINALIZED, USER_NOT_FOUND } from '../errors/SharedErrorMessages';
+import { USER_NOT_AUTHENTICATED, USER_NOT_FINALIZED } from '../errors/SharedErrorMessages';
+import { prisma } from '../prisma/client';
 import { getUserById } from '../queries/userQueries';
 
 export const fullUserRequired = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -8,8 +9,16 @@ export const fullUserRequired = async (req: Request, res: Response, next: NextFu
     // @ts-ignore
     const dbUser = await getUserById(req.user.uid);
     if (!dbUser) {
-      res.status(404).send({ error: USER_NOT_FOUND });
-    } else if (dbUser.firstName === undefined || dbUser.lastName === undefined) {
+      prisma.user.create({
+        data: {
+          // @ts-ignore
+          id: req.user.uid,
+          // @ts-ignore
+          email: req.user.email,
+          emailVerified: true
+        }
+      });
+
       res.status(400).send({ error: USER_NOT_FINALIZED });
     } else {
       next();
