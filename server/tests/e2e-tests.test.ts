@@ -2,6 +2,7 @@ import { server } from '..';
 import { prisma } from '../prisma/client';
 import { chatsTests } from './chats-tests/chats-tests';
 import { listingsTests } from './listings-tests/listings-test';
+import { ratingTests } from './rating-tests/rating-post-tests';
 import { usersTests } from './users-tests/users-test';
 
 describe('Backend Server End-To-End Tests', () => {
@@ -15,6 +16,7 @@ describe('Backend Server End-To-End Tests', () => {
   usersTests();
   listingsTests();
   chatsTests();
+  ratingTests();
   afterAll(async () => {
     server.close();
   });
