@@ -41,6 +41,10 @@ router.get('/login', loginRequired, (req: Request, res: Response) => {
   });
 });
 
+// router.post('/chat', loginRequired, chatController.createChat);
+
+// router.get('/chat/:id', loginRequired, chatController.getChat);
+
 router.get('*', (req: Request, res: Response) => {
   res.status(404).send({ error: PAGE_NOT_FOUND });
 });
