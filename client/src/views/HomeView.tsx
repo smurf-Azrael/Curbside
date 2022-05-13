@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useApi } from "../contexts/ApiProvider"
 import { useEffect, useState, useRef, useCallback, KeyboardEvent } from "react"
 import { Link } from "react-router-dom";
@@ -15,8 +16,9 @@ export default function HomeView() {
 
   const [listings, setListings] = useState<any[]>([]);
   const [FiltersAreVisible, setFiltersAreVisible] = useState(false);
-  const [isLoading, setIsLoading] = useState<boolean>(true)
-  const [loadingError, setLoadingError] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [loadingError, setLoadingError] = useState<boolean>(false);
+  const [tagStack, SetTagStack] = useState<any[]>([]);
 
   const offset = useRef<number>(0);
 
@@ -27,17 +29,18 @@ export default function HomeView() {
   const maxPriceField = useRef<HTMLInputElement>(null);
   const minPriceField = useRef<HTMLInputElement>(null);
   const conditionField = useRef<HTMLSelectElement>(null);
-  const fields = { tagsField, sortByField, maxPriceField, minPriceField, conditionField }
+  const fields = { tagsField, sortByField, maxPriceField, minPriceField, conditionField, SetTagStack }
+//! working on it
+  const latitudeField = useRef<HTMLSelectElement>(null);
+  const longitudeField = useRef<HTMLSelectElement>(null);
 
-  // const latitudeField = useRef<HTMLSelectElement>(null);
-  // const longitudeField = useRef<HTMLSelectElement>(null);
   const searchField = useRef<HTMLInputElement>(null);
 
   const getListings = useCallback(async (offset: number) => {
     const longitude = 13.405 //CHANGE TO PULL FROM SOMEWHERE
     const latitude = 52.52 // CHANGE TO PULL FROM SOMEWHERE
-    const tagString = Object.values(tagsField.current).join('+');
-    const tags = tagString !== '' ? tagString : undefined;
+    // const radius = radiusField.current?.value || 10;
+    // const tags = tagString !== '' ? tagString : undefined;
     const radius = radiusField.current?.value || 55;
     const maxPrice = maxPriceField.current?.value || undefined;
     const minPrice = minPriceField.current?.value || 0;
@@ -46,11 +49,14 @@ export default function HomeView() {
     // const latitude = latitudeField.current?.value || 'all';
     // const longitude = longitudeField.current?.value || 'all';
     const search = searchField.current?.value || undefined;
+    const tagString = tagStack.map(el => el.replace(/\s+/g,'')).join(' ');
+    const tags = tagString !== '' ? tagString : undefined;
+    console.log('tags', tags)
     const query = { search, offset, radius, condition, tags, maxPrice, minPrice, sortBy, latitude, longitude };
     // add 'search' to query
     const res = await api.get('/listings', query)
     return res;
-  }, [api])
+  }, [api, tagStack])
 
 
 
@@ -69,17 +75,17 @@ export default function HomeView() {
   async function applyFilters() {
     closeFiltersModal();
     console.log(conditionField.current?.value)
-    console.log(sortByField.current?.value)
+    setTimeout(() => {console.log(sortByField.current?.value)},1000)
     console.log(maxPriceField.current?.value)
-
+    
     const res = await getListings(0);
     if (res.ok) {
       offset.current = res.body.data.offset;
       setListings(res.body.data.listings);
 
     } else {
-      //handleError
-    }
+        //handleError
+      }
   }
 
   const loadData = async () => {
@@ -97,9 +103,10 @@ export default function HomeView() {
     }
     setIsLoading(false);
   }
+
   useEffect(() => {
     loadData();
-  }, [api, getListings])
+  }, [api])
 
 
   function pressEnter(event: KeyboardEvent<HTMLInputElement>): any {
@@ -120,7 +127,7 @@ export default function HomeView() {
 
           <div className="global-search-area">
             <div className='search-bar-container'>
-              <button onClick={() => getListings(0)}><i className="bi bi-search"></i></button>
+              <button onClick={() => loadData()}><i className="bi bi-search"></i></button>
               <input ref={searchField} className="main-input" placeholder="Search.." onKeyPress={(e) => pressEnter(e)} />
             </div>
             <div className='search-buttons-group' >
@@ -151,11 +158,13 @@ export default function HomeView() {
                 <ListingPreview key={listing.id} listing={listing} />
               </Link>)
             })}
+            {!isLoading && listings.length === 0 && <p>No listing matched your request...</p>}
             {loadingError && <p>Couldn't load listings :/</p>}
             {isLoading && <img style={{ height: '20vw', maxHeight: '200px', borderRadius: '20px' }} src={loader} alt="Loading..." />}
           </div>
         </div>
       </div>
+
       <div className='body-footer-container'>
         <Footer />
       </div>
