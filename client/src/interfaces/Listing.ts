@@ -1,0 +1,18 @@
+export interface Listing {
+  condition: string,
+  createdAt: Date,
+  currency: string,
+  description: string,
+  id: number,
+  latitude: number,
+  longitude: number,
+  photoUrls: string[],
+  priceInCents: number,
+  rating?: number,
+  status: string,
+  title: string,
+  userFirstName: string,
+  userId: string,
+  userLastName: string,
+  userPhotoUrl: string,
+}
