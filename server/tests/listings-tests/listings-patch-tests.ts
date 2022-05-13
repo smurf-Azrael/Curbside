@@ -44,7 +44,7 @@ export const listingsPatchTests = (): void => {
 
     beforeAll(async () => {
       await prisma.user.deleteMany();
-      await prisma.user.create({ data: mockInitialUserInput1 });
+      await prisma.user.create({ data: { ...mockInitialUserInput1, firstName: 'Test', lastName: 'Tester' } });
       listingFromDb = await prisma.listing.create({ data: mockAddListing });
     });
 
