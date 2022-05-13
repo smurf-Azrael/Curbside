@@ -98,7 +98,7 @@ enum ChatStatus {
 model Message {
   id        String   @id @default(cuid())
   senderId  String
-  chat      Chat     @relation(fields: [chatId], references: [id])
+  chat      Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
   chatId    String   @default(cuid())
   body      String
   createdAt DateTime @default(now())
