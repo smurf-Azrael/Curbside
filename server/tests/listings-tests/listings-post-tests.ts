@@ -24,13 +24,14 @@ export const listingsPostTests = (): void => {
       condition: IListingCondition.new,
       photoUrls: JSON.stringify(mocks.listings[0].images),
       longitude: mocks.listings[0].longitude,
-      latitude: mocks.listings[0].latitude
+      latitude: mocks.listings[0].latitude,
+      tags: 'car bike'
     };
 
     let testToken: string|undefined;
 
     beforeAll(async () => {
-      await prisma.user.create({ data: mockInitialUserInput });
+      await prisma.user.create({ data: { ...mockInitialUserInput, firstName: 'test', lastName: 'tester' } });
     });
 
     beforeEach(async () => {

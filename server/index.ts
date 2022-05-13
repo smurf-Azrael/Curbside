@@ -7,13 +7,41 @@ import { router } from './router';
 import { errorHandler } from './middlewares/error-handler.middleware';
 import { authMiddleware } from './middlewares/auth.middleware';
 
+import http from 'http';
+import { Server, Socket } from 'socket.io';
+import { socketListener } from './chat/socket';
+import { CustomError } from './errors/CustomError.class';
+import { USER_NOT_AUTHENTICATED } from './errors/SharedErrorMessages';
+import { getUserById } from './queries/userQueries';
+import { auth } from 'firebase-admin';
+
 dotenv.config({ path: path.resolve(__dirname, `./config/${process.env.NODE_ENV}.env`) });
 
 const PORT = process.env.PORT;
 
 export const app = express();
-
+const httpServer = http.createServer(app);
+const io = new Server(httpServer, {
+  cors: {
+    origin: '*'
+  }
+});
 app.use(cors());
+io.use(async (socket: Socket, next: any) => {
+  const token = socket.handshake.auth.token;
+
+  const fbUser = await auth().verifyIdToken(token);
+  const user = await getUserById(fbUser.uid);
+  if (user) {
+    // @ts-ignore
+    socket.user = user;
+    next();
+  } else {
+    next(new CustomError(USER_NOT_AUTHENTICATED, 401));
+  }
+});
+socketListener(io);
+
 app.use(express.json());
 app.use(logger('dev'));
 app.use(authMiddleware);
@@ -21,4 +49,4 @@ app.use('/api', router);
 app.use(router);
 
 app.use(errorHandler);
-export const server = app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT} 🚀`));
+export const server = httpServer.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT} 🚀`));
