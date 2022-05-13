@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useApi } from "../contexts/ApiProvider"
 import { useEffect, useState, useRef, useCallback, KeyboardEvent } from "react"
 import { mocks } from '../mocks';
@@ -8,8 +9,6 @@ import Footer from "../components/Footer";
 import '../styling/HomeView.css';
 import LocationPreviewComponent from "../components/LocationPreviewComponent";
 import loader from '../assets/loader.gif';
-import { Autocomplete, TextField } from '@mui/material';
-import AutoCompleteSearch from '../components/AutoCompleteSearch';
 
 export default function HomeView() {
   const api = useApi()
@@ -20,8 +19,6 @@ export default function HomeView() {
   const [loadingError, setLoadingError] = useState<boolean>(false);
   const [tagStack, SetTagStack] = useState<any[]>([]);
 
-  // setInterval(() => {console.log('tagStack', tagStack)}, 2000)
-
   const offset = useRef<number>(0);
 
   const radiusField = useRef<HTMLInputElement>(null); // for geo modal
@@ -31,17 +28,16 @@ export default function HomeView() {
   const maxPriceField = useRef<HTMLInputElement>(null);
   const minPriceField = useRef<HTMLInputElement>(null);
   const conditionField = useRef<HTMLSelectElement>(null);
-  const fields = { tagsField, sortByField, maxPriceField, minPriceField, conditionField }
-
+  const fields = { tagsField, sortByField, maxPriceField, minPriceField, conditionField, SetTagStack }
+//! working on it
   const latitudeField = useRef<HTMLSelectElement>(null);
   const longitudeField = useRef<HTMLSelectElement>(null);
+
   const searchField = useRef<HTMLInputElement>(null);
 
   const getListings = useCallback(async (offset: number) => {
     const longitude = 13.405 //CHANGE TO PULL FROM SOMEWHERE
     const latitude = 52.52 // CHANGE TO PULL FROM SOMEWHERE
-    const tagString = Object.values(tagsField.current).join('+');
-    const tags = tagString !== '' ? tagString : undefined;
     const radius = radiusField.current?.value || 10;
     const maxPrice = maxPriceField.current?.value || undefined;
     const minPrice = minPriceField.current?.value || 0;
@@ -50,40 +46,43 @@ export default function HomeView() {
     // const latitude = latitudeField.current?.value || 'all';
     // const longitude = longitudeField.current?.value || 'all';
     const search = searchField.current?.value || undefined;
+    const tagString = tagStack.map(el => el.replace(/\s+/g,'')).join(' ');
+    const tags = tagString !== '' ? tagString : undefined;
+    console.log('tags', tags)
     const query = { search, offset, radius, condition, tags, maxPrice, minPrice, sortBy, latitude, longitude };
     // add 'search' to query
     const res = await api.get('/listings', query)
     return res;
-  }, [api])
+  }, [api, tagStack])
 
 
 
-  async function handleScroll() {
-    const res = await getListings(offset.current);
-    if (res.ok) {
-      offset.current = res.body.data.offset;
-      setListings(res.body.data.listings);
-    } else {
-      //handleError
-    }
-  }
+  // async function handleScroll() {
+  //   const res = await getListings(offset.current);
+  //   if (res.ok) {
+  //     offset.current = res.body.data.offset;
+  //     setListings(res.body.data.listings);
+  //   } else {
+  //     //handleError
+  //   }
+  // }
   const openFiltersModal = () => setFiltersAreVisible(true)
   const closeFiltersModal = () => setFiltersAreVisible(false)
 
   async function applyFilters() {
     closeFiltersModal();
     console.log(conditionField.current?.value)
-    console.log(sortByField.current?.value)
+    setTimeout(() => {console.log(sortByField.current?.value)},1000)
     console.log(maxPriceField.current?.value)
-
+    
     const res = await getListings(0);
     if (res.ok) {
       offset.current = res.body.data.offset;
       setListings(res.body.data.listings);
 
     } else {
-      //handleError
-    }
+        //handleError
+      }
   }
 
   const loadData = async () => {
@@ -101,9 +100,10 @@ export default function HomeView() {
     }
     setIsLoading(false);
   }
+
   useEffect(() => {
     loadData();
-  }, [api, getListings])
+  }, [api])
 
 
   function pressEnter(event: KeyboardEvent<HTMLInputElement>): any {
@@ -118,13 +118,15 @@ export default function HomeView() {
       <div className='body-header-container' >
         <Header />
       </div>
+      <p>sortByField: </p>
+      {sortByField.current && (<p>{sortByField.current.value}</p>)}
       <div className="body-content-background">
         <div className="body-frame">
           <LocationPreviewComponent />{/*Empty for now, but will possibly show preview of your location  */}
 
           <div className="global-search-area">
             <div className='search-bar-container'>
-              <button onClick={() => getListings(0)}><i className="bi bi-search"></i></button>
+              <button onClick={() => loadData()}><i className="bi bi-search"></i></button>
               <input ref={searchField} className="main-input" placeholder="Search.." onKeyPress={(e) => pressEnter(e)} />
             </div>
             <div className='search-buttons-group' >
@@ -142,21 +144,9 @@ export default function HomeView() {
               </button>
             </div>
           </div>
-          {/* <Autocomplete
-            multiple
-            limitTags={2}
-            id="multiple-limit-tags"
-            options={['hey','hello','good morning', 'good night']}
-            getOptionLabel={(option) => option}
-            // defaultValue={['hey', 'hello']}
-            renderInput={(params) => (
-              <TextField {...params} label="limitTags" placeholder="Favorites" />
-            )}
-            sx={{ width: '500px' }}
-          /> */}
 
 
-          <AutoCompleteSearch SetTagStack={SetTagStack} />
+          {/* <AutoCompleteSearch SetTagStack={SetTagStack} /> */}
 
 
           <FiltersComponent
@@ -172,6 +162,7 @@ export default function HomeView() {
           </div>
         </div>
       </div>
+
       <div className='body-footer-container'>
         <Footer />
       </div>

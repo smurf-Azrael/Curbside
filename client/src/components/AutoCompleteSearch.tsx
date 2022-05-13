@@ -64,6 +64,7 @@ interface TagProps extends ReturnType<AutocompleteGetTagProps> {
 
 
 export default function AutoCompleteSearch({SetTagStack} : { SetTagStack: any }) {
+  const [myList, setMyList] = useState([]);
 
   function Tag(props: TagProps) {
     const { label, onDelete, ...other } = props;
@@ -159,11 +160,10 @@ export default function AutoCompleteSearch({SetTagStack} : { SetTagStack: any })
   `,
   );
 
-  const [myList, setMyList] = useState([])
 
   const {
     getRootProps,
-    getInputLabelProps,
+    // getInputLabelProps,
     getInputProps,
     getTagProps,
     getListboxProps,

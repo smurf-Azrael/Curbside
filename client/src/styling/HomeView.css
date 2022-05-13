@@ -1,7 +1,6 @@
 
  .search-buttons-group {
    width: 90%;
-
    margin: auto;
  }
 
@@ -46,7 +45,7 @@
  .search-btn {
    background-color: white;
    color: var(--main-green-color);
-   border: 1.5px solid var(--main-green-color);
+   border: 1px solid var(--main-green-color);
    width: 50%;
  }
 
