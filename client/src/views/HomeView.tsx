@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { mocks } from '../mocks';
 import ListingPreview from "../components/ListingPreview";
 import FiltersComponent from "../components/FiltersComponent";
+import LocationRadius from "../components/LocationRadius";
 import Header from '../components/Header';
 import Footer from "../components/Footer";
 import '../styling/HomeView.css';
@@ -16,6 +17,7 @@ export default function HomeView() {
 
   const [listings, setListings] = useState<any[]>([]);
   const [FiltersAreVisible, setFiltersAreVisible] = useState(false);
+  const [locationIsVisible, setLocationIsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [loadingError, setLoadingError] = useState<boolean>(false);
   const [tagStack, SetTagStack] = useState<any[]>([]);
@@ -37,6 +39,7 @@ export default function HomeView() {
   const searchField = useRef<HTMLInputElement>(null);
 
   const getListings = useCallback(async (offset: number) => {
+    console.log('in get LIsntgs')
     const longitude = 13.405 //CHANGE TO PULL FROM SOMEWHERE
     const latitude = 52.52 // CHANGE TO PULL FROM SOMEWHERE
     // const radius = radiusField.current?.value || 10;
@@ -71,11 +74,14 @@ export default function HomeView() {
   // }
   const openFiltersModal = () => setFiltersAreVisible(true)
   const closeFiltersModal = () => setFiltersAreVisible(false)
+  const openLocationModal = () => setLocationIsVisible(true)
+  const closeLocationModal = () => setLocationIsVisible(false)
 
   async function applyFilters() {
     closeFiltersModal();
-    console.log(conditionField.current?.value)
-    setTimeout(() => {console.log(sortByField.current?.value)},1000)
+    console.warn(conditionField.current?.value)
+    console.log('-->',sortByField.current?.value)
+    setTimeout(() => {console.log('line79',sortByField)},1000)
     console.log(maxPriceField.current?.value)
     
     const res = await getListings(0);
@@ -131,7 +137,7 @@ export default function HomeView() {
               <input ref={searchField} className="main-input" placeholder="Search.." onKeyPress={(e) => pressEnter(e)} />
             </div>
             <div className='search-buttons-group' >
-              <button className="search-location-button search-btn" onClick={openFiltersModal}>
+              <button className="search-location-button search-btn" onClick={openLocationModal}>
                 <p>
                   <i className="bi bi-geo-alt"></i>
                   Location
@@ -145,6 +151,11 @@ export default function HomeView() {
               </button>
             </div>
           </div>
+
+          <LocationRadius 
+            locationIsVisible={locationIsVisible}
+            closeLocationModal={closeLocationModal}
+          />
 
           <FiltersComponent
             filtersAreVisible={FiltersAreVisible}
