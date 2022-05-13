@@ -5,9 +5,15 @@
   --header-height: 60px;
   --footer-height: 50px;
 }
+
+html, body, #root {
+  height: 100%;
+}
+
+
 .App {
+  height: 100%;
   text-align: center;
-  min-height: 100vh;
   min-width:250px;
   margin: auto;
   text-align: center;
@@ -15,18 +21,11 @@
   flex-direction: column;
   font-family: 'Raleway', 'Quicksand', 'Inter', sans-serif  ;
 }
-.body-page{
-  min-height: 100vh;
-  /* border: 1px solid black; */
-}
-.body-content-background{
-  min-height: calc(100vh - var(--header-height) - var(--footer-height) );
-  width: 100%;
-  background-color: rgba(230, 225, 225, 0.801);
-  padding-top: 25px;
-  padding-bottom: 25px;
-}
+
+
 .body-frame {
+  padding-top:25px;
+  padding-bottom:25px;
   max-width: 500px;
   display: flex;
   flex-direction: column;
@@ -34,17 +33,7 @@
   margin: 0px auto;
   gap: 30px;
 }
-.body-header-container {
-  margin-top: auto;
-  position: sticky;
-  top:0;
-  z-index: 1;
-}
-.body-footer-container{
-  margin-top: auto;
-  position: sticky;
-  bottom:-1px;
-}
+
 .body-frame-padding {
   margin-top: 20px;
   background-color: white;
