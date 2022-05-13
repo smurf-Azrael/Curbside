@@ -94,7 +94,6 @@ export const getListingsByIdTests = (): void => {
     it('Should send 404 if listing can\'t be found', async () => {
       const { body, statusCode } = await request(app)
         .get('/listings/NONE');
-      console.log('body', body);
       expect(statusCode).toEqual(404);
       expect(body.error).toEqual(LISTING_NOT_FOUND);
     });
