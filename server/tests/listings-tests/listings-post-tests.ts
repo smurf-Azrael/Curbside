@@ -46,8 +46,8 @@ export const listingsPostTests = (): void => {
     });
 
     it('Should add listing to the database and return it with id and createdAt fields added', async () => {
-      const intialListings = await prisma.listing.findMany();
-      expect(intialListings.length).toEqual(0);
+      const initialListings = await prisma.listing.findMany();
+      expect(initialListings.length).toEqual(0);
       const { body } = await request(server)
         .post('/listings')
         .set('Authorization', 'Bearer ' + testToken)
