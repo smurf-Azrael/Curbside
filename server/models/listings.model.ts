@@ -1,8 +1,9 @@
 import { CustomError } from '../errors/CustomError.class';
 import { LISTING_NOT_FOUND, UNKNOWN_SERVER_ERROR } from '../errors/SharedErrorMessages';
 import { IListing, IListingPackage } from '../interfaces/listing.interface';
-import { AddListingDTO, GetListingQueryParams } from '../interfaces/listings.interface.dto';
+import { AddListingDTO, FinalizeListingDTO, GetListingQueryParams } from '../interfaces/listings.interface.dto';
 import { IUserInfoSelect } from '../interfaces/user.interface';
+import { updateListingQuery } from '../queries/listingByIdPatchQueries';
 import { getListingsByListingId, getSelectUserInfoByUserId, getUserRatingByUserId } from '../queries/listingByIdQueries';
 import listingsQueries, { spatialQuery, spatialQueryListings } from '../queries/listingsQueries';
 import { getUserById } from '../queries/userQueries';
@@ -86,6 +87,16 @@ export const getListingByListingIdModel = async (id:string) : Promise<IListingPa
   }
 };
 
+export const updateListing = async (listingId: string, listingDetails: FinalizeListingDTO): Promise<IListing> => {
+  try {
+    const listing: IListing = await updateListingQuery(listingId, listingDetails);
+    return listing;
+  } catch (error) {
+    console.log('/models/listingsById.model getListingByIdModel ERROR', error);
+    throw error;
+  }
+};
+
 export const getDistance = (start: number[], end: number[]): number => {
   const xDistance = start[0] - end[0];
   const yDistance = start[1] - end[1];
@@ -97,5 +108,7 @@ export const getDistance = (start: number[], end: number[]): number => {
 };
 export default {
   addListing,
-  getListings
+  getListings,
+  getListingByListingIdModel,
+  updateListing
 };
