@@ -80,7 +80,7 @@ export default function AddListingView() {
       description,
       condition,
       priceInCents,
-      tags: 'car bike',
+      tags: '',
     };
     console.log(newListing);
     const res = await api.post('/listings', newListing);
