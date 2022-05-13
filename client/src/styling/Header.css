@@ -1,4 +1,8 @@
-.header-container{
+.Header{
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
   min-height: var(--header-height);
   display: flex;
   align-items: center;
