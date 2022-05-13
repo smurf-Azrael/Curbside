@@ -82,7 +82,7 @@ i {
   justify-content: flex-start;
 }
 
-p {
+.listing-details-data-wrapper p {
   display: inline-block;
   margin-bottom: 7px;
 }
