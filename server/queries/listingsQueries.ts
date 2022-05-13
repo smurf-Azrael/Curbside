@@ -57,8 +57,6 @@ export const spatialQuery = async (longitude: number, latitude: number, radius:n
 };
 
 export const spatialQueryListings = async (spatialQueryRes: {id:string}[], queryParams: GetListingQueryParams): Promise<any> => {
-  // console.log('SEARCH TERMS', queryParams.search?.split(' ').join(' | '));
-  // console.log('SPATIAL QUERY IDS', spatialQueryRes);
   const dbListings = await prisma.listing.findMany({
     where: {
       AND: [
