@@ -44,3 +44,8 @@ export const convertDataBaseListingToListing = (dbListing: Listing): IListing =>
     throw new CustomError(LISTING_PARSING_ERROR, 400);
   }
 };
+
+export default {
+  convertDBSelectUserDetailsToDetails,
+  convertDataBaseListingToListing
+};
