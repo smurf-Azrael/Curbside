@@ -18,7 +18,7 @@ function ProfileView() {
   useEffect(() => {
 
     const loadUserData = async () => {
-      const res = await api.get(`/users/${id}`); 
+      const res = await api.get(`/users/${id}`);
       if (res.ok) {
         setUser(res.body.data.user);
         setUserListings(res.body.data.listings);
@@ -57,7 +57,9 @@ function ProfileView() {
       <div className="profile-my-listings-wrapper">
         {userListings.length > 0 &&
           userListings.map((listing) => (
-            <ListingPreview key={listing.id} listing={listing} />
+            <div className="listing-container">
+              <ListingPreview key={listing.id} listing={listing} />
+            </div>
           ))}
       </div>
     </section>

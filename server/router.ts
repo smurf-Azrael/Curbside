@@ -5,6 +5,7 @@ import { fullUserRequired, loginRequired } from './middlewares/login-required.mi
 import { PAGE_NOT_FOUND } from './errors/SharedErrorMessages';
 import { patchListingByListingId } from './controllers/listingsByIdPatch.controller';
 import chatsController from './controllers/chats.controller';
+import ratingsController from './controllers/ratings.controller';
 
 export const router = Router();
 
@@ -19,7 +20,9 @@ router.post('/listings', fullUserRequired, listingsController.addListing);
 router.get('/listings/:id', listingsController.getListingByListingId);
 router.patch('/listings/:id', fullUserRequired, patchListingByListingId);
 
-router.get('/chats/:id', fullUserRequired, chatsController.getChatsByUserId);
+router.get('/chats', fullUserRequired, chatsController.getChatsByUserId);
+
+router.post('/ratings', loginRequired, ratingsController.addRatings);
 
 router.get('/login', fullUserRequired, (req: Request, res: Response) => {
   res.send({
