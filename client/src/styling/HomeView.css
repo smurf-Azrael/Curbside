@@ -65,11 +65,15 @@
  }
 
  .listings-container {
-   border: 1px solid blue;
+   /* border: 1px solid blue; */
    display: flex;
    flex-wrap: wrap;
    width:96%;
    max-width: 500px;
-   justify-content: center;
-   margin: auto;
+   justify-content: flex-start;
+   margin: 0;
+ }
+
+ .listings-container a {
+   width: 50%;
  }
