@@ -3,8 +3,7 @@ import { LISTING_NOT_FOUND, UNKNOWN_SERVER_ERROR } from '../errors/SharedErrorMe
 import { IListing, IListingPackage } from '../interfaces/listing.interface';
 import { AddListingDTO, FinalizeListingDTO, GetListingQueryParams } from '../interfaces/listings.interface.dto';
 import { IUserInfoSelect } from '../interfaces/user.interface';
-import { updateListingQuery } from '../queries/listing.patch.Queries';
-import { getListingsByListingId, getSelectUserInfoByUserId, getUserRatingByUserId } from '../queries/listing.get.Queries';
+import { getListingsByListingId, getSelectUserInfoByUserId, getUserRatingByUserId, updateListingQuery } from '../queries/listing.get.Queries';
 import listingsQueries, { spatialQuery, spatialQueryListings } from '../queries/listingsQueries';
 import { getUserById } from '../queries/userQueries';
 import { addListingInputValidation } from './listings.model.validation';

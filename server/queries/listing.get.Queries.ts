@@ -2,10 +2,10 @@ import { Listing } from '@prisma/client';
 import { CustomError } from '../errors/CustomError.class';
 import { USER_NOT_FOUND } from '../errors/SharedErrorMessages';
 import { IListing } from '../interfaces/listing.interface';
-import { IdbSelectUserDetails } from '../interfaces/listings.interface.dto';
+import { FinalizeListingDTO, IdbSelectUserDetails } from '../interfaces/listings.interface.dto';
 import { IUserInfoSelect } from '../interfaces/user.interface';
 import { prisma } from '../prisma/client';
-import { convertDataBaseListingToListing, convertDBSelectUserDetailsToDetails } from './query-helpers/converter.helpers';
+import converterHelpers, { convertDataBaseListingToListing, convertDBSelectUserDetailsToDetails } from './query-helpers/converter.helpers';
 
 export const getListingsByListingId = async (id: string):Promise<IListing | null> => {
   const dbListing : Listing | null = await prisma.listing.findFirst({
@@ -50,4 +50,15 @@ export const getUserRatingByUserId = async (userId: string): Promise<number> => 
   const sum = (acc: number, obj:{rating:number}): number => (acc + obj.rating);
   const avg = ratingArr.reduce(sum, 0) / ratingArr.length;
   return avg;
+};
+
+export const updateListingQuery = async (listingId:string, listingDetails:FinalizeListingDTO): Promise<IListing> => {
+  const dbListing: Listing = await prisma.listing.update({
+    where: {
+      id: listingId
+    },
+    data: listingDetails
+  });
+  const listing: IListing = converterHelpers.convertDataBaseListingToListing(dbListing);
+  return listing;
 };
