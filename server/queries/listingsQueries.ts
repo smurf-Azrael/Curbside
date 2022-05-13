@@ -1,12 +1,11 @@
-import { Listing, ListingCondition, Tag } from '@prisma/client';
+import { Listing, ListingCondition } from '@prisma/client';
 import { CustomError } from '../errors/CustomError.class';
 import { LISTING_PARSING_ERROR } from '../errors/SharedErrorMessages';
-import { IListing, IListingCondition } from '../interfaces/listing.interface';
+import { IListing, IListingCondition, IListingStatus } from '../interfaces/listing.interface';
 import { AddListingDTO, GetListingQueryParams } from '../interfaces/listings.interface.dto';
-import { ITag } from '../interfaces/tag.interface';
 import { prisma } from '../prisma/client';
 
-const convertDataBaseListingToListing = (dbListing: Listing & {tags?: Tag[]}): IListing => {
+const convertDataBaseListingToListing = (dbListing: Listing): IListing => {
   try {
     const listing: IListing = {
       id: dbListing.id,
@@ -23,9 +22,13 @@ const convertDataBaseListingToListing = (dbListing: Listing & {tags?: Tag[]}): I
       photoUrls: dbListing.photoUrls,
       longitude: dbListing.longitude,
       latitude: dbListing.latitude,
-      status: dbListing.status,
+      status: dbListing.status === 'available'
+        ? IListingStatus.available
+        : dbListing.status === 'reserved'
+          ? IListingStatus.reserved
+          : IListingStatus.sold,
       createdAt: dbListing.createdAt,
-      tags: !dbListing.tags ? [] : dbListing.tags.map<ITag>((tag: Tag) => ({ id: tag.id, title: tag.title }))
+      tags: dbListing.tags
     };
     return listing;
   } catch (error) {
@@ -54,8 +57,6 @@ export const spatialQuery = async (longitude: number, latitude: number, radius:n
 };
 
 export const spatialQueryListings = async (spatialQueryRes: {id:string}[], queryParams: GetListingQueryParams): Promise<any> => {
-  // console.log('SEARCH TERMS', queryParams.search?.split(' ').join(' | '));
-  // console.log('SPATIAL QUERY IDS', spatialQueryRes);
   const dbListings = await prisma.listing.findMany({
     where: {
       AND: [
@@ -92,6 +93,11 @@ export const spatialQueryListings = async (spatialQueryRes: {id:string}[], query
           ]
         },
         {
+          tags: {
+            search: queryParams.tags ? queryParams.tags.split(' ').join(' | ') : undefined
+          }
+        },
+        {
           OR: [
             {
               title: {
@@ -108,10 +114,8 @@ export const spatialQueryListings = async (spatialQueryRes: {id:string}[], query
     orderBy: { // sortBy
       createdAt: queryParams.sortBy === 'newest' ? 'desc' : undefined,
       priceInCents: queryParams.sortBy === 'price desc' ? 'desc' : queryParams.sortBy === 'price asc' ? 'asc' : undefined
-    },
-    include: {
-      tags: true
     }
+
   });
   return dbListings.map(convertDataBaseListingToListing);
 };

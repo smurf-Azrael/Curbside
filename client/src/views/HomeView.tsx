@@ -38,7 +38,9 @@ export default function HomeView() {
   const getListings = useCallback(async (offset: number) => {
     const longitude = 13.405 //CHANGE TO PULL FROM SOMEWHERE
     const latitude = 52.52 // CHANGE TO PULL FROM SOMEWHERE
-    const radius = radiusField.current?.value || 10;
+    // const radius = radiusField.current?.value || 10;
+    // const tags = tagString !== '' ? tagString : undefined;
+    const radius = radiusField.current?.value || 55;
     const maxPrice = maxPriceField.current?.value || undefined;
     const minPrice = minPriceField.current?.value || 0;
     const sortBy = sortByField.current?.value || 'closest';
@@ -118,8 +120,6 @@ export default function HomeView() {
       <div className='body-header-container' >
         <Header />
       </div>
-      <p>sortByField: </p>
-      {sortByField.current && (<p>{sortByField.current.value}</p>)}
       <div className="body-content-background">
         <div className="body-frame">
           <LocationPreviewComponent />{/*Empty for now, but will possibly show preview of your location  */}
@@ -145,10 +145,6 @@ export default function HomeView() {
             </div>
           </div>
 
-
-          {/* <AutoCompleteSearch SetTagStack={SetTagStack} /> */}
-
-
           <FiltersComponent
             filtersAreVisible={FiltersAreVisible}
             closeFiltersModal={closeFiltersModal}
@@ -157,6 +153,7 @@ export default function HomeView() {
           />
           <div className='listings-container' >
             {listings.map(listing => <ListingPreview key={listing.id} listing={listing} />)}
+            {!isLoading && listings.length === 0 && <p>No listing matched your request...</p>}
             {loadingError && <p>Couldn't load listings :/</p>}
             {isLoading && <img style={{ height: '20vw', maxHeight: '200px', borderRadius: '20px' }} src={loader} alt="Loading..." />}
           </div>

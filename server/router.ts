@@ -1,30 +1,27 @@
-import { NextFunction, Request, Response, Router } from 'express';
+import { Request, Response, Router } from 'express';
 import usersController from './controllers/users.controller';
 import listingsController from './controllers/listings.controller';
-import { loginRequired } from './middlewares/login-required.middleware';
-import { PAGE_NOT_FOUND, USER_NOT_AUTHENTICATED } from './errors/SharedErrorMessages';
+import { fullUserRequired, loginRequired } from './middlewares/login-required.middleware';
+import { PAGE_NOT_FOUND } from './errors/SharedErrorMessages';
+import { patchListingByListingId } from './controllers/listingsByIdPatch.controller';
+import chatsController from './controllers/chats.controller';
 
 export const router = Router();
 
-router.post('/users', (req: Request, res: Response, next: NextFunction): void => {
-  // @ts-ignore
-  if (req.user) {
-    next();
-  } else {
-    res.status(401).send({ error: USER_NOT_AUTHENTICATED });
-  }
-}, usersController.addInitialUser);
-
-router.patch('/users/:id', loginRequired, usersController.finalizeUser);
-
-router.post('/listings', loginRequired, listingsController.addListing);
-
-router.get('/listings/:id', listingsController.getListingByListingId);
-router.get('/listings', listingsController.getListings);
+router.post('/users', loginRequired, usersController.addInitialUser);
 
 router.get('/users/:id', usersController.getUserProfile);
+router.patch('/users/:id', loginRequired, usersController.finalizeUser);
 
-router.get('/login', loginRequired, (req: Request, res: Response) => {
+router.get('/listings', listingsController.getListings);
+router.post('/listings', fullUserRequired, listingsController.addListing);
+
+router.get('/listings/:id', listingsController.getListingByListingId);
+router.patch('/listings/:id', fullUserRequired, patchListingByListingId);
+
+router.get('/chats/:id', fullUserRequired, chatsController.getChatsByUserId);
+
+router.get('/login', fullUserRequired, (req: Request, res: Response) => {
   res.send({
     data: {
       user: {

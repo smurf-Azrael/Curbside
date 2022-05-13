@@ -13,7 +13,7 @@
   text-align: center;
   display: flex;
   flex-direction: column;
-  font-family: 'Inter', 'Quicksand', 'Raleway', sans-serif  ;
+  font-family: 'Raleway', 'Quicksand', 'Inter', sans-serif  ;
 }
 .body-page{
   min-height: 100vh;
