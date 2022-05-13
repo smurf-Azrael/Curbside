@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { IListing, IListingPackage } from '../interfaces/listing.interface';
-import { AddListingDTO, GetListingQueryParams } from '../interfaces/listings.interface.dto';
+import { AddListingDTO, FinalizeListingDTO, GetListingQueryParams } from '../interfaces/listings.interface.dto';
+import { updateListing } from '../models/listingbyIdPatch.model';
 import listingsModel, { getListingByListingIdModel } from '../models/listings.model';
 
 const addListing = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -28,6 +29,17 @@ export const getListingByListingId = async (req: Request, res: Response, next: N
   try {
     const id : string = req.params.id;
     const listing: IListingPackage | null = await getListingByListingIdModel(id);
+    res.status(200).send({ data: { listing } });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const patchListingByListingId = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const listingDetails: FinalizeListingDTO = req.body;
+    const listingId:string = req.params.id;
+    const listing = await updateListing(listingId, listingDetails);
     res.status(200).send({ data: { listing } });
   } catch (error) {
     next(error);
