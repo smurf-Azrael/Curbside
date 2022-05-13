@@ -15,11 +15,8 @@ export const addRatingInputValidation = async (ratingDetails:AddRatingDTO): Prom
     errorMessages.title = ratingModelErrorMessages.invalidRating;
   }
   // Check that both users are still in the database
-  console.log("I'm in the model validator for ratings");
   const seller = await prisma.user.findUnique({ where: { id: ratingDetails.sellerId } });
   const buyer = await prisma.user.findUnique({ where: { id: ratingDetails.buyerId } });
-  console.log('seller', seller);
-  console.log('buyer', buyer);
   if (!seller || !buyer) {
     errorMessages.user = ratingModelErrorMessages.invalidUserId;
   }
