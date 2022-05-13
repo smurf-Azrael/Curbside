@@ -3,10 +3,11 @@ import { LISTING_NOT_FOUND, UNKNOWN_SERVER_ERROR } from '../errors/SharedErrorMe
 import { IListing, IListingPackage } from '../interfaces/listing.interface';
 import { AddListingDTO, FinalizeListingDTO, GetListingQueryParams } from '../interfaces/listings.interface.dto';
 import { IUserInfoSelect } from '../interfaces/user.interface';
-import { getListingsByListingId, getSelectUserInfoByUserId, getUserRatingByUserId, updateListingQuery } from '../queries/listingQueries';
-import listingsQueries, { spatialQuery, spatialQueryListings } from '../queries/listingsQueries';
-import { getUserById } from '../queries/userQueries';
+import listingQueries from '../queries/listingQueries';
+import listingsQueries from '../queries/listingsQueries';
+import userQueries from '../queries/userQueries';
 import { addListingInputValidation } from './listings.model.validation';
+import distanceHelpers from './model-helpers/distance.helpers';
 
 const addListing = async (listingDetails: AddListingDTO): Promise<IListing> => {
   try {
@@ -33,7 +34,7 @@ const getListings = async (userId: string | undefined, params: GetListingQueryPa
       // if long lat are not given
       //    => grab them from the logged in user
       if (userId !== undefined) {
-        const user = await getUserById(userId);
+        const user = await userQueries.getUserById(userId);
 
         if (user && user.longitude && user.latitude) {
           long = user.longitude;
@@ -49,16 +50,16 @@ const getListings = async (userId: string | undefined, params: GetListingQueryPa
         lat = 52.52;
       }
     }
-    const listingsInRangeIds: {id: string}[] = await spatialQuery(long, lat, +params.radius);
-    let listings: IListing[] = await spatialQueryListings(listingsInRangeIds, params);
+    const listingsInRangeIds: {id: string}[] = await listingsQueries.spatialQuery(long, lat, +params.radius);
+    let listings: IListing[] = await listingsQueries.spatialQueryListings(listingsInRangeIds, params);
     // filter for tags
 
     // sort by closest
     if (params.sortBy === 'closest') {
       const sortedByDistanceListings = [...listings]
         .sort((a, b) =>
-          getDistance([a.longitude, a.latitude], [long!, lat!]) -
-           getDistance([b.longitude, b.latitude], [long!, lat!])
+          distanceHelpers.getDistance([a.longitude, a.latitude], [long!, lat!]) -
+          distanceHelpers.getDistance([b.longitude, b.latitude], [long!, lat!])
         );
       listings = sortedByDistanceListings;
     }
@@ -74,10 +75,10 @@ const getListings = async (userId: string | undefined, params: GetListingQueryPa
 };
 export const getListingByListingIdModel = async (id:string) : Promise<IListingPackage | null> => {
   try {
-    const listing: IListing | null = await getListingsByListingId(id);
+    const listing: IListing | null = await listingQueries.getListingsByListingId(id);
     if (listing === null || undefined) { throw new CustomError(LISTING_NOT_FOUND, 404); }
-    const userInfo: IUserInfoSelect | null = await getSelectUserInfoByUserId(listing.userId);
-    const rating: number | null = await getUserRatingByUserId(listing.userId);
+    const userInfo: IUserInfoSelect | null = await listingQueries.getSelectUserInfoByUserId(listing.userId);
+    const rating: number | null = await listingQueries.getUserRatingByUserId(listing.userId);
     const listingPackage: IListingPackage = { ...listing, ...userInfo, rating };
     return listingPackage;
   } catch (error) {
@@ -88,22 +89,12 @@ export const getListingByListingIdModel = async (id:string) : Promise<IListingPa
 
 export const updateListing = async (listingId: string, listingDetails: FinalizeListingDTO): Promise<IListing> => {
   try {
-    const listing: IListing = await updateListingQuery(listingId, listingDetails);
+    const listing: IListing = await listingQueries.updateListingQuery(listingId, listingDetails);
     return listing;
   } catch (error) {
     console.log('/models/listingsById.model getListingByIdModel ERROR', error);
     throw error;
   }
-};
-
-export const getDistance = (start: number[], end: number[]): number => {
-  const xDistance = start[0] - end[0];
-  const yDistance = start[1] - end[1];
-  const sqx = xDistance * xDistance;
-  const sqy = yDistance * yDistance;
-  const distSum = sqx + sqy;
-  const sqrtDist = Math.sqrt(distSum);
-  return sqrtDist;
 };
 
 export default {

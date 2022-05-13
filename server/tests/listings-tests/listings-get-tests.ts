@@ -7,7 +7,7 @@ import { InitialUserDTO } from '../../interfaces/users.interface.dto';
 import { ListingCondition } from '@prisma/client';
 import { AddListingDTO } from '../../interfaces/listings.interface.dto';
 import { IListing, IListingCondition } from '../../interfaces/listing.interface';
-import { getDistance } from '../../models/listings.model';
+import distanceHelpers from '../../models/model-helpers/distance.helpers';
 export const listingsGetTests = (): void => {
   describe('GET /listings', () => {
     const mockInitialUserInput: InitialUserDTO = {
@@ -66,7 +66,7 @@ export const listingsGetTests = (): void => {
         .expect(200);
       expect(body.data.listings.length).toBeTruthy();
       const sortedListings = body.data.listings.slice()
-        .sort((a: IListing, b: IListing) => getDistance(coords, [a.latitude, a.longitude]) - getDistance(coords, [b.latitude, b.longitude]));
+        .sort((a: IListing, b: IListing) => distanceHelpers.getDistance(coords, [a.latitude, a.longitude]) - distanceHelpers.getDistance(coords, [b.latitude, b.longitude]));
       expect(sortedListings).toEqual(body.data.listings);
     });
 
