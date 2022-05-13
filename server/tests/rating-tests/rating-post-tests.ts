@@ -78,5 +78,12 @@ export const ratingTests = ():void => {
       console.log('body', body);
       expect(body).toHaveProperty('error');
     });
+
+    // it('Should throw a custom error is rating input is invalid', async () => {
+    //   const { body } = await request(server)
+    //     .post('/ratings')
+    //     .set('Authorization', 'Bearer ' + testToken);
+    //     .expect('Content-Type', /json/)
+    // });
   });
 };

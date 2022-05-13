@@ -5,8 +5,8 @@ import { InitialUserDTO } from '../../interfaces/users.interface.dto';
 import { mocks } from '../../../mocks';
 import { AddListingDTO } from '../../interfaces/listings.interface.dto';
 import { IListingCondition } from '../../interfaces/listing.interface';
-import { AddRatingsDTO } from '../../interfaces/ratings.interface.dto';
 import { LISTING_NOT_FOUND } from '../../errors/SharedErrorMessages';
+import { AddRatingDTO } from '../../interfaces/rating.interface.dto';
 
 export const getListingsByIdTests = (): void => {
   describe('GET /listings/:id', () => {
@@ -44,14 +44,12 @@ export const getListingsByIdTests = (): void => {
       tags: 'car bike'
     };
 
-    const mockAddRating1: AddRatingsDTO = {
-      id: '1',
+    const mockAddRating1: AddRatingDTO = {
       sellerId: mocks.Users[0].id,
       buyerId: mocks.Users[1].id,
       rating: 3
     };
-    const mockAddRating2: AddRatingsDTO = {
-      id: '2',
+    const mockAddRating2: AddRatingDTO = {
       sellerId: mocks.Users[0].id,
       buyerId: mocks.Users[2].id,
       rating: 5
