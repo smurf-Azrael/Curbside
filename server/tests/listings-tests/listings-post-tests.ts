@@ -31,7 +31,7 @@ export const listingsPostTests = (): void => {
     let testToken: string|undefined;
 
     beforeAll(async () => {
-      await prisma.user.create({ data: mockInitialUserInput });
+      await prisma.user.create({ data: { ...mockInitialUserInput, firstName: 'test', lastName: 'tester' } });
     });
 
     beforeEach(async () => {

@@ -44,7 +44,7 @@ export const listingsPatchTests = (): void => {
 
     beforeAll(async () => {
       await prisma.user.deleteMany();
-      await prisma.user.create({ data: mockInitialUserInput1 });
+      await prisma.user.create({ data: { ...mockInitialUserInput1, firstName: 'Test', lastName: 'Tester' } });
       listingFromDb = await prisma.listing.create({ data: mockAddListing });
     });
 
@@ -75,13 +75,13 @@ export const listingsPatchTests = (): void => {
       expect(body.data.listing.status).toEqual(IListingStatus.reserved);
     });
 
-    it('Should send a custom error to teh client if something goes wrong', async () => {
+    it('Should send a custom error to the client if something goes wrong', async () => {
       const { body } = await request(server)
         .patch(`/listings/${listingFromDb.id}`)
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/)
         .send({})
-        .expect(404);
+        .expect(400);
       expect(body).toHaveProperty('error');
     });
 

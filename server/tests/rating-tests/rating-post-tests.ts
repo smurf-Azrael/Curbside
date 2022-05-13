@@ -91,15 +91,5 @@ export const ratingTests = ():void => {
         .expect(400);
       expect(JSON.parse(body.error).user).toBe(ratingModelErrorMessages.invalidUserId); // Checking error message contents
     });
-    it('Should throw a 404 if validated user is not in database', async () => {
-      await prisma.user.delete({ where: { id: process.env.SECRET_UID } });
-      const { body } = await request(server)
-        .post('/ratings')
-        .set('Authorization', 'Bearer ' + testToken)
-        .expect('Content-Type', /json/)
-        .send(mockAddRating)
-        .expect(404);
-      expect(body.error).toEqual('User not found.');
-    });
   });
 };
