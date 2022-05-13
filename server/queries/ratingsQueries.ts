@@ -12,5 +12,4 @@ export const createRating = async (ratingDetails :AddRatingDTO): Promise<IRating
 
 export default {
   createRating
-
 };
