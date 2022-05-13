@@ -9,7 +9,7 @@ export default function Header() {
   const {currentUser, logOut} = useAuth()
 
   return (
-    <div className='header-container'>
+    <div className='Header'>
       <div className='header-frame' >
         <button className="curbside-home" onClick={() => navigate('/')}>
           <img src={curbside} alt='Curbside' />
