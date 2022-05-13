@@ -61,6 +61,7 @@ export default function AddListingView() {
       ],
       latitude: 52.5200,
       longitude: 13.4050,
+      tags: '',
       title, description, condition, priceInCents,
     }
     console.log(newListing)
