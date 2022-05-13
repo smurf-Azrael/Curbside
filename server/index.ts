@@ -29,14 +29,18 @@ const io = new Server(httpServer, {
 app.use(cors());
 io.use(async (socket: Socket, next: any) => {
   const token = socket.handshake.auth.token;
-
-  const fbUser = await auth().verifyIdToken(token);
-  const user = await getUserById(fbUser.uid);
-  if (user) {
-    // @ts-ignore
-    socket.user = user;
-    next();
-  } else {
+  try {
+    const fbUser = await auth().verifyIdToken(token);
+    const user = await getUserById(fbUser.uid);
+    if (user) {
+      // @ts-ignore
+      socket.user = user;
+      next();
+    } else {
+      next(new CustomError(USER_NOT_AUTHENTICATED, 401));
+    }
+  } catch (e) {
+    console.log('SOCKET HANDSHAKE FAILED');
     next(new CustomError(USER_NOT_AUTHENTICATED, 401));
   }
 });
