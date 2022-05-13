@@ -1,6 +1,6 @@
 import './App.css';
 import React from 'react';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ApiProvider from './contexts/ApiProvider';
 import SignupView from './views/SignupView';
 import SetProfileView from './views/SetProfileView';
@@ -12,9 +12,9 @@ import HomeView from './views/HomeView';
 import ProfileView from './views/ProfileView';
 import ChatView from './views/ChatView';
 import ListingDetailView from './views/ListingDetailView';
+import ChatsView from './views/ChatsView';
 
 function App() {
-
   return (
     <div className="App">
       <BrowserRouter>
@@ -28,12 +28,12 @@ function App() {
               <Route path="/signup" element={<SignupView />} />
               <Route path="/verify" element={<VerifyView />} />
               <Route path="/set-profile" element={<SetProfileView />} />
-              <Route path="/listing/:listingId/chat/:buyerId" element={<ChatView />}/>
-              <Route path="/listing/:listingId/chat" element={<ChatView />}/>
-              <Route path="/listing/:id" element={<ListingDetailView />}/>
-              <Route path="/profile/:id" element={<ProfileView/>}/>
+              <Route path="/listing/:listingId/chat/:buyerId" element={<ChatView />} />
+              <Route path="/listing/:listingId/chat" element={<ChatView />} />
+              <Route path="/listing/:id" element={<ListingDetailView />} />
+              <Route path="/profile/:id" element={<ProfileView />} />
               <Route path="/favorites" />
-              <Route path="/chats" />
+              <Route path="/chats" element={<ChatsView />} />
               <Route path="/add-listing" element={<AddListingView />} />
             </Routes>
           </AuthProvider>
