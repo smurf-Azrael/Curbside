@@ -1,7 +1,6 @@
 
  .search-buttons-group {
    width: 90%;
-
    margin: auto;
  }
 
@@ -46,7 +45,7 @@
  .search-btn {
    background-color: white;
    color: var(--main-green-color);
-   border: 1.5px solid var(--main-green-color);
+   border: 1px solid var(--main-green-color);
    width: 50%;
  }
 
@@ -65,11 +64,15 @@
  }
 
  .listings-container {
-   border: 1px solid blue;
+   /* border: 1px solid blue; */
    display: flex;
    flex-wrap: wrap;
    width:96%;
    max-width: 500px;
-   justify-content: center;
-   margin: auto;
+   justify-content: flex-start;
+   margin: 0;
+ }
+
+ .listings-container a {
+   width: 50%;
  }
