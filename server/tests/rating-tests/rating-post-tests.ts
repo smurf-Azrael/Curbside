@@ -57,5 +57,26 @@ export const ratingTests = ():void => {
       expect(body.data.rating.rating).toEqual(1);
       expect(typeof body.data.rating.id).toEqual('string');
     });
+    it('Should send a 401 error is user is not authenticated', async () => {
+      const { body, statusCode } = await request(server)
+        .post('/ratings')
+        .set('Authorization', 'Bearer ' + testToken + 'X')
+        .expect('Content-Type', /json/)
+        .send(mockAddRating);
+      expect(statusCode).toBeGreaterThanOrEqual(401);
+      expect(body).toHaveProperty('error');
+    });
+
+    it('Should throw 404 error is associated users are not in db', async () => {
+      await prisma.user.deleteMany();
+      const { body } = await request(server)
+        .post('/ratings')
+        .set('Authorization', 'Bearer ' + testToken)
+        .expect('Content-Type', /json/)
+        .send(mockAddRating)
+        .expect(404);
+      console.log('body', body);
+      expect(body).toHaveProperty('error');
+    });
   });
 };
