@@ -3,11 +3,12 @@ import { mocks } from '../../../mocks';
 import { server } from '../../index';
 import { AddRatingDTO } from '../../interfaces/rating.interface.dto';
 import { InitialUserDTO } from '../../interfaces/users.interface.dto';
+import { ratingModelErrorMessages } from '../../models/ratings.model.validation';
 import { prisma } from '../../prisma/client';
 import { getTestIdToken } from '../test-helpers';
 
 export const ratingTests = ():void => {
-  describe.only('POST /Ratings', () => {
+  describe('POST /Ratings', () => {
     const mockInitialUserInput: InitialUserDTO = {
       id: process.env.SECRET_UID!,
       email: mocks.Users[0].email,
@@ -27,9 +28,16 @@ export const ratingTests = ():void => {
       sellerId: process.env.SECRET_UID!
     };
 
+    const mockAddInvalidRating1: AddRatingDTO = {
+      rating: 10,
+      buyerId: mocks.Users[1].id,
+      sellerId: process.env.SECRET_UID!
+    };
+
     let testToken: string|undefined;
 
     beforeAll(async () => {
+      await prisma.user.deleteMany();
       await prisma.user.create({ data: mockInitialUserInput });
       await prisma.user.create({ data: mockInitialUserInput2 });
     });
@@ -67,23 +75,24 @@ export const ratingTests = ():void => {
       expect(body).toHaveProperty('error');
     });
 
-    it('Should throw 404 error is associated users are not in db', async () => {
-      await prisma.user.deleteMany();
+    it('Should throw a custom error is rating input is invalid', async () => {
+      const { body } = await request(server)
+        .post('/ratings')
+        .set('Authorization', 'Bearer ' + testToken)
+        .expect('Content-Type', /json/)
+        .send(mockAddInvalidRating1)
+        .expect(400);
+      expect(JSON.parse(body.error).title).toBe(ratingModelErrorMessages.invalidRating); // Checking error message contents
+    });
+    it('Should throw a custom error if associated users are not in db', async () => {
+      await prisma.user.delete({ where: { id: mocks.Users[1].id } });
       const { body } = await request(server)
         .post('/ratings')
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/)
         .send(mockAddRating)
-        .expect(404);
-      console.log('body', body);
-      expect(body).toHaveProperty('error');
+        .expect(400);
+      expect(JSON.parse(body.error).user).toBe(ratingModelErrorMessages.invalidUserId); // Checking error message contents
     });
-
-    // it('Should throw a custom error is rating input is invalid', async () => {
-    //   const { body } = await request(server)
-    //     .post('/ratings')
-    //     .set('Authorization', 'Bearer ' + testToken);
-    //     .expect('Content-Type', /json/)
-    // });
   });
 };
