@@ -1,5 +1,6 @@
 import { useApi } from "../contexts/ApiProvider"
 import { useEffect, useState, useRef, useCallback, KeyboardEvent } from "react"
+import { Link } from "react-router-dom";
 import { mocks } from '../mocks';
 import ListingPreview from "../components/ListingPreview";
 import FiltersComponent from "../components/FiltersComponent";
@@ -28,8 +29,8 @@ export default function HomeView() {
   const conditionField = useRef<HTMLSelectElement>(null);
   const fields = { tagsField, sortByField, maxPriceField, minPriceField, conditionField }
 
-  const latitudeField = useRef<HTMLSelectElement>(null);
-  const longitudeField = useRef<HTMLSelectElement>(null);
+  // const latitudeField = useRef<HTMLSelectElement>(null);
+  // const longitudeField = useRef<HTMLSelectElement>(null);
   const searchField = useRef<HTMLInputElement>(null);
 
   const getListings = useCallback(async (offset: number) => {
@@ -53,15 +54,15 @@ export default function HomeView() {
 
 
 
-  async function handleScroll() {
-    const res = await getListings(offset.current);
-    if (res.ok) {
-      offset.current = res.body.data.offset;
-      setListings(res.body.data.listings);
-    } else {
-      //handleError
-    }
-  }
+  // async function handleScroll() {
+  //   const res = await getListings(offset.current);
+  //   if (res.ok) {
+  //     offset.current = res.body.data.offset;
+  //     setListings(res.body.data.listings);
+  //   } else {
+  //     //handleError
+  //   }
+  // }
   const openFiltersModal = () => setFiltersAreVisible(true)
   const closeFiltersModal = () => setFiltersAreVisible(false)
 
@@ -145,7 +146,11 @@ export default function HomeView() {
             fields={fields}
           />
           <div className='listings-container' >
-            {listings.map(listing => <ListingPreview key={listing.id} listing={listing} />)}
+            {listings.map(listing => {
+              return (<Link to={`/listing/${listing.id}`} style={{textDecoration:"none", color: "black"}}>
+                <ListingPreview key={listing.id} listing={listing} />
+              </Link>)
+            })}
             {loadingError && <p>Couldn't load listings :/</p>}
             {isLoading && <img style={{ height: '20vw', maxHeight: '200px', borderRadius: '20px' }} src={loader} alt="Loading..." />}
           </div>
