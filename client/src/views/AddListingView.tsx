@@ -83,6 +83,7 @@ export default function AddListingView() {
       tags: '',
     };
     console.log(newListing);
+
     const res = await api.post('/listings', newListing);
     if (res.ok) {
       navigate('/');
