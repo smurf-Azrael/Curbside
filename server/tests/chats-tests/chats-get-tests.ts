@@ -7,7 +7,7 @@ import { prisma } from '../../prisma/client';
 import { getTestIdToken } from '../test-helpers';
 
 export const getChatsByUserIdTests = (): void => {
-  describe('/chats/:userId GET', () => {
+  describe('GET /chats/:userId', () => {
     let buyer: any, seller: any, listing: any;
     let testToken: string|undefined;
     let mockAddChat: any;
@@ -35,8 +35,8 @@ export const getChatsByUserIdTests = (): void => {
         tags: 'bike car'
       };
 
-      buyer = await prisma.user.create({ data: mockUser1 });
-      seller = await prisma.user.create({ data: mockUser2 });
+      buyer = await prisma.user.create({ data: { ...mockUser1, firstName: 'Test', lastName: 'Tester' } });
+      seller = await prisma.user.create({ data: { ...mockUser2, firstName: 'Test', lastName: 'Tester' } });
       listing = await prisma.listing.create({ data: mockListing });
 
       testToken = await getTestIdToken();

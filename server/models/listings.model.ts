@@ -2,7 +2,6 @@ import { CustomError } from '../errors/CustomError.class';
 import { LISTING_NOT_FOUND, UNKNOWN_SERVER_ERROR } from '../errors/SharedErrorMessages';
 import { IListing, IListingPackage } from '../interfaces/listing.interface';
 import { AddListingDTO, GetListingQueryParams } from '../interfaces/listings.interface.dto';
-import { ITag } from '../interfaces/tag.interface';
 import { IUserInfoSelect } from '../interfaces/user.interface';
 import { getListingsByListingId, getSelectUserInfoByUserId, getUserRatingByUserId } from '../queries/listingByIdQueries';
 import listingsQueries, { spatialQuery, spatialQueryListings } from '../queries/listingsQueries';

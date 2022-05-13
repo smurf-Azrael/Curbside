@@ -5,12 +5,8 @@ import { IMessage } from '../interfaces/message.interface';
 import { prisma } from '../prisma/client';
 
 export const socketListener = (io: Server): Server => io.on('connection', (socket: Socket) => {
-  console.log('a user connected');
-
   socket.on('message', async (body: string, listingId: string, chatId: string | undefined) => {
-    // store the message in db
-    // convert db msg to IMessage
-    //@ts-ignore
+    // @ts-ignore
     const senderId = socket.user.id;
     if (!chatId) {
       const listing = await prisma.listing.findUnique({ where: { id: listingId } });
@@ -18,7 +14,6 @@ export const socketListener = (io: Server): Server => io.on('connection', (socke
         const chat = await prisma.chat.create(
           {
             data: {
-              //@ts-ignore
               buyerId: senderId,
               listingId: listing.id,
               sellerId: listing.userId
@@ -29,18 +24,11 @@ export const socketListener = (io: Server): Server => io.on('connection', (socke
     }
 
     const dbMessage = await prisma.message.create({ data: { body, chatId, senderId } });
-    console.log(body, { chatId });
-    // // @ts-ignore
-    // const senderId = socket.user.id;
-    // const dbMessage = await prisma.message.create({ data: { body, chatId, senderId } });
-    //@ts-ignore
-    io.in(chatId).emit('messageResponse', { ok: true, data: { message: dbMessage } });
+    io.in(chatId!).emit('messageResponse', { ok: true, data: { message: dbMessage } });
   });
 
   socket.on('getChat', async (listingId: string, buyerId: string, cb: ({ ok, data }: { ok?: boolean, data:{chatId?:string, messages?: IMessage[], error?: string }}) => void) => {
     // @ts-ignore
-
-    console.log('gettttttting chat')
     try {
       const chat = await prisma.chat.findFirst({
         where: {
@@ -55,7 +43,7 @@ export const socketListener = (io: Server): Server => io.on('connection', (socke
         }
       });
       if (!chat) {
-        cb({ ok: false, data : {error: 'Chat not found.' }});
+        cb({ ok: false, data: { error: 'Chat not found.' } });
       } else {
         const messages = await prisma.message.findMany({
           where: {
@@ -74,18 +62,11 @@ export const socketListener = (io: Server): Server => io.on('connection', (socke
       }
     } catch (e) {
       console.log(e);
-      cb({ ok: false, data: { error: 'Chat not found.' }});
+      cb({ ok: false, data: { error: 'Chat not found.' } });
     }
-    // query db to get the chat where all ids are true
-    // if there is such a chat
-    //    -> cb({data: {chatId: string, messages: IMessage[], listing: {}}})
-    // else
-    //    -> cb({ok: false, error: 'No Chat'})
   });
 
   socket.on('joinChat', async (chatId: string) => {
-    // if user in chat => good
-
     const chat = await prisma.chat.findUnique({
       where: {
         id: chatId
