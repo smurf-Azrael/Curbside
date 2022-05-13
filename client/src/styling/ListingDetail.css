@@ -27,9 +27,30 @@
 
 .listing-owner-name-buttons-wrapper {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  align-items: flex-start;
   justify-content: space-between;
-  width: 75%;
+  width: 100%;
+}
+
+.listing-owner-name {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.listing-button-wrapper {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: flex-start;
+}
+
+a {
+  width: 100%;
+}
+
+i {
+  padding-right: 3px;
 }
 
 .listing-details-gallery-wrapper {
@@ -47,6 +68,13 @@
 .listing-details-data-wrapper {
   text-align: left;
   margin-top: 15px;
+}
+
+.price-favorite-button-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 12px;
 }
 
 .listing-details-data-wrapper p {
