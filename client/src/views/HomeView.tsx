@@ -10,6 +10,7 @@ import Footer from "../components/Footer";
 import '../styling/HomeView.css';
 import LocationPreviewComponent from "../components/LocationPreviewComponent";
 import loader from '../assets/loader.gif';
+import AppBody from "../components/AppBody";
 
 export default function HomeView() {
   const api = useApi()
@@ -98,7 +99,7 @@ export default function HomeView() {
       searchField.current!.value = "";
     } else {
       // handleErrors
-      setListings(mocks.listings);
+      // setListings(mocks.listings);
       setLoadingError(false);
     }
     setIsLoading(false);
@@ -117,11 +118,7 @@ export default function HomeView() {
 
 
   return (
-    <div className="body-page">
-      <div className='body-header-container' >
-        <Header />
-      </div>
-      <div className="body-content-background">
+    <AppBody>
         <div className="body-frame">
           <LocationPreviewComponent />{/*Empty for now, but will possibly show preview of your location  */}
 
@@ -163,11 +160,6 @@ export default function HomeView() {
             {isLoading && <img style={{ height: '20vw', maxHeight: '200px', borderRadius: '20px' }} src={loader} alt="Loading..." />}
           </div>
         </div>
-      </div>
-
-      <div className='body-footer-container'>
-        <Footer />
-      </div>
-    </div>
+    </AppBody>
   )
 }
