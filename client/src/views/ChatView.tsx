@@ -25,11 +25,22 @@ const ChatView = () => {
     if (newMsgField.current && newMsgField.current.value) {
       const msg = newMsgField.current.value.trim();
       if (msg !== '' && socket) {
-        socket.emit('message', msg, listingId, chatId.current)
+        socket.emit('message', msg, listingId, chatId.current, (res: any) => {
+          console.log('message callback')
+          if (res.ok) {
+            if (!chatId.current) {
+              console.log('joining chat after new message');
+              chatId.current = res.data.chatId;
+              socket.emit("joinChat", chatId.current);
+              setMessages([res.data.message])
+            }
+          }
+        })
+      }
         newMsgField.current.value = ''
       }
     }
-  }
+  
 
   useEffect(() => {
     async function init() {
@@ -39,18 +50,20 @@ const ChatView = () => {
       }
       const id = buyerId ? buyerId : currentUser?.id;
       if (socket) {
+        console.log('socket connection exists')
         socket.connect();
         socket.emit(
           "getChat", listingId, id, (res: { ok: boolean, data: any }) => {
             if (res.ok) {
               chatId.current = res.data.chatId
+              console.log('joining chat')
               socket.emit("joinChat", chatId.current)
               setMessages(res.data.messages)
             }
           })
 
         socket.on('messageResponse', (res: { ok: boolean, data: any }) => {
-          console.log('hello?')
+          console.log('messages being received by all clients')
           if (res.ok) {
             setMessages((messages) => {
               return [...messages, res.data.message]
@@ -58,7 +71,7 @@ const ChatView = () => {
           }
         })
       } else {
-        console.log('no socket')
+        console.log('no socket connection')
       }
     }
     init();
