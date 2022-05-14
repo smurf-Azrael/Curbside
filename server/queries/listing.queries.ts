@@ -5,7 +5,7 @@ import { IListing } from '../interfaces/listing.interface';
 import { FinalizeListingDTO, IdbSelectUserDetails } from '../interfaces/listings.interface.dto';
 import { IUserInfoSelect } from '../interfaces/user.interface';
 import { prisma } from '../prisma/client';
-import converterHelpers, { convertDataBaseListingToListing, convertDBSelectUserDetailsToDetails } from './query-helpers/converter.helpers';
+import converterHelpers from './query-helpers/converter.helpers';
 
 export const getListingsByListingId = async (id: string):Promise<IListing | null> => {
   const dbListing : Listing | null = await prisma.listing.findFirst({
@@ -13,7 +13,7 @@ export const getListingsByListingId = async (id: string):Promise<IListing | null
       id
     }
   });
-  const listings = dbListing ? (convertDataBaseListingToListing(dbListing)) : dbListing;
+  const listings = dbListing ? (converterHelpers.convertDataBaseListingToListing(dbListing)) : dbListing;
   console.log('listings', listings);
   return listings;
 };
@@ -31,7 +31,7 @@ export const getSelectUserInfoByUserId = async (userId: string): Promise<IUserIn
 
   });
   if (dbUserInfo === null || undefined) { throw new CustomError(USER_NOT_FOUND, 404); }
-  return convertDBSelectUserDetailsToDetails(dbUserInfo);
+  return converterHelpers.convertDBSelectUserDetailsToDetails(dbUserInfo);
 };
 
 export const getUserRatingByUserId = async (userId: string): Promise<number> => {
