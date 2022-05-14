@@ -2,11 +2,12 @@ import { User } from '@prisma/client';
 import { CustomError } from '../errors/CustomError.class';
 import { USER_NOT_FOUND } from '../errors/SharedErrorMessages';
 import { IListing } from '../interfaces/listing.interface';
+import { IdbSelectUserDetails } from '../interfaces/listings.interface.dto';
 import { ProfileDTO } from '../interfaces/profile.interface.dto';
-import { IUser } from '../interfaces/user.interface';
+import { IUser, IUserInfoSelect } from '../interfaces/user.interface';
 import { FinalizeUserDTO, InitialUserDTO } from '../interfaces/users.interface.dto';
 import { prisma } from '../prisma/client';
-import listingsQueries from './listings.queries';
+import listingsQueries from './listing.queries';
 import converterHelpers from './query-helpers/converter.helpers';
 
 export const createInitialUser = async (userDetails: InitialUserDTO): Promise<IUser> => {
@@ -80,11 +81,28 @@ export const getOwnProfile = async (userId: string): Promise<ProfileDTO> => {
   return result;
 };
 
+export const getSelectUserInfo = async (userId: string): Promise<IUserInfoSelect> => {
+  const dbUserInfo: IdbSelectUserDetails | null = await prisma.user.findFirst({
+    where: {
+      id: userId
+    },
+    select: {
+      firstName: true,
+      lastName: true,
+      photoUrl: true
+    }
+
+  });
+  if (dbUserInfo === null || undefined) { throw new CustomError(USER_NOT_FOUND, 404); }
+  return converterHelpers.convertDBSelectUserDetailsToDetails(dbUserInfo);
+};
+
 export default {
   createInitialUser,
   finalizeUser,
   getUserByEmail,
   getUserById,
   getForeignProfile,
-  getOwnProfile
+  getOwnProfile,
+  getSelectUserInfo
 };
