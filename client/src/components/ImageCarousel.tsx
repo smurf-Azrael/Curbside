@@ -1,11 +1,10 @@
 //@ts-nocheck
-import React from 'react';
 import Carousel from 'react-bootstrap/Carousel';
-import '../styling/ImageCarousel.css';
+import '../styling/ImageCarousel.scss';
 
 const ImageCarousel = ({carouselItems}) => {
   return (
-    <Carousel>
+    <Carousel className='Carousel'>
       {carouselItems.map(function(item) {
         return <Carousel.Item key={item}>
           <img

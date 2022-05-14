@@ -49,7 +49,6 @@ export default function HomeView() {
     const search = searchField.current?.value || undefined;
     const tagString = tagStack.map(el => el.replace(/\s+/g, '')).join(' ');
     const tags = tagString !== '' ? tagString : undefined;
-    console.log('tags', tags)
     const query = { search, offset, radius, condition, tags, maxPrice, minPrice, sortBy, latitude, longitude };
     // add 'search' to query
     const res = await api.get('/listings', query)
@@ -92,7 +91,6 @@ export default function HomeView() {
       offset.current = res.body.data.offset;
       setListings(res.body.data.listings);
       setLoadingError(false);
-      console.log('hi here')
       searchField.current!.value = "";
     } else {
       // handleErrors
@@ -126,16 +124,16 @@ export default function HomeView() {
           </div>
           <div className='search-buttons-group' >
             <button className="search-location-button search-btn" onClick={openFiltersModal}>
-              <p>
+              <span>
                 <i className="bi bi-geo-alt"></i>
                 Location
-              </p>
+              </span>
             </button>
             <button className="search-filter-button search-btn" onClick={openFiltersModal}>
-              <p>
-                Filter
+              <span>
                 <i className="bi bi-sliders"></i>
-              </p>
+                Filter
+              </span>
             </button>
           </div>
         </div>
@@ -148,8 +146,8 @@ export default function HomeView() {
         />
         <div className='listings-container' >
           {listings.map(listing => {
-            return (<Link to={`/listing/${listing.id}`} style={{ textDecoration: "none", color: "black" }}>
-              <ListingPreview key={listing.id} listing={listing} />
+            return (<Link key={listing.id} to={`/listing/${listing.id}`} style={{ textDecoration: "none", color: "black" }}>
+              <ListingPreview  listing={listing} />
             </Link>)
           })}
           {!isLoading && listings.length === 0 && <p>No listing matched your request...</p>}
