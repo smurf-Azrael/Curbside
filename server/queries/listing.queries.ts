@@ -1,6 +1,6 @@
 import { Listing, ListingCondition } from '@prisma/client';
 import { IListing, IListingCondition } from '../interfaces/listing.interface';
-import { AddListingDTO, GetListingQueryParams } from '../interfaces/listings.interface.dto';
+import { AddListingDTO, FinalizeListingDTO, GetListingQueryParams } from '../interfaces/listing.interface.dto';
 import { prisma } from '../prisma/client';
 import converterHelpers from './query-helpers/converter.helpers';
 
@@ -19,12 +19,12 @@ export const createListing = async (listingDetails: AddListingDTO): Promise<ILis
   return listing;
 };
 
-export const spatialQuery = async (longitude: number, latitude: number, radius:number): Promise<{id: string}[]> => {
+export const getIdsInRadius = async (longitude: number, latitude: number, radius:number): Promise<{id: string}[]> => {
   const rawQueryRes = await prisma.$queryRaw<{id: string}[]>`SELECT id FROM "Listing" WHERE ST_DWithin(ST_MakePoint(longitude, latitude), ST_MakePoint(${longitude}, ${latitude})::geography, ${radius} *1000)` as any;
   return rawQueryRes;
 };
 
-export const spatialQueryListings = async (spatialQueryRes: {id:string}[], queryParams: GetListingQueryParams): Promise<any> => {
+export const getListingsInRadius = async (spatialQueryRes: {id:string}[], queryParams: GetListingQueryParams): Promise<any> => {
   const dbListings = await prisma.listing.findMany({
     where: {
       AND: [
@@ -98,9 +98,33 @@ export const getListingsByUserId = async (userId: string):Promise<IListing[]> =>
   return listings;
 };
 
+export const getListings = async (id: string):Promise<IListing | null> => {
+  const dbListing : Listing | null = await prisma.listing.findFirst({
+    where: {
+      id
+    }
+  });
+  const listings = dbListing ? (converterHelpers.convertDataBaseListingToListing(dbListing)) : dbListing;
+  console.log('listings', listings);
+  return listings;
+};
+
+export const updateListing = async (listingId:string, listingDetails:FinalizeListingDTO): Promise<IListing> => {
+  const dbListing: Listing = await prisma.listing.update({
+    where: {
+      id: listingId
+    },
+    data: listingDetails
+  });
+  const listing: IListing = converterHelpers.convertDataBaseListingToListing(dbListing);
+  return listing;
+};
+
 export default {
   createListing,
-  spatialQuery,
-  spatialQueryListings,
-  getListingsByUserId
+  getIdsInRadius,
+  getListingsInRadius,
+  getListingsByUserId,
+  getListings,
+  updateListing
 };

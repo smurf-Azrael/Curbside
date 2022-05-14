@@ -2,7 +2,7 @@ import { Listing, User } from '@prisma/client';
 import { CustomError } from '../../errors/CustomError.class';
 import { LISTING_PARSING_ERROR, USER_PARSING_ERROR } from '../../errors/SharedErrorMessages';
 import { IListing, IListingCondition, IListingStatus } from '../../interfaces/listing.interface';
-import { IdbSelectUserDetails } from '../../interfaces/listings.interface.dto';
+import { IdbSelectUserDetails } from '../../interfaces/listing.interface.dto';
 import { IUser, IUserInfoSelect } from '../../interfaces/user.interface';
 
 export const convertDBSelectUserDetailsToDetails = (dbSelectUserDetails: IdbSelectUserDetails): IUserInfoSelect => {

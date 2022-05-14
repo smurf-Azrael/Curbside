@@ -1,8 +1,8 @@
-import { CustomError } from '../errors/CustomError.class';
-import { CustomErrorMessageObject } from '../errors/CustomErrorMessageObject.interface';
-import { AddListingDTO } from '../interfaces/listings.interface.dto';
-import { prisma } from '../prisma/client';
-import { coordinationVerification } from './users.model.validation';
+import { CustomError } from '../../errors/CustomError.class';
+import { CustomErrorMessageObject } from '../../errors/CustomErrorMessageObject.interface';
+import { AddListingDTO } from '../../interfaces/listing.interface.dto';
+import { prisma } from '../../prisma/client';
+import { coordinationVerification } from './user.model.validation';
 
 export const listingsModelErrorMessages = {
   invalidTitle: 'Invalid title.',

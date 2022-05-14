@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { ProfileDTO } from '../interfaces/profile.interface.dto';
-import { FinalizeUserDTO, InitialUserDTO } from '../interfaces/users.interface.dto';
-import usersModel from '../models/users.model';
+import { FinalizeUserDTO, InitialUserDTO } from '../interfaces/user.interface.dto';
+import usersModel from '../models/user.model';
 
 const addInitialUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {

@@ -1,8 +1,8 @@
 import request from 'supertest';
 import { server } from '../..';
 import { IListingCondition } from '../../interfaces/listing.interface';
-import { AddListingDTO } from '../../interfaces/listings.interface.dto';
-import { InitialUserDTO } from '../../interfaces/users.interface.dto';
+import { AddListingDTO } from '../../interfaces/listing.interface.dto';
+import { InitialUserDTO } from '../../interfaces/user.interface.dto';
 import { prisma } from '../../prisma/client';
 import { getTestIdToken } from '../test-helpers';
 
