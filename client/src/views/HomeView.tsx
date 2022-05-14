@@ -141,7 +141,6 @@ export default function HomeView() {
         <LocationRadius
             locationIsVisible={locationIsVisible}
             closeLocationModal={closeLocationModal}
-            // locationGroupField={locationGroupField}
             setLocationGroupField={setLocationGroupField}
           />
         <div className='listings-container' >
