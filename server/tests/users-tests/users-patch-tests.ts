@@ -4,6 +4,7 @@ import { mocks } from '../../../mocks';
 import { FinalizeUserDTO } from '../../interfaces/user.interface.dto';
 import { prisma } from '../../prisma/client';
 import { getTestIdToken } from '../test-helpers';
+
 export const usersPatchTests = (): void => {
   describe('PATCH /users/:id', () => {
     const mockFinalizeUserInput: FinalizeUserDTO = {

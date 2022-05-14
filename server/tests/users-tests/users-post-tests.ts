@@ -4,6 +4,7 @@ import { mocks } from '../../../mocks';
 import { InitialUserDTO } from '../../interfaces/user.interface.dto';
 import { prisma } from '../../prisma/client';
 import { getTestIdToken } from '../test-helpers';
+
 export const usersPostTests = (): void => {
   describe('POST /users', () => {
     const mockInitialUserInput: InitialUserDTO = {

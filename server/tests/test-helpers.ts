@@ -1,4 +1,5 @@
 import { auth } from 'firebase-admin';
+
 const fetch = require('node-fetch');
 export const getTestIdToken = async (): Promise<string|undefined> => {
   try {
