@@ -1,12 +1,13 @@
 import request from 'supertest';
 import { server } from '../../index';
 import { mocks } from '../../../mocks';
-import { AddListingDTO } from '../../interfaces/listings.interface.dto';
+import { AddListingDTO } from '../../interfaces/listing.interface.dto';
 import { prisma } from '../../prisma/client';
 import { getTestIdToken } from '../test-helpers';
-import { InitialUserDTO } from '../../interfaces/users.interface.dto';
+import { InitialUserDTO } from '../../interfaces/user.interface.dto';
 import { IListingCondition } from '../../interfaces/listing.interface';
-import { listingsModelErrorMessages } from '../../models/listings.model.validation';
+import { listingsModelErrorMessages } from '../../models/model-helpers/listing.model.validation';
+
 export const listingsPostTests = (): void => {
   describe('POST /listings', () => {
     const mockInitialUserInput: InitialUserDTO = {

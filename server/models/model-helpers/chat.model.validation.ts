@@ -1,7 +1,7 @@
-import { CustomError } from '../errors/CustomError.class';
-import { CustomErrorMessageObject } from '../errors/CustomErrorMessageObject.interface';
-import { CreateChatInputDTO } from '../interfaces/chat.interface.dto';
-import { prisma } from '../prisma/client';
+import { CustomError } from '../../errors/CustomError.class';
+import { CustomErrorMessageObject } from '../../errors/CustomErrorMessageObject.interface';
+import { CreateChatInputDTO } from '../../interfaces/chat.interface.dto';
+import { prisma } from '../../prisma/client';
 
 export const chatsModelErrorMessages = {
 

@@ -3,11 +3,12 @@ import { server } from '../../index';
 import { mocks } from '../../../mocks';
 import { prisma } from '../../prisma/client';
 import { getTestIdToken } from '../test-helpers';
-import { InitialUserDTO } from '../../interfaces/users.interface.dto';
+import { InitialUserDTO } from '../../interfaces/user.interface.dto';
 import { ListingCondition } from '@prisma/client';
-import { AddListingDTO } from '../../interfaces/listings.interface.dto';
+import { AddListingDTO } from '../../interfaces/listing.interface.dto';
 import { IListing, IListingCondition } from '../../interfaces/listing.interface';
 import distanceHelpers from '../../models/model-helpers/distance.helpers';
+
 export const listingsGetTests = (): void => {
   describe('GET /listings', () => {
     const mockInitialUserInput: InitialUserDTO = {

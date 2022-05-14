@@ -1,18 +1,18 @@
 import { CustomError } from '../errors/CustomError.class';
 import { LISTING_NOT_FOUND, UNKNOWN_SERVER_ERROR } from '../errors/SharedErrorMessages';
 import { IListing, IListingPackage } from '../interfaces/listing.interface';
-import { AddListingDTO, FinalizeListingDTO, GetListingQueryParams } from '../interfaces/listings.interface.dto';
+import { AddListingDTO, FinalizeListingDTO, GetListingQueryParams } from '../interfaces/listing.interface.dto';
 import { IUserInfoSelect } from '../interfaces/user.interface';
-import listingQueries from '../queries/listingQueries';
-import listingsQueries from '../queries/listingsQueries';
-import userQueries from '../queries/userQueries';
-import { addListingInputValidation } from './listings.model.validation';
+import listingQueries from '../queries/listing.queries';
+import ratingQueries from '../queries/rating.queries';
+import userQueries from '../queries/user.queries';
+import { addListingInputValidation } from './model-helpers/listing.model.validation';
 import distanceHelpers from './model-helpers/distance.helpers';
 
 const addListing = async (listingDetails: AddListingDTO): Promise<IListing> => {
   try {
     await addListingInputValidation(listingDetails);
-    const listing: IListing = await listingsQueries.createListing(listingDetails);
+    const listing: IListing = await listingQueries.createListing(listingDetails);
     return listing;
   } catch (error) {
     console.log('/models/listings.model addListing ERROR', error);
@@ -50,8 +50,8 @@ const getListings = async (userId: string | undefined, params: GetListingQueryPa
         lat = 52.52;
       }
     }
-    const listingsInRangeIds: {id: string}[] = await listingsQueries.spatialQuery(long, lat, +params.radius);
-    let listings: IListing[] = await listingsQueries.spatialQueryListings(listingsInRangeIds, params);
+    const listingsInRangeIds: {id: string}[] = await listingQueries.getIdsInRadius(long, lat, +params.radius);
+    let listings: IListing[] = await listingQueries.getListingsInRadius(listingsInRangeIds, params);
     // filter for tags
 
     // sort by closest
@@ -75,10 +75,10 @@ const getListings = async (userId: string | undefined, params: GetListingQueryPa
 };
 export const getListingByListingIdModel = async (id:string) : Promise<IListingPackage | null> => {
   try {
-    const listing: IListing | null = await listingQueries.getListingsByListingId(id);
+    const listing: IListing | null = await listingQueries.getListings(id);
     if (listing === null || undefined) { throw new CustomError(LISTING_NOT_FOUND, 404); }
-    const userInfo: IUserInfoSelect | null = await listingQueries.getSelectUserInfoByUserId(listing.userId);
-    const rating: number | null = await listingQueries.getUserRatingByUserId(listing.userId);
+    const userInfo: IUserInfoSelect | null = await userQueries.getSelectUserInfo(listing.userId);
+    const rating: number | null = await ratingQueries.getUserRating(listing.userId);
     const listingPackage: IListingPackage = { ...listing, ...userInfo, rating };
     return listingPackage;
   } catch (error) {
@@ -89,7 +89,7 @@ export const getListingByListingIdModel = async (id:string) : Promise<IListingPa
 
 export const updateListing = async (listingId: string, listingDetails: FinalizeListingDTO): Promise<IListing> => {
   try {
-    const listing: IListing = await listingQueries.updateListingQuery(listingId, listingDetails);
+    const listing: IListing = await listingQueries.updateListing(listingId, listingDetails);
     return listing;
   } catch (error) {
     console.log('/models/listingsById.model getListingByIdModel ERROR', error);

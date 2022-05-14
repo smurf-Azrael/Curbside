@@ -3,7 +3,7 @@ import request from 'supertest';
 import { getTestIdToken } from '../test-helpers';
 import { prisma } from '../../prisma/client';
 import { mocks } from '../../../mocks';
-import { InitialUserDTO } from '../../interfaces/users.interface.dto';
+import { InitialUserDTO } from '../../interfaces/user.interface.dto';
 
 export const loginTests = (): void => {
   describe('/login', () => {

@@ -1,7 +1,7 @@
-import { CustomError } from '../errors/CustomError.class';
-import { CustomErrorMessageObject } from '../errors/CustomErrorMessageObject.interface';
-import { AddRatingDTO } from '../interfaces/rating.interface.dto';
-import { prisma } from '../prisma/client';
+import { CustomError } from '../../errors/CustomError.class';
+import { CustomErrorMessageObject } from '../../errors/CustomErrorMessageObject.interface';
+import { AddRatingDTO } from '../../interfaces/rating.interface.dto';
+import { prisma } from '../../prisma/client';
 
 export const ratingModelErrorMessages = {
   invalidRating: 'Invalid Rating.',

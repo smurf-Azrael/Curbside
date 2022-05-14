@@ -1,9 +1,10 @@
 import request from 'supertest';
 import { server } from '../../index';
 import { mocks } from '../../../mocks';
-import { InitialUserDTO } from '../../interfaces/users.interface.dto';
+import { InitialUserDTO } from '../../interfaces/user.interface.dto';
 import { prisma } from '../../prisma/client';
 import { getTestIdToken } from '../test-helpers';
+
 export const usersPostTests = (): void => {
   describe('POST /users', () => {
     const mockInitialUserInput: InitialUserDTO = {
