@@ -36,3 +36,9 @@ export interface GetListingQueryParams {
   latitude?:string,
   search?:string,
 }
+
+export interface IdbSelectUserDetails{
+  firstName: string| null,
+  lastName: string| null,
+  photoUrl: string | null
+}

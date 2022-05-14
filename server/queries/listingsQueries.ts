@@ -1,40 +1,8 @@
 import { Listing, ListingCondition } from '@prisma/client';
-import { CustomError } from '../errors/CustomError.class';
-import { LISTING_PARSING_ERROR } from '../errors/SharedErrorMessages';
-import { IListing, IListingCondition, IListingStatus } from '../interfaces/listing.interface';
+import { IListing, IListingCondition } from '../interfaces/listing.interface';
 import { AddListingDTO, GetListingQueryParams } from '../interfaces/listings.interface.dto';
 import { prisma } from '../prisma/client';
-
-const convertDataBaseListingToListing = (dbListing: Listing): IListing => {
-  try {
-    const listing: IListing = {
-      id: dbListing.id,
-      userId: dbListing.userId,
-      title: dbListing.title,
-      description: dbListing.description,
-      priceInCents: dbListing.priceInCents,
-      currency: dbListing.currency,
-      condition: dbListing.condition === 'new'
-        ? IListingCondition.new
-        : dbListing.condition === 'gentlyUsed'
-          ? IListingCondition.gentlyUsed
-          : IListingCondition.used,
-      photoUrls: dbListing.photoUrls,
-      longitude: dbListing.longitude,
-      latitude: dbListing.latitude,
-      status: dbListing.status === 'available'
-        ? IListingStatus.available
-        : dbListing.status === 'reserved'
-          ? IListingStatus.reserved
-          : IListingStatus.sold,
-      createdAt: dbListing.createdAt,
-      tags: dbListing.tags
-    };
-    return listing;
-  } catch (error) {
-    throw new CustomError(LISTING_PARSING_ERROR, 400);
-  }
-};
+import converterHelpers from './query-helpers/converter.helpers';
 
 export const createListing = async (listingDetails: AddListingDTO): Promise<IListing> => {
   const dbListing: Listing = await prisma.listing.create({
@@ -47,7 +15,7 @@ export const createListing = async (listingDetails: AddListingDTO): Promise<ILis
           : ListingCondition.used
     }
   });
-  const listing: IListing = convertDataBaseListingToListing(dbListing);
+  const listing: IListing = converterHelpers.convertDataBaseListingToListing(dbListing);
   return listing;
 };
 
@@ -117,7 +85,7 @@ export const spatialQueryListings = async (spatialQueryRes: {id:string}[], query
     }
 
   });
-  return dbListings.map(convertDataBaseListingToListing);
+  return dbListings.map(converterHelpers.convertDataBaseListingToListing);
 };
 
 export const getListingsByUserId = async (userId: string):Promise<IListing[]> => {
@@ -126,7 +94,7 @@ export const getListingsByUserId = async (userId: string):Promise<IListing[]> =>
       userId
     }
   });
-  const listings = dbListings.map(convertDataBaseListingToListing);
+  const listings = dbListings.map(converterHelpers.convertDataBaseListingToListing);
   return listings;
 };
 
