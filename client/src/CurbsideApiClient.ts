@@ -31,6 +31,7 @@ export default class CurbsideApiClient {
       query = '?' + query;
     }
     let response;
+    console.log('query -->', query)
     try {
       response = await fetch(this.base_url + options.url + query, {
         method: options.method,

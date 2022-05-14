@@ -22,47 +22,34 @@ export default function HomeView() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [loadingError, setLoadingError] = useState<boolean>(false);
   const [tagStack, SetTagStack] = useState<any[]>([]);
-
-  const offset = useRef<number>(0);
-
-  const radiusField = useRef<HTMLInputElement>(null); // for geo modal
-
+  const [locationGroupField, setLocationGroupField] = useState<any[]>({})
+  
   const tagsField = useRef<{ [key: string]: string }>({}) // categories need to be decided {catName: false, }
   const sortByField = useRef<HTMLSelectElement>(null);
   const maxPriceField = useRef<HTMLInputElement>(null);
   const minPriceField = useRef<HTMLInputElement>(null);
   const conditionField = useRef<HTMLSelectElement>(null);
-  const fields = { tagsField, sortByField, maxPriceField, minPriceField, conditionField, SetTagStack }
-  //! working on it
-  const latitudeField = useRef<HTMLSelectElement>(null);
-  const longitudeField = useRef<HTMLSelectElement>(null);
-
+  const fields = { tagsField, sortByField, maxPriceField, minPriceField, conditionField, SetTagStack };
+  
+  const offset = useRef<number>(0);
   const searchField = useRef<HTMLInputElement>(null);
 
   const getListings = useCallback(async (offset: number) => {
-    console.log('in get LIsntgs')
-    const longitude = 13.405 //CHANGE TO PULL FROM SOMEWHERE
-    const latitude = 52.52 // CHANGE TO PULL FROM SOMEWHERE
-    // const radius = radiusField.current?.value || 10;
-    // const tags = tagString !== '' ? tagString : undefined;
-    const radius = radiusField.current?.value || 55;
+    const longitude = locationGroupField.lat//CHANGE TO PULL FROM SOMEWHERE
+    const latitude =  locationGroupField.lng // CHANGE TO PULL FROM SOMEWHERE
+    const radius = locationGroupField.radius || 10;
     const maxPrice = maxPriceField.current?.value || undefined;
     const minPrice = minPriceField.current?.value || 0;
     const sortBy = sortByField.current?.value || 'closest';
     const condition = conditionField.current?.value || 'all';
-    // const latitude = latitudeField.current?.value || 'all';
-    // const longitude = longitudeField.current?.value || 'all';
     const search = searchField.current?.value || undefined;
     const tagString = tagStack.map(el => el.replace(/\s+/g, '')).join(' ');
     const tags = tagString !== '' ? tagString : undefined;
-    console.log('tags', tags)
     const query = { search, offset, radius, condition, tags, maxPrice, minPrice, sortBy, latitude, longitude };
     // add 'search' to query
     const res = await api.get('/listings', query)
     return res;
-  }, [api, tagStack])
-
-
+  }, [api, tagStack, locationGroupField])
 
   // async function handleScroll() {
   //   const res = await getListings(offset.current);
@@ -141,7 +128,7 @@ export default function HomeView() {
               <button className="search-location-button search-btn" onClick={openLocationModal}>
                 <p>
                   <i className="bi bi-geo-alt"></i>
-                  Location
+                  {locationGroupField.address ? locationGroupField.address : "Location"}
                 </p>
               </button>
               <button className="search-filter-button search-btn" onClick={openFiltersModal}>
@@ -156,6 +143,8 @@ export default function HomeView() {
           <LocationRadius
             locationIsVisible={locationIsVisible}
             closeLocationModal={closeLocationModal}
+            // locationGroupField={locationGroupField}
+            setLocationGroupField={setLocationGroupField}
           />
 
           <FiltersComponent
