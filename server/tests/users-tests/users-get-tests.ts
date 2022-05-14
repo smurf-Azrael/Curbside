@@ -7,6 +7,7 @@ import { IUser } from '../../interfaces/user.interface';
 import { USER_NOT_FOUND } from '../../errors/SharedErrorMessages';
 import { AddListingDTO } from '../../interfaces/listing.interface.dto';
 import { IListingCondition } from '../../interfaces/listing.interface';
+
 export const usersGetTests = (): void => {
   describe('GET /users/:id', () => {
     const mockUserInput: IUser = { ...mocks.Users[0], createdAt: new Date(), id: process.env.SECRET_UID! };

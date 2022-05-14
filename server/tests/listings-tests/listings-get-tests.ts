@@ -8,6 +8,7 @@ import { ListingCondition } from '@prisma/client';
 import { AddListingDTO } from '../../interfaces/listing.interface.dto';
 import { IListing, IListingCondition } from '../../interfaces/listing.interface';
 import distanceHelpers from '../../models/model-helpers/distance.helpers';
+
 export const listingsGetTests = (): void => {
   describe('GET /listings', () => {
     const mockInitialUserInput: InitialUserDTO = {
