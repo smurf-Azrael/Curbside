@@ -4,6 +4,7 @@ import { useApi } from '../contexts/ApiProvider'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { Socket } from 'socket.io-client'
+import Header from '../components/Header'
 
 let socket: Socket;
 
@@ -84,7 +85,9 @@ const ChatView = () => {
   }, [api, buyerId, listingId, currentUser])
 
   return (
-    <>{messages.length > 0 && messages.map(message => {
+    <>
+    <Header prevRoute/>
+    {messages.length > 0 && messages.map(message => {
       return (<div key={message.id}>
         {message.body}
       </div>)

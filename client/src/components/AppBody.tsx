@@ -2,15 +2,18 @@ import React from 'react'
 import Header from './Header'
 import Footer from './Footer'
 import '../styling/AppBody.scss'
-import { User } from '../interfaces/AuthContextInterface'
-const AppBody = ({currentUser, children} : appBodyProps) => {
+import { useAuth } from '../contexts/AuthContext'
+
+const AppBody = ({children} : appBodyProps) => {
+  const { currentUser } = useAuth();
+
   return (
-    <div className="AppBody">
+    <div className={currentUser ? "AppBody" : "AppBody noFooter"}>
       <Header/>
       <div className='wrapper'>
         {children}
       </div>
-      <Footer/>
+      { currentUser && <Footer/> }
     </div>
   )
 }
@@ -18,6 +21,6 @@ const AppBody = ({currentUser, children} : appBodyProps) => {
 export default AppBody
 
 interface appBodyProps {
-  currentUser?: User, 
+  // currentUser?: User, 
   children: JSX.Element | JSX.Element[]
 }
