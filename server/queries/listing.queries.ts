@@ -1,4 +1,4 @@
-import { Listing, ListingCondition } from '@prisma/client';
+import { Listing, ListingCondition, ListingStatus } from '@prisma/client';
 import { IListing, IListingCondition } from '../interfaces/listing.interface';
 import { AddListingDTO, FinalizeListingDTO, GetListingQueryParams } from '../interfaces/listing.interface.dto';
 import { prisma } from '../prisma/client';
@@ -25,9 +25,15 @@ export const getIdsInRadius = async (longitude: number, latitude: number, radius
 };
 
 export const getListingsInRadius = async (spatialQueryRes: {id:string}[], queryParams: GetListingQueryParams): Promise<any> => {
+  const tags = queryParams.tags?.split(' ').join(' | ');
   const dbListings = await prisma.listing.findMany({
     where: {
       AND: [
+        {
+          status: {
+            equals: ListingStatus.available
+          }
+        },
         {
           id: {
             in: spatialQueryRes.map(({ id }: {id:string}) => id)
@@ -62,7 +68,7 @@ export const getListingsInRadius = async (spatialQueryRes: {id:string}[], queryP
         },
         {
           tags: {
-            search: queryParams.tags ? queryParams.tags.split(' ').join(' | ') : undefined
+            search: tags ? tags.includes('AllCategories') ? undefined : tags : undefined
           }
         },
         {
