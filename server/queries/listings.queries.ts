@@ -19,12 +19,12 @@ export const createListing = async (listingDetails: AddListingDTO): Promise<ILis
   return listing;
 };
 
-export const spatialQuery = async (longitude: number, latitude: number, radius:number): Promise<{id: string}[]> => {
+export const getIdInRadius = async (longitude: number, latitude: number, radius:number): Promise<{id: string}[]> => {
   const rawQueryRes = await prisma.$queryRaw<{id: string}[]>`SELECT id FROM "Listing" WHERE ST_DWithin(ST_MakePoint(longitude, latitude), ST_MakePoint(${longitude}, ${latitude})::geography, ${radius} *1000)` as any;
   return rawQueryRes;
 };
 
-export const spatialQueryListings = async (spatialQueryRes: {id:string}[], queryParams: GetListingQueryParams): Promise<any> => {
+export const getListingInRadius = async (spatialQueryRes: {id:string}[], queryParams: GetListingQueryParams): Promise<any> => {
   const dbListings = await prisma.listing.findMany({
     where: {
       AND: [
@@ -100,7 +100,7 @@ export const getListingsByUserId = async (userId: string):Promise<IListing[]> =>
 
 export default {
   createListing,
-  spatialQuery,
-  spatialQueryListings,
+  getIdInRadius,
+  getListingInRadius,
   getListingsByUserId
 };

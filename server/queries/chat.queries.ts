@@ -3,7 +3,7 @@ import { IChat } from '../interfaces/chat.interface';
 import { IListingStatus } from '../interfaces/listing.interface';
 import { prisma } from '../prisma/client';
 
-const getChatsByUserId = async (userId: string): Promise<IChat[]> => {
+const getChats = async (userId: string): Promise<IChat[]> => {
   const chats = await prisma.chat.findMany({
     where: {
       OR: [{ sellerId: userId }, { buyerId: userId }]
@@ -60,5 +60,5 @@ const getChatsByUserId = async (userId: string): Promise<IChat[]> => {
 };
 
 export default {
-  getChatsByUserId
+  getChats
 };

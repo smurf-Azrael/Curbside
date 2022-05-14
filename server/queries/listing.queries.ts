@@ -7,7 +7,7 @@ import { IUserInfoSelect } from '../interfaces/user.interface';
 import { prisma } from '../prisma/client';
 import converterHelpers from './query-helpers/converter.helpers';
 
-export const getListingsByListingId = async (id: string):Promise<IListing | null> => {
+export const getListings = async (id: string):Promise<IListing | null> => {
   const dbListing : Listing | null = await prisma.listing.findFirst({
     where: {
       id
@@ -18,7 +18,7 @@ export const getListingsByListingId = async (id: string):Promise<IListing | null
   return listings;
 };
 
-export const getSelectUserInfoByUserId = async (userId: string): Promise<IUserInfoSelect> => {
+export const getSelectUserInfo = async (userId: string): Promise<IUserInfoSelect> => {
   const dbUserInfo: IdbSelectUserDetails | null = await prisma.user.findFirst({
     where: {
       id: userId
@@ -34,7 +34,7 @@ export const getSelectUserInfoByUserId = async (userId: string): Promise<IUserIn
   return converterHelpers.convertDBSelectUserDetailsToDetails(dbUserInfo);
 };
 
-export const getUserRatingByUserId = async (userId: string): Promise<number> => {
+export const getUserRating = async (userId: string): Promise<number> => {
   const dbUserRatings: {rating:number}[] | null = await prisma.rating.findMany({
     where: {
       sellerId: userId
@@ -52,7 +52,7 @@ export const getUserRatingByUserId = async (userId: string): Promise<number> => 
   return avg;
 };
 
-export const updateListingQuery = async (listingId:string, listingDetails:FinalizeListingDTO): Promise<IListing> => {
+export const updateListing = async (listingId:string, listingDetails:FinalizeListingDTO): Promise<IListing> => {
   const dbListing: Listing = await prisma.listing.update({
     where: {
       id: listingId
@@ -64,8 +64,8 @@ export const updateListingQuery = async (listingId:string, listingDetails:Finali
 };
 
 export default {
-  getListingsByListingId,
-  getSelectUserInfoByUserId,
-  getUserRatingByUserId,
-  updateListingQuery
+  getListings,
+  getSelectUserInfo,
+  getUserRating,
+  updateListing
 };
