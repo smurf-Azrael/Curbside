@@ -4,7 +4,7 @@ import { ProfileDTO } from '../interfaces/profile.interface.dto';
 import { IUser } from '../interfaces/user.interface';
 import { FinalizeUserDTO, InitialUserDTO } from '../interfaces/user.interface.dto';
 import userQueries from '../queries/user.queries';
-import { addInitialUserInputValidation, finalizeUserInputValidation } from './user.model.validation';
+import { addInitialUserInputValidation, finalizeUserInputValidation } from './model-helpers/user.model.validation';
 
 const addInitialUser = async (userDetails: InitialUserDTO): Promise<IUser> => {
   try {
