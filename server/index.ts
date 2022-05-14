@@ -51,6 +51,7 @@ app.use(express.json());
 app.use(logger('dev'));
 app.use(authMiddleware);
 app.use(express.static(path.join(__dirname, '../client/build')));
+
 app.get('/', (req: Request, res: Response, next: NextFunction): void => {
   try {
     res.sendFile(path.join(__dirname, '../client/build', '../client/build/index.html'));
