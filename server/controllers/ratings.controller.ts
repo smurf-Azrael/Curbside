@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { AddRatingDTO } from '../interfaces/rating.interface.dto';
-import ratingsModel from '../models/ratings.model';
+import ratingsModel from '../models/rating.model';
 
 export const addRatings = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
