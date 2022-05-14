@@ -18,6 +18,7 @@ export default function InputField({
   step,
   multiple = false,
   onChange = (): void => {},
+  onKeyPress = (): void => {},
 }: inputInterface) {
   return (
     <Form.Group controlId={name} className="InputField">
@@ -34,6 +35,7 @@ export default function InputField({
         max={max}
         value={value}
         onChange={onChange}
+        onKeyPress={onKeyPress}
       />
       <Form.Text className={'text-danger'}>{error}</Form.Text>
     </Form.Group>
@@ -55,4 +57,5 @@ interface inputInterface {
   value?: number | string;
   multiple?: boolean;
   onChange?: (event: FormEvent) => void;
+  onKeyPress?: (event: FormEvent) => void;
 }

@@ -4,6 +4,8 @@ import { useEffect, useState, useRef, useCallback, KeyboardEvent } from "react"
 import { Link } from "react-router-dom";
 import ListingPreview from "../components/ListingPreview";
 import FiltersComponent from "../components/FiltersComponent";
+import LocationRadius from "../components/LocationRadius";
+import RoundedButton from '../components/RoundedButton';
 import '../styling/HomeView.scss';
 import LocationPreviewComponent from "../components/LocationPreviewComponent";
 import loader from '../assets/loader.gif';
@@ -14,38 +16,30 @@ export default function HomeView() {
 
   const [listings, setListings] = useState<any[]>([]);
   const [FiltersAreVisible, setFiltersAreVisible] = useState(false);
+  const [locationIsVisible, setLocationIsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [loadingError, setLoadingError] = useState<boolean>(false);
   const [tagStack, SetTagStack] = useState<any[]>([]);
-
-  const offset = useRef<number>(0);
-
-  const radiusField = useRef<HTMLInputElement>(null); // for geo modal
-
+  const [locationGroupField, setLocationGroupField] = useState<any[]>({})
+  
   const tagsField = useRef<{ [key: string]: string }>({}) // categories need to be decided {catName: false, }
   const sortByField = useRef<HTMLSelectElement>(null);
   const maxPriceField = useRef<HTMLInputElement>(null);
   const minPriceField = useRef<HTMLInputElement>(null);
   const conditionField = useRef<HTMLSelectElement>(null);
-  const fields = { tagsField, sortByField, maxPriceField, minPriceField, conditionField, SetTagStack }
-  //! working on it
-  const latitudeField = useRef<HTMLSelectElement>(null);
-  const longitudeField = useRef<HTMLSelectElement>(null);
-
+  const fields = { tagsField, sortByField, maxPriceField, minPriceField, conditionField, SetTagStack };
+  
+  const offset = useRef<number>(0);
   const searchField = useRef<HTMLInputElement>(null);
 
   const getListings = useCallback(async (offset: number) => {
-    const longitude = 13.405 //CHANGE TO PULL FROM SOMEWHERE
-    const latitude = 52.52 // CHANGE TO PULL FROM SOMEWHERE
-    // const radius = radiusField.current?.value || 10;
-    // const tags = tagString !== '' ? tagString : undefined;
-    const radius = radiusField.current?.value || 55;
+    const longitude = locationGroupField.lat//CHANGE TO PULL FROM SOMEWHERE
+    const latitude =  locationGroupField.lng // CHANGE TO PULL FROM SOMEWHERE
+    const radius = locationGroupField.radius || 10;
     const maxPrice = maxPriceField.current?.value || undefined;
     const minPrice = minPriceField.current?.value || 0;
     const sortBy = sortByField.current?.value || 'closest';
     const condition = conditionField.current?.value || 'all';
-    // const latitude = latitudeField.current?.value || 'all';
-    // const longitude = longitudeField.current?.value || 'all';
     const search = searchField.current?.value || undefined;
     const tagString = tagStack.map(el => el.replace(/\s+/g, '')).join(' ');
     const tags = tagString !== '' ? tagString : undefined;
@@ -53,9 +47,7 @@ export default function HomeView() {
     // add 'search' to query
     const res = await api.get('/listings', query)
     return res;
-  }, [api, tagStack])
-
-
+  }, [api, tagStack, locationGroupField])
 
   // async function handleScroll() {
   //   const res = await getListings(offset.current);
@@ -68,13 +60,11 @@ export default function HomeView() {
   // }
   const openFiltersModal = () => setFiltersAreVisible(true)
   const closeFiltersModal = () => setFiltersAreVisible(false)
+  const openLocationModal = () => setLocationIsVisible(true)
+  const closeLocationModal = () => setLocationIsVisible(false)
 
   async function applyFilters() {
     closeFiltersModal();
-    console.log(conditionField.current?.value)
-    setTimeout(() => { console.log(sortByField.current?.value) }, 1000)
-    console.log(maxPriceField.current?.value)
-
     const res = await getListings(0);
     if (res.ok) {
       offset.current = res.body.data.offset;
@@ -123,10 +113,10 @@ export default function HomeView() {
             <input ref={searchField} className="main-input" placeholder="Search.." onKeyPress={(e) => pressEnter(e)} />
           </div>
           <div className='search-buttons-group' >
-            <button className="search-location-button search-btn" onClick={openFiltersModal}>
+            <button className="search-location-button search-btn" onClick={openLocationModal}>
               <span>
                 <i className="bi bi-geo-alt"></i>
-                Location
+                {locationGroupField.address ? locationGroupField.address : "Location"}
               </span>
             </button>
             <button className="search-filter-button search-btn" onClick={openFiltersModal}>
@@ -144,6 +134,12 @@ export default function HomeView() {
           applyFilters={applyFilters}
           fields={fields}
         />
+        <LocationRadius
+            locationIsVisible={locationIsVisible}
+            closeLocationModal={closeLocationModal}
+            // locationGroupField={locationGroupField}
+            setLocationGroupField={setLocationGroupField}
+          />
         <div className='listings-container' >
           {listings.map(listing => {
             return (<Link key={listing.id} to={`/listing/${listing.id}`} style={{ textDecoration: "none", color: "black" }}>
