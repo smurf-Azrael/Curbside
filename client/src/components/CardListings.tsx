@@ -6,7 +6,7 @@ import loader from '../assets/loader.gif';
 
 
 function CardListings({listings}:{listings:Listing[]}, isLoading:boolean,loadingError:boolean) {
-  console.log("I'm in CardListings",listings)
+  
   const listings4Display= listings.map(listing => {
     return (<Link key={listing.id} to={`/listing/${listing.id}`} style={{ textDecoration: "none", color: "black" }}>
       <ListingPreview  listing={listing} />
