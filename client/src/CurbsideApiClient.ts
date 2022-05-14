@@ -1,5 +1,5 @@
 import { auth } from "./firebase";
-import  io from "socket.io-client";
+import io from "socket.io-client";
 
 const BASE_API_URL = process.env.REACT_APP_BASE_API_URL;
 if (!BASE_API_URL) throw new Error('add env vars for REACT_APP_BASE_API_URL')
@@ -31,7 +31,7 @@ export default class CurbsideApiClient {
       query = '?' + query;
     }
     let response;
-    console.log('query -->', query)
+    // console.log('query -->', query)
     try {
       response = await fetch(this.base_url + options.url + query, {
         method: options.method,
@@ -54,7 +54,6 @@ export default class CurbsideApiClient {
         }; }
       };
     }
-    console.log('response', response)
     const res : {ok:boolean, status:number, body?:any} = {
       ok: response.ok,
       status: response.status,

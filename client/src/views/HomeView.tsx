@@ -65,11 +65,6 @@ export default function HomeView() {
 
   async function applyFilters() {
     closeFiltersModal();
-    console.warn(conditionField.current?.value)
-    console.log('-->', sortByField.current?.value)
-    setTimeout(() => { console.log('line79', sortByField) }, 1000)
-    console.log(maxPriceField.current?.value)
-
     const res = await getListings(0);
     if (res.ok) {
       offset.current = res.body.data.offset;
@@ -83,7 +78,6 @@ export default function HomeView() {
   const loadData = async () => {
     const res = await getListings(0);
     if (res.ok) {
-      console.log('res.body', res.body)
       offset.current = res.body.data.offset;
       setListings(res.body.data.listings);
       setLoadingError(false);

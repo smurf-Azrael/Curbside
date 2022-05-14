@@ -101,7 +101,7 @@ const [address, setAddress] = useState<string>();
           type='location'
           // fieldref={locationField}
           value={address}
-          onChange={(e) => {console.log('inhere', e.target.value); setAddress(e.target.value)}}
+          onChange={(e) => setAddress(e.target.value)}
           onKeyPress={e => pressEnter(e)}
         />
 
