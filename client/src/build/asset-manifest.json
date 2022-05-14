@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/static/css/main.ae284fe1.css",
+    "main.js": "/static/js/main.8d0ce9d2.js",
+    "static/media/loader.gif": "/static/media/loader.0dd94c76fa7f6b5d66c2.gif",
+    "static/media/bootstrap-icons.woff?": "/static/media/bootstrap-icons.c1d7432ee75fa194e499.woff",
+    "static/media/bootstrap-icons.woff2?": "/static/media/bootstrap-icons.a13b815539b49de48d23.woff2",
+    "static/media/CurbsideSmall.png": "/static/media/CurbsideSmall.912b516762b34c198566.png",
+    "index.html": "/index.html",
+    "main.ae284fe1.css.map": "/static/css/main.ae284fe1.css.map",
+    "main.8d0ce9d2.js.map": "/static/js/main.8d0ce9d2.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ae284fe1.css",
+    "static/js/main.8d0ce9d2.js"
+  ]
+}

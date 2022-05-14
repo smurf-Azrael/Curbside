@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styling/Header.css';
+import '../styling/Header.scss';
 import ButtonSmall from './ButtonSmall';
 import { useNavigate } from 'react-router-dom';
 import curbside from './../assets/CurbsideSmall.png';

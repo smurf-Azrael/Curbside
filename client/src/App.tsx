@@ -1,5 +1,4 @@
-import './App.css';
-import React from 'react';
+import './App.scss';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ApiProvider from './contexts/ApiProvider';
 import SignupView from './views/SignupView';
