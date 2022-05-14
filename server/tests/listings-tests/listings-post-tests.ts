@@ -1,12 +1,13 @@
 import request from 'supertest';
 import { server } from '../../index';
 import { mocks } from '../../../mocks';
-import { AddListingDTO } from '../../interfaces/listings.interface.dto';
+import { AddListingDTO } from '../../interfaces/listing.interface.dto';
 import { prisma } from '../../prisma/client';
 import { getTestIdToken } from '../test-helpers';
-import { InitialUserDTO } from '../../interfaces/users.interface.dto';
+import { InitialUserDTO } from '../../interfaces/user.interface.dto';
 import { IListingCondition } from '../../interfaces/listing.interface';
-import { listingsModelErrorMessages } from '../../models/listings.model.validation';
+import { listingsModelErrorMessages } from '../../models/model-helpers/listing.model.validation';
+
 export const listingsPostTests = (): void => {
   describe('POST /listings', () => {
     const mockInitialUserInput: InitialUserDTO = {
@@ -46,8 +47,8 @@ export const listingsPostTests = (): void => {
     });
 
     it('Should add listing to the database and return it with id and createdAt fields added', async () => {
-      const intialListings = await prisma.listing.findMany();
-      expect(intialListings.length).toEqual(0);
+      const initialListings = await prisma.listing.findMany();
+      expect(initialListings.length).toEqual(0);
       const { body } = await request(server)
         .post('/listings')
         .set('Authorization', 'Bearer ' + testToken)

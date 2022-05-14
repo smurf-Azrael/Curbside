@@ -54,7 +54,7 @@ export default class CurbsideApiClient {
         }; }
       };
     }
-
+    console.log('response', response)
     const res : {ok:boolean, status:number, body?:any} = {
       ok: response.ok,
       status: response.status,

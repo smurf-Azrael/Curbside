@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { USER_NOT_AUTHENTICATED, USER_NOT_FINALIZED } from '../errors/SharedErrorMessages';
 import { prisma } from '../prisma/client';
-import { getUserById } from '../queries/userQueries';
+import { getUserById } from '../queries/user.queries';
 
 export const fullUserRequired = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   // @ts-ignore

@@ -1,7 +1,7 @@
 import React, { ElementType, FormEvent } from 'react';
 import { MutableRefObject } from 'react';
 import Form from 'react-bootstrap/Form';
-import '../styling/InputField.css';
+import '../styling/InputField.scss';
 
 export default function InputField({
   name,

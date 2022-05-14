@@ -1,0 +1,94 @@
+.ListingDetailView {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  padding-bottom: 60px;
+
+  .listing-owner-info-wrapper {
+   display: flex;
+   flex: row;
+   justify-content: space-between;
+   padding: 10px;
+   margin-bottom: 15px;
+
+   .listing-owner-image-wrapper {
+     width: 100px;
+     height: 100px;
+     margin-right: 15px;
+     
+     img {
+       height: 100px;
+       width: 100px;
+       object-fit: cover;
+       border-radius: 50%;
+     }
+   }
+   
+   .listing-owner-name-buttons-wrapper {
+     display: flex;
+     flex-direction: column;
+     align-items: flex-start;
+     justify-content: space-between;
+     width: 100%;
+     
+     .listing-owner-name {
+       font-weight: bold;
+       font-size: 1.5rem;
+     }
+   }
+
+  }
+  
+  .listing-button-wrapper {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: flex-start;
+    
+    a {
+      width: 100%;
+    }
+    
+    i {
+      padding-right: 3px;
+    }
+  }
+  
+  .listing-details-gallery-wrapper {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: row;
+    
+    .item-for-sale-img{
+      height: 200px;
+      width: 200px;
+      overflow: hidden;
+    }
+  }
+  
+  .listing-details-data-wrapper {
+    text-align: left;
+    margin-top: 15px;
+    
+    .price-favorite-button-wrapper {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    
+    p {
+      width: 100%;
+      justify-content: flex-start;
+      display: inline-block;
+      margin-bottom: 7px;
+    }
+    
+    span {
+      margin-right: 0.5rem;
+      font-weight: bold;
+      color: gray;
+    }
+  }
+  
+}
