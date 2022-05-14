@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import logger from 'morgan';
 import path from 'path';
@@ -20,6 +20,7 @@ dotenv.config({ path: path.resolve(__dirname, `./config/${process.env.NODE_ENV}.
 const PORT = process.env.PORT;
 
 export const app = express();
+
 const httpServer = http.createServer(app);
 const io = new Server(httpServer, {
   cors: {
@@ -49,6 +50,17 @@ socketListener(io);
 app.use(express.json());
 app.use(logger('dev'));
 app.use(authMiddleware);
+app.use(express.static(path.join(__dirname, '../client/build')));
+
+app.get('/', (req: Request, res: Response, next: NextFunction): void => {
+  try {
+    res.sendFile(path.join(__dirname, '../client/build', '../client/build/index.html'));
+  } catch (e) {
+    console.log(e);
+    next(e);
+  }
+});
+
 app.use('/api', router);
 app.use(router);
 
