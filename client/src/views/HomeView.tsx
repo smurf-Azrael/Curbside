@@ -11,6 +11,7 @@ import Footer from "../components/Footer";
 import '../styling/HomeView.css';
 import LocationPreviewComponent from "../components/LocationPreviewComponent";
 import loader from '../assets/loader.gif';
+import RoundedButton from '../components/RoundedButton';
 
 export default function HomeView() {
   const api = useApi()
@@ -32,7 +33,7 @@ export default function HomeView() {
   const minPriceField = useRef<HTMLInputElement>(null);
   const conditionField = useRef<HTMLSelectElement>(null);
   const fields = { tagsField, sortByField, maxPriceField, minPriceField, conditionField, SetTagStack }
-//! working on it
+  //! working on it
   const latitudeField = useRef<HTMLSelectElement>(null);
   const longitudeField = useRef<HTMLSelectElement>(null);
 
@@ -52,7 +53,7 @@ export default function HomeView() {
     // const latitude = latitudeField.current?.value || 'all';
     // const longitude = longitudeField.current?.value || 'all';
     const search = searchField.current?.value || undefined;
-    const tagString = tagStack.map(el => el.replace(/\s+/g,'')).join(' ');
+    const tagString = tagStack.map(el => el.replace(/\s+/g, '')).join(' ');
     const tags = tagString !== '' ? tagString : undefined;
     console.log('tags', tags)
     const query = { search, offset, radius, condition, tags, maxPrice, minPrice, sortBy, latitude, longitude };
@@ -80,18 +81,18 @@ export default function HomeView() {
   async function applyFilters() {
     closeFiltersModal();
     console.warn(conditionField.current?.value)
-    console.log('-->',sortByField.current?.value)
-    setTimeout(() => {console.log('line79',sortByField)},1000)
+    console.log('-->', sortByField.current?.value)
+    setTimeout(() => { console.log('line79', sortByField) }, 1000)
     console.log(maxPriceField.current?.value)
-    
+
     const res = await getListings(0);
     if (res.ok) {
       offset.current = res.body.data.offset;
       setListings(res.body.data.listings);
 
     } else {
-        //handleError
-      }
+      //handleError
+    }
   }
 
   const loadData = async () => {
@@ -152,7 +153,7 @@ export default function HomeView() {
             </div>
           </div>
 
-          <LocationRadius 
+          <LocationRadius
             locationIsVisible={locationIsVisible}
             closeLocationModal={closeLocationModal}
           />
@@ -163,11 +164,13 @@ export default function HomeView() {
             applyFilters={applyFilters}
             fields={fields}
           />
+          <RoundedButton content={<i className="bi bi-map"></i>} />
           <div className='listings-container' >
-            {listings.map(listing => {
-              return (<Link to={`/listing/${listing.id}`} style={{textDecoration:"none", color: "black"}}>
-                <ListingPreview key={listing.id} listing={listing} />
-              </Link>)
+            {listings.map((listing, index) => {
+              return (
+                <Link key={index} to={`/listing/${listing.id}`} style={{ textDecoration: "none", color: "black" }}>
+                  <ListingPreview key={listing.id} listing={listing} />
+                </Link>)
             })}
             {!isLoading && listings.length === 0 && <p>No listing matched your request...</p>}
             {loadingError && <p>Couldn't load listings :/</p>}

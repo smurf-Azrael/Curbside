@@ -6,6 +6,7 @@ import RangeSlider from 'react-bootstrap-range-slider';
 import InputField from './InputField';
 import SimpleMap from './SimpleMap';
 import Button from 'react-bootstrap/Button';
+import Map from './SetProfileMap';
 
 export default function LocationRadius({ locationIsVisible, closeLocationModal }: { [key: string]: any }) {
   const [radius, setRadius] = useState(25);
@@ -31,7 +32,7 @@ export default function LocationRadius({ locationIsVisible, closeLocationModal }
   function formatResponse(response) {
     console.log('formatResponse')
     let selectedPlace = response.filter(el => (el.type === 'city' || el.type === 'village'))[0];
-    if (selectedPlace.length === 0) {
+    if (!selectedPlace) {
       selectedPlace = response[0]
     }
     setLocationResult({
@@ -86,7 +87,7 @@ export default function LocationRadius({ locationIsVisible, closeLocationModal }
           </Form.Group>
         </Form>
 
-        <SimpleMap position={position} radius={radius} />
+        <Map position={position} setPosition={setPosition} radius={radius} />
 
 
       </Modal.Body>
