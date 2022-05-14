@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import AppBody from '../components/AppBody';
 import { useApi } from '../contexts/ApiProvider';
 import { useAuth } from '../contexts/AuthContext';
-import '../styling/ChatsView.css';
+import '../styling/ChatsView.scss';
+
 const ChatsView = () => {
   const auth = useAuth();
   const [chats, setChats] = useState<ChatPreview[]>([]);
@@ -24,7 +25,7 @@ const ChatsView = () => {
   }, [api]);
   return (
     <AppBody>
-      <div>
+      <div className='ChatsView'>
         {chats.map((chat) => (
           <Link
             to={`/listing/${chat.listingId}/chat/${chat.buyerId}`}

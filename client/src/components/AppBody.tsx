@@ -1,7 +1,7 @@
 import React from 'react'
 import Header from './Header'
 import Footer from './Footer'
-import '../styling/AppBody.css'
+import '../styling/AppBody.scss'
 import { User } from '../interfaces/AuthContextInterface'
 const AppBody = ({currentUser, children} : appBodyProps) => {
   return (

@@ -1,0 +1,40 @@
+
+.ChatsView{
+  padding: 16px;
+  .chat-element {
+    display: flex;
+    padding: 0.5rem;
+    align-items: center;
+    overflow-y: scroll;
+    background-color: white;
+    border-radius: 10px;
+    margin-bottom: 16px;
+  }
+  .image-preview {
+    border-radius: 10px;
+    max-height: 6rem;
+  }
+  
+  .info-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 1rem;
+    width: 100%;
+  }
+  
+  .top-info {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-size: smaller;
+    color: gray;
+  }
+  
+  .listing-title {
+    font-weight: bold;
+    font-size: large;
+  }
+
+}

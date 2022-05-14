@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styling/Footer.css';
+import '../styling/Footer.scss';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
