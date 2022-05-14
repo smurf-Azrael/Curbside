@@ -50,8 +50,8 @@ const getListings = async (userId: string | undefined, params: GetListingQueryPa
         lat = 52.52;
       }
     }
-    const listingsInRangeIds: {id: string}[] = await listingsQueries.spatialQuery(long, lat, +params.radius);
-    let listings: IListing[] = await listingsQueries.spatialQueryListings(listingsInRangeIds, params);
+    const listingsInRangeIds: {id: string}[] = await listingsQueries.getIdInRadius(long, lat, +params.radius);
+    let listings: IListing[] = await listingsQueries.getListingInRadius(listingsInRangeIds, params);
     // filter for tags
 
     // sort by closest
@@ -75,10 +75,10 @@ const getListings = async (userId: string | undefined, params: GetListingQueryPa
 };
 export const getListingByListingIdModel = async (id:string) : Promise<IListingPackage | null> => {
   try {
-    const listing: IListing | null = await listingQueries.getListingsByListingId(id);
+    const listing: IListing | null = await listingQueries.getListings(id);
     if (listing === null || undefined) { throw new CustomError(LISTING_NOT_FOUND, 404); }
-    const userInfo: IUserInfoSelect | null = await listingQueries.getSelectUserInfoByUserId(listing.userId);
-    const rating: number | null = await listingQueries.getUserRatingByUserId(listing.userId);
+    const userInfo: IUserInfoSelect | null = await listingQueries.getSelectUserInfo(listing.userId);
+    const rating: number | null = await listingQueries.getUserRating(listing.userId);
     const listingPackage: IListingPackage = { ...listing, ...userInfo, rating };
     return listingPackage;
   } catch (error) {
@@ -89,7 +89,7 @@ export const getListingByListingIdModel = async (id:string) : Promise<IListingPa
 
 export const updateListing = async (listingId: string, listingDetails: FinalizeListingDTO): Promise<IListing> => {
   try {
-    const listing: IListing = await listingQueries.updateListingQuery(listingId, listingDetails);
+    const listing: IListing = await listingQueries.updateListing(listingId, listingDetails);
     return listing;
   } catch (error) {
     console.log('/models/listingsById.model getListingByIdModel ERROR', error);
