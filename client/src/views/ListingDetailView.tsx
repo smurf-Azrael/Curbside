@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom';
 import { useApi } from "../contexts/ApiProvider";
-import '../styling/ListingDetail.css';
+import '../styling/ListingDetailView.scss';
 import ButtonWide from '../components/ButtonWide';
 import SimpleMap from '../components/SimpleMap';
 import ImageCarousel from '../components/ImageCarousel';
@@ -33,7 +33,7 @@ const ListingDetailView = () => {
 
   return listing !== undefined ? (
     <AppBody>
-      <section className='listing-detail-container'>
+      <section className='ListingDetailView'>
         <section className='listing-owner-info-wrapper'>
           <section className='listing-owner-image-wrapper'>
             <img src={listing.userPhotoUrl} alt={'user'} />
