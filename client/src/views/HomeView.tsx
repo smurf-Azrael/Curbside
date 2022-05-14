@@ -2,16 +2,14 @@
 import { useApi } from "../contexts/ApiProvider"
 import { useEffect, useState, useRef, useCallback, KeyboardEvent } from "react"
 import { Link } from "react-router-dom";
-import { mocks } from '../mocks';
 import ListingPreview from "../components/ListingPreview";
 import FiltersComponent from "../components/FiltersComponent";
 import LocationRadius from "../components/LocationRadius";
-import Header from '../components/Header';
-import Footer from "../components/Footer";
-import '../styling/HomeView.css';
+import RoundedButton from '../components/RoundedButton';
+import '../styling/HomeView.scss';
 import LocationPreviewComponent from "../components/LocationPreviewComponent";
 import loader from '../assets/loader.gif';
-import RoundedButton from '../components/RoundedButton';
+import AppBody from "../components/AppBody";
 
 export default function HomeView() {
   const api = useApi()
@@ -85,14 +83,14 @@ export default function HomeView() {
   const loadData = async () => {
     const res = await getListings(0);
     if (res.ok) {
+      console.log('res.body', res.body)
       offset.current = res.body.data.offset;
       setListings(res.body.data.listings);
       setLoadingError(false);
-      console.log('hi here')
       searchField.current!.value = "";
     } else {
       // handleErrors
-      setListings(mocks.listings);
+      // setListings(mocks.listings);
       setLoadingError(false);
     }
     setIsLoading(false);
@@ -111,66 +109,54 @@ export default function HomeView() {
 
 
   return (
-    <div className="body-page">
-      <div className='body-header-container' >
-        <Header />
-      </div>
-      <div className="body-content-background">
-        <div className="body-frame">
-          <LocationPreviewComponent />{/*Empty for now, but will possibly show preview of your location  */}
+    <AppBody>
+      <div className="HomeView">
+        <LocationPreviewComponent />{/*Empty for now, but will possibly show preview of your location  */}
 
-          <div className="global-search-area">
-            <div className='search-bar-container'>
-              <button onClick={() => loadData()}><i className="bi bi-search"></i></button>
-              <input ref={searchField} className="main-input" placeholder="Search.." onKeyPress={(e) => pressEnter(e)} />
-            </div>
-            <div className='search-buttons-group' >
-              <button className="search-location-button search-btn" onClick={openLocationModal}>
-                <p>
-                  <i className="bi bi-geo-alt"></i>
-                  {locationGroupField.address ? locationGroupField.address : "Location"}
-                </p>
-              </button>
-              <button className="search-filter-button search-btn" onClick={openFiltersModal}>
-                <p>
-                  Filter
-                  <i className="bi bi-sliders"></i>
-                </p>
-              </button>
-            </div>
+        <div className="global-search-area">
+          <div className='search-bar-container'>
+            <button onClick={() => loadData()}><i className="bi bi-search"></i></button>
+            <input ref={searchField} className="main-input" placeholder="Search.." onKeyPress={(e) => pressEnter(e)} />
           </div>
+          <div className='search-buttons-group' >
+            <button className="search-location-button search-btn" onClick={openLocationModal}>
+              <span>
+                <i className="bi bi-geo-alt"></i>
+                {locationGroupField.address ? locationGroupField.address : "Location"}
+              </span>
+            </button>
+            <button className="search-filter-button search-btn" onClick={openFiltersModal}>
+              <span>
+                <i className="bi bi-sliders"></i>
+                Filter
+              </span>
+            </button>
+          </div>
+        </div>
 
-          <LocationRadius
+        <FiltersComponent
+          filtersAreVisible={FiltersAreVisible}
+          closeFiltersModal={closeFiltersModal}
+          applyFilters={applyFilters}
+          fields={fields}
+        />
+        <LocationRadius
             locationIsVisible={locationIsVisible}
             closeLocationModal={closeLocationModal}
             // locationGroupField={locationGroupField}
             setLocationGroupField={setLocationGroupField}
           />
-
-          <FiltersComponent
-            filtersAreVisible={FiltersAreVisible}
-            closeFiltersModal={closeFiltersModal}
-            applyFilters={applyFilters}
-            fields={fields}
-          />
-          <RoundedButton content={<i className="bi bi-map"></i>} />
-          <div className='listings-container' >
-            {listings.map((listing, index) => {
-              return (
-                <Link key={index} to={`/listing/${listing.id}`} style={{ textDecoration: "none", color: "black" }}>
-                  <ListingPreview key={listing.id} listing={listing} />
-                </Link>)
-            })}
-            {!isLoading && listings.length === 0 && <p>No listing matched your request...</p>}
-            {loadingError && <p>Couldn't load listings :/</p>}
-            {isLoading && <img style={{ height: '20vw', maxHeight: '200px', borderRadius: '20px' }} src={loader} alt="Loading..." />}
-          </div>
+        <div className='listings-container' >
+          {listings.map(listing => {
+            return (<Link key={listing.id} to={`/listing/${listing.id}`} style={{ textDecoration: "none", color: "black" }}>
+              <ListingPreview  listing={listing} />
+            </Link>)
+          })}
+          {!isLoading && listings.length === 0 && <p>No listing matched your request...</p>}
+          {loadingError && <p>Couldn't load listings :/</p>}
+          {isLoading && <img style={{ height: '20vw', maxHeight: '200px', borderRadius: '20px' }} src={loader} alt="Loading..." />}
         </div>
       </div>
-
-      <div className='body-footer-container'>
-        <Footer />
-      </div>
-    </div>
+    </AppBody>
   )
 }

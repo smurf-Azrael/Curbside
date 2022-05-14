@@ -1,13 +1,13 @@
 import request from 'supertest';
 import { server } from '../..';
 import { IListingCondition } from '../../interfaces/listing.interface';
-import { AddListingDTO } from '../../interfaces/listings.interface.dto';
-import { InitialUserDTO } from '../../interfaces/users.interface.dto';
+import { AddListingDTO } from '../../interfaces/listing.interface.dto';
+import { InitialUserDTO } from '../../interfaces/user.interface.dto';
 import { prisma } from '../../prisma/client';
 import { getTestIdToken } from '../test-helpers';
 
 export const getChatsByUserIdTests = (): void => {
-  describe('GET /chats/:userId', () => {
+  describe('GET /chats', () => {
     let buyer: any, seller: any, listing: any;
     let testToken: string|undefined;
     let mockAddChat: any;
@@ -56,7 +56,7 @@ export const getChatsByUserIdTests = (): void => {
 
     it('Should get all chats where a user is either a buyer', async () => {
       const { body } = await request(server)
-        .get(`/chats/${buyer.id}`)
+        .get('/chats')
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/)
         .expect(200);

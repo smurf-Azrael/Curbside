@@ -5,7 +5,7 @@ import { IMessage } from '../interfaces/message.interface';
 import { prisma } from '../prisma/client';
 
 export const socketListener = (io: Server): Server => io.on('connection', (socket: Socket) => {
-  socket.on('message', async (body: string, listingId: string, chatId: string | undefined) => {
+  socket.on('message', async (body: string, listingId: string, chatId: string | undefined, cb: ({ ok, data }: { ok: boolean, data: { chatId: string, message: IMessage } }) => void) => {
     // @ts-ignore
     const senderId = socket.user.id;
     if (!chatId) {
@@ -22,12 +22,14 @@ export const socketListener = (io: Server): Server => io.on('connection', (socke
         chatId = chat.id;
       }
     }
-
-    const dbMessage = await prisma.message.create({ data: { body, chatId, senderId } });
-    io.in(chatId!).emit('messageResponse', { ok: true, data: { message: dbMessage } });
+    if (chatId) {
+      const message = await prisma.message.create({ data: { body, chatId, senderId } });
+      cb({ ok: true, data: { chatId, message } });
+      io.in(chatId!).emit('messageResponse', { ok: true, data: { message } });
+    }
   });
 
-  socket.on('getChat', async (listingId: string, buyerId: string, cb: ({ ok, data }: { ok?: boolean, data:{chatId?:string, messages?: IMessage[], error?: string }}) => void) => {
+  socket.on('getChat', async (listingId: string, buyerId: string, cb: ({ ok, data }: { ok?: boolean, data: { chatId?: string, messages?: IMessage[], error?: string } }) => void) => {
     // @ts-ignore
     try {
       const chat = await prisma.chat.findFirst({

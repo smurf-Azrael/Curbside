@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styling/Header.css';
+import '../styling/Header.scss';
 import ButtonSmall from './ButtonSmall';
 import { useNavigate } from 'react-router-dom';
 import curbside from './../assets/CurbsideSmall.png';
@@ -9,7 +9,7 @@ export default function Header() {
   const {currentUser, logOut} = useAuth()
 
   return (
-    <div className='header-container'>
+    <div className='Header'>
       <div className='header-frame' >
         <button className="curbside-home" onClick={() => navigate('/')}>
           <img src={curbside} alt='Curbside' />

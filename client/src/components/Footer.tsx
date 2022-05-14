@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styling/Footer.css';
+import '../styling/Footer.scss';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -7,7 +7,7 @@ export default function Footer() {
 const navigate = useNavigate();
 const { currentUser } = useAuth();
   return (
-    <div className="footer-container">
+    <div className="Footer">
       <div className="footer-frame">
         <div onClick={() => navigate('/')} className='footer-div-button'>
           <i className="bi bi-house"></i>
