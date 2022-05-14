@@ -5,7 +5,7 @@ import { prisma } from '../../prisma/client';
 import { getTestIdToken } from '../test-helpers';
 import { IUser } from '../../interfaces/user.interface';
 import { USER_NOT_FOUND } from '../../errors/SharedErrorMessages';
-import { AddListingDTO } from '../../interfaces/listings.interface.dto';
+import { AddListingDTO } from '../../interfaces/listing.interface.dto';
 import { IListingCondition } from '../../interfaces/listing.interface';
 export const usersGetTests = (): void => {
   describe('GET /users/:id', () => {

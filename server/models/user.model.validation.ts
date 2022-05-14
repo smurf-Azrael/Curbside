@@ -1,6 +1,6 @@
 import { CustomError } from '../errors/CustomError.class';
 import { CustomErrorMessageObject } from '../errors/CustomErrorMessageObject.interface';
-import { FinalizeUserDTO, InitialUserDTO } from '../interfaces/users.interface.dto';
+import { FinalizeUserDTO, InitialUserDTO } from '../interfaces/user.interface.dto';
 import userQueries from '../queries/user.queries';
 
 export const usersModelErrorMessages = {
