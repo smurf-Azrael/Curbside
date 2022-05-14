@@ -1,6 +1,6 @@
-import { Form, FormSelect } from 'react-bootstrap'
-import Button from 'react-bootstrap/Button'
-import Modal from 'react-bootstrap/Modal'
+import { Form, FormSelect } from 'react-bootstrap';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 import { FormControl } from '@mui/material';
 import AutoCompleteSearch from './AutoCompleteSearch';
 import '../styling/FiltersComponents.css';
@@ -8,7 +8,7 @@ import '../styling/FiltersComponents.css';
 export default function FiltersComponent({ filtersAreVisible, closeFiltersModal, applyFilters, fields }: { [key: string]: any }) {
   return (
     <>
-      <Modal show={filtersAreVisible} onHide={closeFiltersModal}>
+      <Modal show={filtersAreVisible} onHide={closeFiltersModal} >
         <Modal.Header closeButton>Filters</Modal.Header>
         <Modal.Body className="filter-frame" >
           <Form.Group>

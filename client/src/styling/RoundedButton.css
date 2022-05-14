@@ -1,0 +1,13 @@
+.map-button{
+  border:none;
+  border-radius:30px;
+  background-color: rgba(127, 255, 212, 0.743);
+  width: fit-content;
+  font-size:20px;
+  height:60px;
+  width:60px;
+}
+.map-button i{
+padding-right: 0;
+padding-top:1px;
+}
