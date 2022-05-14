@@ -31,6 +31,9 @@ const getChats = async (userId: string): Promise<IChat[]> => {
         }
       },
       messages: {
+        orderBy: {
+          createdAt: 'desc'
+        },
         take: 1,
         select: {
           senderId: true,
@@ -39,6 +42,9 @@ const getChats = async (userId: string): Promise<IChat[]> => {
           createdAt: true
         }
       }
+    },
+    orderBy: {
+      updatedAt: 'desc'
     }
   });
   return chats.map((chat) => ({
