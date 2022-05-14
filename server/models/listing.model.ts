@@ -50,8 +50,8 @@ const getListings = async (userId: string | undefined, params: GetListingQueryPa
         lat = 52.52;
       }
     }
-    const listingsInRangeIds: {id: string}[] = await listingQueries.getIdInRadius(long, lat, +params.radius);
-    let listings: IListing[] = await listingQueries.getListingInRadius(listingsInRangeIds, params);
+    const listingsInRangeIds: {id: string}[] = await listingQueries.getIdsInRadius(long, lat, +params.radius);
+    let listings: IListing[] = await listingQueries.getListingsInRadius(listingsInRangeIds, params);
     // filter for tags
 
     // sort by closest
