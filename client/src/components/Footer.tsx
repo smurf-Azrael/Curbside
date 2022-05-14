@@ -1,30 +1,27 @@
 import React from 'react';
 import '../styling/Footer.scss';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import FooterLink from './FooterLink';
 
 export default function Footer() {
-const navigate = useNavigate();
-const { currentUser } = useAuth();
+  const { currentUser } = useAuth();
   return (
     <div className="Footer">
-      <div className="footer-frame">
-        <div onClick={() => navigate('/')} className='footer-div-button'>
-          <i className="bi bi-house"></i>
-        </div>
-        <div onClick={() => navigate('/chats')} className='footer-div-button'>
-          <i className="bi bi-chat-dots"></i>
-        </div>
-        <div onClick={() => navigate('/add-listing')} className='footer-div-button'>
-          <i className="bi bi-plus-circle"></i>
-        </div>
-        <div onClick={() => navigate(`/profile/${currentUser?.id}`)} className='footer-div-button'>
-          <i className="bi bi-person"></i>
-        </div>
-        <div onClick={() => navigate('/settings')} className='footer-div-button'>
+      <FooterLink to="/">
+        <i className="bi bi-house"></i>
+      </FooterLink>
+      <FooterLink to="/chats">
+        <i className="bi bi-chat-dots"></i>
+      </FooterLink>
+      <FooterLink to="/add-listing">
+        <i className="bi bi-plus-circle"></i>
+      </FooterLink>
+      <FooterLink to={`/profile/${currentUser?.id}`}>
+        <i className="bi bi-person"></i>
+      </FooterLink>
+      <FooterLink to="settings">
         <i className="bi bi-gear"></i>
-        </div>
-      </div>
+      </FooterLink>
     </div>
   )
 }
