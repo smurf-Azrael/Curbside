@@ -1,9 +1,9 @@
 import { server, app } from '../../index';
 import request from 'supertest';
 import { prisma } from '../../prisma/client';
-import { InitialUserDTO } from '../../interfaces/users.interface.dto';
+import { InitialUserDTO } from '../../interfaces/user.interface.dto';
 import { mocks } from '../../../mocks';
-import { AddListingDTO } from '../../interfaces/listings.interface.dto';
+import { AddListingDTO } from '../../interfaces/listing.interface.dto';
 import { IListingCondition } from '../../interfaces/listing.interface';
 import { LISTING_NOT_FOUND } from '../../errors/SharedErrorMessages';
 import { AddRatingDTO } from '../../interfaces/rating.interface.dto';

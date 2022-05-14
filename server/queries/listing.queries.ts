@@ -1,6 +1,6 @@
 import { Listing, ListingCondition } from '@prisma/client';
 import { IListing, IListingCondition } from '../interfaces/listing.interface';
-import { AddListingDTO, FinalizeListingDTO, GetListingQueryParams } from '../interfaces/listings.interface.dto';
+import { AddListingDTO, FinalizeListingDTO, GetListingQueryParams } from '../interfaces/listing.interface.dto';
 import { prisma } from '../prisma/client';
 import converterHelpers from './query-helpers/converter.helpers';
 

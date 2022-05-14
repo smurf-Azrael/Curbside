@@ -1,7 +1,7 @@
 import { CustomError } from '../errors/CustomError.class';
 import { LISTING_NOT_FOUND, UNKNOWN_SERVER_ERROR } from '../errors/SharedErrorMessages';
 import { IListing, IListingPackage } from '../interfaces/listing.interface';
-import { AddListingDTO, FinalizeListingDTO, GetListingQueryParams } from '../interfaces/listings.interface.dto';
+import { AddListingDTO, FinalizeListingDTO, GetListingQueryParams } from '../interfaces/listing.interface.dto';
 import { IUserInfoSelect } from '../interfaces/user.interface';
 import listingQueries from '../queries/listing.queries';
 import ratingQueries from '../queries/rating.queries';
