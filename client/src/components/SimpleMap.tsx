@@ -2,8 +2,7 @@ import React from 'react'
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import { Icon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import '../styling/ListingDetail.css'
-
+import '../styling/SimpleMap.scss'
 
 const customIcon = new Icon({
   iconUrl: "/icons8-select-24.png",
@@ -13,7 +12,7 @@ const customIcon = new Icon({
 const SimpleMap = ({position}: {position: {lat: number, lng: number}}) => {
 
   return (
-    <section className='map-component' >
+    <section className='SimpleMap' >
       <MapContainer
         center={position}
         zoom={14}

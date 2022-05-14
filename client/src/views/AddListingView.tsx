@@ -3,13 +3,16 @@ import InputField from '../components/InputField';
 import { useAuth } from '../contexts/AuthContext';
 import { useApi } from '../contexts/ApiProvider';
 import { useNavigate } from 'react-router-dom';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import '../styling/AddListingView.css';
+// import '../styling/AddListingView.scss';
+import '../styling/AddListingView.scss'
 import ButtonWide from '../components/ButtonWide';
 import { FormSelect, Form } from 'react-bootstrap';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { storage } from '../firebase';
+import AppBody from '../components/AppBody';
+
+
+
 export default function AddListingView() {
   const titleField = useRef<HTMLInputElement>(null);
   const descriptionField = useRef<HTMLInputElement>(null);
@@ -82,7 +85,6 @@ export default function AddListingView() {
       priceInCents,
       tags: '',
     };
-    console.log(newListing);
 
     const res = await api.post('/listings', newListing);
     if (res.ok) {
@@ -94,64 +96,62 @@ export default function AddListingView() {
   };
 
   return (
-    <div className="body-page">
-      <Header />
-      <div className="body-content-background">
-        <div className="body-frame">
-          <div className="body-frame-padding">
-            <form onSubmit={onSubmit}>
-              <h3 className="form-title">List an item</h3>
-              <InputField
-                name="title"
-                placeholder="title"
-                label="Title"
-                error={formErrors.title}
-                fieldref={titleField}
-              />
-              <InputField
-                name="price"
-                placeholder="Price"
-                type="number"
-                min={0}
-                step="any"
-                label="Price"
-                error={formErrors.price}
-                fieldref={priceField}
-              />
-              <p style={{ justifyContent: 'flex-start', marginBottom: '10px' }}>Condition</p>
-              <div style={{ marginBottom: '15px' }}>
-                <Form.Group>
-                  <FormSelect ref={conditionField}>
-                    <option value="new">New</option>
-                    <option value="gentlyUsed">Gently Used</option>
-                    <option value="used">Used</option>
-                  </FormSelect>
-                </Form.Group>
+    <AppBody>
+      <div className="AddListingView">
+        <div className="body-frame-padding">
+          <form onSubmit={onSubmit}>
+            <h3 className="form-title">List an item</h3>
+            <InputField
+              name="title"
+              placeholder="title"
+              label="Title"
+              error={formErrors.title}
+              fieldref={titleField}
+            />
+            <InputField
+              name="price"
+              placeholder="Price"
+              type="number"
+              min={0}
+              step="any"
+              label="Price"
+              error={formErrors.price}
+              fieldref={priceField}
+            />
+            <p style={{ justifyContent: 'flex-start', marginBottom: '10px' }}>Condition</p>
+            <div style={{ marginBottom: '15px' }}>
+              <Form.Group>
+                <FormSelect ref={conditionField}>
+                  <option value="new">New</option>
+                  <option value="gentlyUsed">Gently Used</option>
+                  <option value="used">Used</option>
+                </FormSelect>
+              </Form.Group>
 
-                <p>{formErrors.condition}</p>
-              </div>
-              <InputField
-                name="description"
-                placeholder="Description"
-                min={0}
-                label="Description"
-                error={formErrors.description}
-                fieldref={descriptionField}
-                as="textarea"
-              />
+              <p>{formErrors.condition}</p>
+            </div>
+            <InputField
+              name="description"
+              placeholder="Description"
+              min={0}
+              label="Description"
+              error={formErrors.description}
+              fieldref={descriptionField}
+              as="textarea"
+            />
 
-              <InputField
-                name="photos"
-                type="file"
-                multiple={true}
-                placeholder="Photos"
-                label="Photos"
-                error={formErrors.photos}
-                fieldref={photoField}
-                onChange={(e) => handleFileSelect(e)}
-              />
+            <InputField
+              name="photos"
+              type="file"
+              multiple={true}
+              placeholder="Photos"
+              label="Photos"
+              error={formErrors.photos}
+              fieldref={photoField}
+              onChange={(e) => handleFileSelect(e)}
+            />
 
-              {/* <div className='location-div-container'>
+            {/* <div className='location-div-container'>
                 <div className='location-input-div'>
                   <InputField
                     name="location"
@@ -168,19 +168,18 @@ export default function AddListingView() {
                 </div>
               </div> */}
 
-              <div className="add-item-buttons">
-                <button type="submit" style={{ border: 'none', padding: '0' }}>
-                  <ButtonWide content={'Create'} fill={true} />
-                </button>
-                <ButtonWide clickFunction={() => navigate('/')} content={'Cancel'} fill={false} />
-              </div>
-            </form>
-          </div>
+            <div className="add-item-buttons">
+              {/* <button type="submit" style={{ border: 'none', padding: '0' }}> */}
+              <ButtonWide type={'submit'} content={'Create'} fill={true} />
+              {/* </button> */}
+              <ButtonWide clickFunction={() => navigate('/')} content={'Cancel'} fill={false} />
+            </div>
+          </form>
+
+        </div>
+        <div className="body-footer-container">
         </div>
       </div>
-      <div className="body-footer-container">
-        <Footer />
-      </div>
-    </div>
+    </AppBody>
   );
 }
