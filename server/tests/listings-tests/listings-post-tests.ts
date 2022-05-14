@@ -6,7 +6,7 @@ import { prisma } from '../../prisma/client';
 import { getTestIdToken } from '../test-helpers';
 import { InitialUserDTO } from '../../interfaces/users.interface.dto';
 import { IListingCondition } from '../../interfaces/listing.interface';
-import { listingsModelErrorMessages } from '../../models/listings.model.validation';
+import { listingsModelErrorMessages } from '../../models/listing.model.validation';
 export const listingsPostTests = (): void => {
   describe('POST /listings', () => {
     const mockInitialUserInput: InitialUserDTO = {

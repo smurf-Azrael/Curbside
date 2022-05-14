@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { IListing, IListingPackage } from '../interfaces/listing.interface';
 import { AddListingDTO, FinalizeListingDTO, GetListingQueryParams } from '../interfaces/listings.interface.dto';
-import listingsModel, { updateListing } from '../models/listings.model';
+import listingsModel, { updateListing } from '../models/listing.model';
 
 const addListing = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
