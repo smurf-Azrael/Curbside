@@ -4,7 +4,7 @@ import { IListing, IListingPackage } from '../interfaces/listing.interface';
 import { AddListingDTO, FinalizeListingDTO, GetListingQueryParams } from '../interfaces/listings.interface.dto';
 import { IUserInfoSelect } from '../interfaces/user.interface';
 import listingQueries from '../queries/listing.queries';
-import listingsQueries from '../queries/listings.queries';
+import ratingQueries from '../queries/rating.queries';
 import userQueries from '../queries/user.queries';
 import { addListingInputValidation } from './listing.model.validation';
 import distanceHelpers from './model-helpers/distance.helpers';
@@ -12,7 +12,7 @@ import distanceHelpers from './model-helpers/distance.helpers';
 const addListing = async (listingDetails: AddListingDTO): Promise<IListing> => {
   try {
     await addListingInputValidation(listingDetails);
-    const listing: IListing = await listingsQueries.createListing(listingDetails);
+    const listing: IListing = await listingQueries.createListing(listingDetails);
     return listing;
   } catch (error) {
     console.log('/models/listings.model addListing ERROR', error);
@@ -50,8 +50,8 @@ const getListings = async (userId: string | undefined, params: GetListingQueryPa
         lat = 52.52;
       }
     }
-    const listingsInRangeIds: {id: string}[] = await listingsQueries.getIdInRadius(long, lat, +params.radius);
-    let listings: IListing[] = await listingsQueries.getListingInRadius(listingsInRangeIds, params);
+    const listingsInRangeIds: {id: string}[] = await listingQueries.getIdInRadius(long, lat, +params.radius);
+    let listings: IListing[] = await listingQueries.getListingInRadius(listingsInRangeIds, params);
     // filter for tags
 
     // sort by closest
@@ -77,8 +77,8 @@ export const getListingByListingIdModel = async (id:string) : Promise<IListingPa
   try {
     const listing: IListing | null = await listingQueries.getListings(id);
     if (listing === null || undefined) { throw new CustomError(LISTING_NOT_FOUND, 404); }
-    const userInfo: IUserInfoSelect | null = await listingQueries.getSelectUserInfo(listing.userId);
-    const rating: number | null = await listingQueries.getUserRating(listing.userId);
+    const userInfo: IUserInfoSelect | null = await userQueries.getSelectUserInfo(listing.userId);
+    const rating: number | null = await ratingQueries.getUserRating(listing.userId);
     const listingPackage: IListingPackage = { ...listing, ...userInfo, rating };
     return listingPackage;
   } catch (error) {
