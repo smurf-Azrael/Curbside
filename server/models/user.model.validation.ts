@@ -1,7 +1,7 @@
 import { CustomError } from '../errors/CustomError.class';
 import { CustomErrorMessageObject } from '../errors/CustomErrorMessageObject.interface';
 import { FinalizeUserDTO, InitialUserDTO } from '../interfaces/users.interface.dto';
-import userQueries from '../queries/userQueries';
+import userQueries from '../queries/user.queries';
 
 export const usersModelErrorMessages = {
   noEmailVerified: 'No email-verified provided.',

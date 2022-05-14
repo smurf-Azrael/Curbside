@@ -6,7 +6,7 @@ import { ProfileDTO } from '../interfaces/profile.interface.dto';
 import { IUser } from '../interfaces/user.interface';
 import { FinalizeUserDTO, InitialUserDTO } from '../interfaces/users.interface.dto';
 import { prisma } from '../prisma/client';
-import listingsQueries from './listingsQueries';
+import listingsQueries from './listings.queries';
 import converterHelpers from './query-helpers/converter.helpers';
 
 export const createInitialUser = async (userDetails: InitialUserDTO): Promise<IUser> => {

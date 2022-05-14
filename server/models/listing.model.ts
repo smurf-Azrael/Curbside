@@ -3,9 +3,9 @@ import { LISTING_NOT_FOUND, UNKNOWN_SERVER_ERROR } from '../errors/SharedErrorMe
 import { IListing, IListingPackage } from '../interfaces/listing.interface';
 import { AddListingDTO, FinalizeListingDTO, GetListingQueryParams } from '../interfaces/listings.interface.dto';
 import { IUserInfoSelect } from '../interfaces/user.interface';
-import listingQueries from '../queries/listingQueries';
-import listingsQueries from '../queries/listingsQueries';
-import userQueries from '../queries/userQueries';
+import listingQueries from '../queries/listing.queries';
+import listingsQueries from '../queries/listings.queries';
+import userQueries from '../queries/user.queries';
 import { addListingInputValidation } from './listing.model.validation';
 import distanceHelpers from './model-helpers/distance.helpers';
 

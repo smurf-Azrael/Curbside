@@ -12,7 +12,7 @@ import { Server, Socket } from 'socket.io';
 import { socketListener } from './chat/socket';
 import { CustomError } from './errors/CustomError.class';
 import { USER_NOT_AUTHENTICATED } from './errors/SharedErrorMessages';
-import { getUserById } from './queries/userQueries';
+import { getUserById } from './queries/user.queries';
 import { auth } from 'firebase-admin';
 
 dotenv.config({ path: path.resolve(__dirname, `./config/${process.env.NODE_ENV}.env`) });
