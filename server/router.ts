@@ -1,10 +1,10 @@
 import { Request, Response, Router } from 'express';
-import usersController from './controllers/users.controller';
-import listingsController from './controllers/listings.controller';
+import usersController from './controllers/user.controller';
+import listingsController from './controllers/listing.controller';
 import { fullUserRequired, loginRequired } from './middlewares/login-required.middleware';
 import { PAGE_NOT_FOUND } from './errors/SharedErrorMessages';
-import chatsController from './controllers/chats.controller';
-import ratingsController from './controllers/ratings.controller';
+import chatsController from './controllers/chat.controller';
+import ratingsController from './controllers/rating.controller';
 
 export const router = Router();
 
