@@ -3,7 +3,7 @@ import { mocks } from '../../../mocks';
 import { server } from '../../index';
 import { AddRatingDTO } from '../../interfaces/rating.interface.dto';
 import { InitialUserDTO } from '../../interfaces/user.interface.dto';
-import { ratingModelErrorMessages } from '../../models/rating.model.validation';
+import { ratingModelErrorMessages } from '../../models/model-helpers/rating.model.validation';
 import { prisma } from '../../prisma/client';
 import { getTestIdToken } from '../test-helpers';
 

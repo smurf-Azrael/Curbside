@@ -6,6 +6,7 @@ import { AddListingDTO, FinalizeListingDTO } from '../../interfaces/listing.inte
 import { InitialUserDTO } from '../../interfaces/user.interface.dto';
 import { prisma } from '../../prisma/client';
 import { getTestIdToken } from '../test-helpers';
+
 export const listingsPatchTests = (): void => {
   describe('PATCH /listings/:id', () => {
     const mockInitialUserInput1: InitialUserDTO = {

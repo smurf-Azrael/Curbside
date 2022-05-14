@@ -6,7 +6,7 @@ import { IUserInfoSelect } from '../interfaces/user.interface';
 import listingQueries from '../queries/listing.queries';
 import ratingQueries from '../queries/rating.queries';
 import userQueries from '../queries/user.queries';
-import { addListingInputValidation } from './listing.model.validation';
+import { addListingInputValidation } from './model-helpers/listing.model.validation';
 import distanceHelpers from './model-helpers/distance.helpers';
 
 const addListing = async (listingDetails: AddListingDTO): Promise<IListing> => {

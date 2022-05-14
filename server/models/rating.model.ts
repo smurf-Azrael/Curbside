@@ -1,6 +1,6 @@
 import { AddRatingDTO, IRating } from '../interfaces/rating.interface.dto';
 import ratingsQueries from '../queries/rating.queries';
-import { addRatingInputValidation } from './rating.model.validation';
+import { addRatingInputValidation } from './model-helpers/rating.model.validation';
 
 export const addRating = async (ratingDetails: AddRatingDTO): Promise<IRating> => {
   try {
