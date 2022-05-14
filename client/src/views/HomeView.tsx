@@ -1,13 +1,13 @@
 // @ts-nocheck
 import { useApi } from "../contexts/ApiProvider"
 import { useEffect, useState, useRef, useCallback, KeyboardEvent } from "react"
-import { Link } from "react-router-dom";
-import ListingPreview from "../components/ListingPreview";
 import FiltersComponent from "../components/FiltersComponent";
 import '../styling/HomeView.scss';
 import LocationPreviewComponent from "../components/LocationPreviewComponent";
-import loader from '../assets/loader.gif';
 import AppBody from "../components/AppBody";
+import ButtonSmall from "../components/ButtonSmall";
+import MapListings from "../components/MapListings"
+import CardListings from "../components/CardListings";
 
 export default function HomeView() {
   const api = useApi()
@@ -144,16 +144,11 @@ export default function HomeView() {
           applyFilters={applyFilters}
           fields={fields}
         />
-        <div className='listings-container' >
-          {listings.map(listing => {
-            return (<Link key={listing.id} to={`/listing/${listing.id}`} style={{ textDecoration: "none", color: "black" }}>
-              <ListingPreview  listing={listing} />
-            </Link>)
-          })}
-          {!isLoading && listings.length === 0 && <p>No listing matched your request...</p>}
-          {loadingError && <p>Couldn't load listings :/</p>}
-          {isLoading && <img style={{ height: '20vw', maxHeight: '200px', borderRadius: '20px' }} src={loader} alt="Loading..." />}
+        <div className='listings-container'>
+          <CardListings listings={listings} isLoading={isLoading}/>
         </div>
+        <MapListings listings={listings}/>
+        <ButtonSmall content={"Map"} fill={false} />
       </div>
     </AppBody>
   )
