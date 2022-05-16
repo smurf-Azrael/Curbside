@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React from 'react'
 import { MapContainer, TileLayer, Circle, useMap } from 'react-leaflet';
 import SetProfileMapLayers from './SetProfileMapLayers';
@@ -7,7 +6,7 @@ import 'leaflet/dist/leaflet.css';
 
 function Map({ position, setPosition, radius }: mapSetUp) {
 
-  function ChangeView({ center, zoom }) {
+  function ChangeView({ center, zoom }:{ center:{lat: number, lng: number}, zoom: number }) {
     const map = useMap();
     map.setView(center, zoom);
     return null;
