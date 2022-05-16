@@ -1,7 +1,7 @@
 // @ts-nocheck
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
-import { Form, Col, Row, InputGroup, FormControl } from 'react-bootstrap';
+import { Form, InputGroup, FormControl } from 'react-bootstrap';
 import InputField from './InputField';
 import Button from 'react-bootstrap/Button';
 import Map from './SetProfileMap';
@@ -16,9 +16,9 @@ export default function LocationRadius({
   const urlSearch = 'https://nominatim.openstreetmap.org/search?format=json&q='
   const [radius, setRadius] = useState<number>(25);
   const [position, setPosition] = useState<{ lat: number, lng: number }>({ lat: 50.52, lng: 13.388 });
-  const [locationResult, setLocationResult] = useState<{ location: string | undefined, lat: string | undefined, lng: string | undefined }>({ location: undefined, lat: undefined, lng: undefined });
-  const [clickPosition, setClickPosition] = useState<{ lat: number | undefined, lng: number | undefined }>({ lat: undefined, lng: undefined });
-  const [address, setAddress] = useState<string>();
+  const [locationResult, setLocationResult] = useState<{ location: string | undefined, lat: string | undefined, lng: string | undefined }>({}); // location: undefined, lat: undefined, lng: undefined 
+  const [clickPosition, setClickPosition] = useState<{ lat: number | undefined, lng: number | undefined }>({  }); //lat: undefined, lng: undefined
+  const [address, setAddress] = useState<string>("");
 
   function pressEnter(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key === 'Enter') {
@@ -99,14 +99,13 @@ export default function LocationRadius({
           label='Location'
           type='location'
           value={address}
-          onChange={(e: any): void => setAddress(e.target.value)}
+          onChange={(e: any): void => setAddress(e.target.value[0].toUpperCase() + e.target.value.slice(1))}
           onKeyPress={(e: any) => pressEnter(e)}
         />
         <Form style={{ display: "flex", justifyContent: 'space-between', width: "100%", gap: '10px' }}>
           <div style={{ width: 'calc(100% - 110px - 20px)' }}>
             <Slider
               sx={{
-                width: 300,
                 color: '#357960',
               }}
               value={radius}
@@ -121,7 +120,7 @@ export default function LocationRadius({
               <FormControl
                 style={{ width: '30px' }}
                 value={radius}
-                onChange={e => setRadius(parseInt(e.target.value, 10) < 1 ? 1 : parseInt(e.target.value, 10))}
+                onChange={e => setRadius((parseInt(e.target.value, 10) < 1 || e.target.value === "") ? 1 : parseInt(e.target.value, 10))}
               />
               <InputGroup.Text style={{ width: '50px', marginRight: '0' }} id="basic-addon2">km</InputGroup.Text>
             </InputGroup>
