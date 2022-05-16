@@ -150,7 +150,7 @@ export default function HomeView() {
           {isLoading && <img style={{ height: '20vw', maxHeight: '200px', borderRadius: '20px' }} src={loader} alt="Loading..." />}
         </div>
         <div className="map-btn-float" style={{}} >
-          <RoundedButton content={<i class="bi bi-map"></i>}/>
+          <RoundedButton content={<i className="bi bi-map"></i>}/>
         </div>
       </div>
     </AppBody>
