@@ -3,14 +3,16 @@ import { initializeApp } from 'firebase-admin/app';
 import { auth, credential } from 'firebase-admin';
 import dotenv from 'dotenv';
 import path from 'path';
+// import config from '../config/config.json';
 dotenv.config({ path: path.resolve(__dirname, `../config/${process.env.NODE_ENV}.env`) });
 
 initializeApp({
   credential: credential.cert({
     projectId: process.env.FIREBASE_ADMIN_PROJECT_ID,
     clientEmail: process.env.FIREBASE_ADMIN_CLIENT_EMAIL,
-    privateKey: process.env.FIREBASE_ADMIN_PRIVATE_KEY
-  })
+    privateKey: process.env.FIREBASE_ADMIN_PRIVATE_KEY?.replace(/\\n/g, '\n')
+  }
+  )
 });
 
 export const authMiddleware = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
