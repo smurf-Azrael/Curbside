@@ -2,6 +2,7 @@
   border:none;
   border-radius:30px;
   background-color: rgba(127, 255, 212, 0.743);
+  background-color: #357960a2;
   width: fit-content;
   font-size:20px;
   height:60px;
@@ -10,4 +11,7 @@
 .map-button i{
 padding-right: 0;
 padding-top:1px;
+}
+.map-button p{
+  margin:0;
 }
