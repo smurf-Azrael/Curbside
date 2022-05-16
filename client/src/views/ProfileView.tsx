@@ -14,6 +14,8 @@ function ProfileView() {
   const [userListings, setUserListings] = useState([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [loadingError, setLoadingError] = useState<boolean>(false);
+  const [myListingsActive, setMyListingsActive] = useState<boolean>(true);
+  const [myFavoritesActive, setMyFavoritesActive] = useState<boolean>(false);
   const [user, setUser] = useState();
   const api = useApi();
   const navigate = useNavigate()
@@ -38,6 +40,16 @@ function ProfileView() {
     loadUserData();
   }, [api, navigate, id]);
 
+  const handleActivateMyListings = () => {
+    setMyListingsActive(true);
+    setMyFavoritesActive(false);
+  }
+
+  const handleActivateMyFavorites = () => {
+    setMyListingsActive(false);
+    setMyFavoritesActive(true);
+  }
+
   return user ? (
     <AppBody>
         <section className="ProfileView">
@@ -58,10 +70,15 @@ function ProfileView() {
             </div>
           </div>
           <nav className="profile-listings-shown-options-wrapper">
-              <div className="option-name" style={{ textAlign: "left" }}>My Listings</div>
-              <div className="option-name" style={{ textAlign: "left" }}>My Favorites</div>
+              <div onClick={handleActivateMyListings} className={`option-name ${myListingsActive === true ? 'active' : ''}`} >My Listings</div>
+              <div onClick={handleActivateMyFavorites} className={`option-name ${myFavoritesActive === true ? 'active' : ''}`} >My Favorites</div>
           </nav>
-          <CardListings listings={userListings} isLoading={isLoading} loadingError={loadingError}/>
+          {myListingsActive === true &&
+            <CardListings listings={userListings} isLoading={isLoading} loadingError={loadingError}/>
+          }
+          {myFavoritesActive === true &&
+            <div>My favorites not yet implemented</div>
+          }
         </section>
       </AppBody>
   ) : (<></>)

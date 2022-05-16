@@ -53,11 +53,17 @@
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
-    margin-top: 20px;
+    margin-top: 25px;
     width: 95%;
 
     .option-name {
       padding-right: 1.5rem;
+      text-align: left;
+      color: rgb(164, 164, 164);
+
+      &.active{
+        color: var(--main-green-color);
+      }
     }
   }
 }
