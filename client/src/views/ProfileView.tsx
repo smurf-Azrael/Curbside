@@ -6,12 +6,15 @@ import { useApi } from "../contexts/ApiProvider";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import ListingPreview from "../components/ListingPreview";
 import { Link } from "react-router-dom";
 import AppBody from "../components/AppBody";
+import CardListings from "../components/CardListings";
 
 function ProfileView() {
   const [userListings, setUserListings] = useState([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [loadingError, setLoadingError] = useState<boolean>(false);
+  const [activeListingSelection, setActiveListingSelection] = useState<ActiveListingSelection>({myListings: true, myFavorites: false});
   const [user, setUser] = useState();
   const api = useApi();
   const navigate = useNavigate()
@@ -19,20 +22,37 @@ function ProfileView() {
   const { currentUser } = useAuth();
 
   useEffect(() => {
-
     const loadUserData = async () => {
       const res = await api.get(`/users/${id}`);
       if (res.ok) {
         setUser(res.body.data.user);
         setUserListings(res.body.data.listings);
+        setLoadingError(false);
       } else {
         console.log("failing to load user listing data");
         navigate('/')
+        setLoadingError(false);
         // handleErrors
       }
+      setIsLoading(false);
     };
     loadUserData();
   }, [api, navigate, id]);
+
+  const handleActivateMyListings = () => {
+    setActiveListingSelection({
+      myListings: true,
+      myFavorites: false
+    })
+  }
+
+  const handleActivateMyFavorites = () => {
+    setActiveListingSelection({
+      myListings: false,
+      myFavorites: true
+    })
+  }
+
   return user ? (
     <AppBody>
         <section className="ProfileView">
@@ -44,7 +64,7 @@ function ProfileView() {
               />
             </div>
             <div className="profile-basic-info-edit-wrapper">
-              <p style={{ fontWeight: "bold" }}>
+              <p>
                 {user.firstName} {user.lastName[0]}.
               </p>
               <Link to="/set-profile">
@@ -52,24 +72,25 @@ function ProfileView() {
               </Link>
             </div>
           </div>
-          <div className="profile-favorites-wrapper">
-            <Link to="/favorites">
-              {currentUser && user.id === currentUser.id && <ButtonSmall content={"My favorites"} fill={false} />}
-            </Link>
-          </div>
-          <p style={{ textAlign: "left" }}>Listings</p>
-          <div className="profile-my-listings-wrapper">
-            {userListings.length > 0 &&
-              userListings.map((listing) => (
-                <div key={listing.id} className="listing-container">
-                  <ListingPreview  listing={listing} />
-                </div>
-              ))}
-          </div>
+          <nav className="profile-listings-shown-options-wrapper">
+              <div onClick={handleActivateMyListings} className={`option-name ${activeListingSelection.myListings === true ? 'active' : ''}`} >My Listings</div>
+              <div onClick={handleActivateMyFavorites} className={`option-name ${activeListingSelection.myFavorites === true ? 'active' : ''}`} >My Favorites</div>
+          </nav>
+          {activeListingSelection.myListings === true &&
+            <CardListings listings={userListings} isLoading={isLoading} loadingError={loadingError}/>
+          }
+          {activeListingSelection.myFavorites === true &&
+            <div>My favorites not yet implemented</div>
+          }
         </section>
       </AppBody>
   ) : (<></>)
 
+}
+
+interface ActiveListingSelection {
+  myListings: boolean,
+  myFavorites: boolean
 }
 
 export default ProfileView;
