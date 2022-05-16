@@ -4,6 +4,13 @@ import { Listing } from '../interfaces/Listing'
 import ListingPreview from './ListingPreview'
 import loader from '../assets/loader.gif';
 
+// @ts-ignore
+import('leaflet.markercluster/dist/leaflet.markercluster.js')
+// @ts-ignore
+import('leaflet.markercluster/dist/MarkerCluster.css')
+// @ts-ignore
+import('leaflet.markercluster/dist/MarkerCluster.Default.css')
+
 
 function CardListings({listings , isLoading,loadingError}:{listings:Listing[] , isLoading:boolean,loadingError:boolean}) {
   const listings4Display= listings.map(listing => {
