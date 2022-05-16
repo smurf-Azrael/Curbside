@@ -5,7 +5,6 @@ import SetProfileMapLayers from './SetProfileMapLayers';
 import 'leaflet/dist/leaflet.css';
 
 function Map({ position, setPosition, radius }: mapSetUp) {
-
   return (
     <section className='map-component' >
       {/* --- (5) Add leaflet map container --- */}

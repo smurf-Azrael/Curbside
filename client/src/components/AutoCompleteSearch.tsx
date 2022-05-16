@@ -63,7 +63,7 @@ interface TagProps extends ReturnType<AutocompleteGetTagProps> {
 }
 
 
-export default function AutoCompleteSearch({SetTagStack} : { SetTagStack: any }) {
+export default function AutoCompleteSearch({tagStack} : { tagStack: any }) {
   const [myList, setMyList] = useState([]);
 
   function Tag(props: TagProps) {
@@ -159,8 +159,6 @@ export default function AutoCompleteSearch({SetTagStack} : { SetTagStack: any })
     }
   `,
   );
-
-
   const {
     getRootProps,
     // getInputLabelProps,
@@ -180,7 +178,8 @@ export default function AutoCompleteSearch({SetTagStack} : { SetTagStack: any })
   });
 
   useEffect(() => {
-    SetTagStack(myList)
+    // SetTagStack(myList)
+    tagStack.current = myList;
   }, [myList])
 
   function addToList(item: string):any {
