@@ -1,7 +1,18 @@
+// change the theme of Bootstrap components
+$theme-colors: (
+  "primary": #357960,
+  "danger": #ff4136,
+  "info": #357960
+);
+
+// Import Bootstrap and its default variables
+@import '~bootstrap/scss/bootstrap.scss';
+
 :root{
   /* --main-green-color: #13C1AC; */
   --main-green-color: #357960;
   --main-background-color: #efeded;
+  --main-gray: rgb(136, 136, 136);
   --header-height: 60px;
   --footer-height: 60px;
 }
