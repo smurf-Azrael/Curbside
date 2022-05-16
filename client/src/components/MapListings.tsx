@@ -64,7 +64,7 @@ const MapListings = ({listings}:{listings:Listing[]}) => {
   
   return (
     <>
-      <div style={{width: '100vw', height: '100vh'}} id="mapId"></div>
+      <div style={{width: '100vw', height: '100vh', zIndex: "0"}} id="mapId"></div>
       {activeListing? <MapListingPreview activeListing={activeListing}/>: null}
     </>
     )
