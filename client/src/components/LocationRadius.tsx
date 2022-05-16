@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { Form, InputGroup, FormControl } from 'react-bootstrap';
 import InputField from './InputField';
@@ -10,15 +10,18 @@ import Slider from '@mui/material/Slider';
 export default function LocationRadius({
   locationIsVisible,
   closeLocationModal,
+  applyFilters,
+  locationGroupField,
   setLocationGroupField
 }: { [key: string]: any }) {
 
-  const urlSearch = 'https://nominatim.openstreetmap.org/search?format=json&q='
-  const [radius, setRadius] = useState<number>(25);
-  const [position, setPosition] = useState<{ lat: number, lng: number }>({ lat: 50.52, lng: 13.388 });
+  const urlSearch = 'https://nominatim.openstreetmap.org/search?format=json&q=';
+
+  const [radius, setRadius] = useState<number>(locationGroupField.radius);
+  const [position, setPosition] = useState<{ lat: number, lng: number }>({ lat: locationGroupField.latitude, lng: locationGroupField.longitude });
   const [locationResult, setLocationResult] = useState<{ location: string | undefined, lat: string | undefined, lng: string | undefined }>({}); // location: undefined, lat: undefined, lng: undefined 
-  const [clickPosition, setClickPosition] = useState<{ lat: number | undefined, lng: number | undefined }>({  }); //lat: undefined, lng: undefined
-  const [address, setAddress] = useState<string>("");
+  const [clickPosition, setClickPosition] = useState<{ lat: number | undefined, lng: number | undefined }>({}); //lat: undefined, lng: undefined
+  const [address, setAddress] = useState<string>(locationGroupField.address);
 
   function pressEnter(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key === 'Enter') {
@@ -49,14 +52,14 @@ export default function LocationRadius({
 
   useEffect(() => {
     if (clickPosition && clickPosition?.lat) {
-      const response = async () => {
+      const response = () => {
         const latCopy = clickPosition.lat?.toString();
         const lngCopy = clickPosition.lng?.toString();
         const positionLessAccurate = [
           latCopy?.slice(0, latCopy?.indexOf('.') + 5),
           lngCopy?.slice(0, lngCopy?.indexOf('.') + 5)
-        ]
-        await fetch(urlSearch + positionLessAccurate.join(','))
+        ];
+        fetch(urlSearch + positionLessAccurate.join(','))
           .then(res => res.json())
           .then(res => formatResponse(res))
           .then(res => (
@@ -71,24 +74,33 @@ export default function LocationRadius({
   }, [clickPosition])
 
   useEffect(() => {
-
     if (locationResult.lat && locationResult?.lng) {
       setPosition({ lat: parseFloat(locationResult?.lat, 10), lng: parseFloat(locationResult?.lng, 10) });
     }
   }, [locationResult]);
+  let booleanCheckApplyFilters = useRef(false);
 
   useEffect(() => {
-
-    if (position.lat && position.lng && address) {
-      const locationData = {
-        lat: position.lat,
-        lng: position.lng,
-        radius: radius,
-        address: address
-      }
-      setLocationGroupField(locationData)
+    setPosition({ lat: locationGroupField.latitude, lng: locationGroupField.longitude })
+    if (booleanCheckApplyFilters) {
+      applyFilters()
     }
-  }, [position, radius])
+    booleanCheckApplyFilters.current = false;
+  }, [locationGroupField])
+
+
+  function saveAndClose() {
+    console.log('saveed');
+
+    setLocationGroupField({
+      latitude: position.lat,
+      longitude: position.lng,
+      radius: radius,
+      address: address,
+      saved: true
+    });
+    booleanCheckApplyFilters.current = true;
+  }
 
   return (
     <Modal show={locationIsVisible} onHide={closeLocationModal}>
@@ -129,7 +141,7 @@ export default function LocationRadius({
         {position?.lat && position?.lng && <Map position={position} setPosition={setClickPosition} radius={radius} />}
       </Modal.Body>
       <Modal.Footer>
-        <Button variant='primary' onClick={closeLocationModal}>Save</Button>
+        <Button variant='primary' onClick={saveAndClose}>Save</Button>
       </Modal.Footer>
     </Modal>
   )
