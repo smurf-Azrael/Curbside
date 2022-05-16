@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import express, { Request, Response, NextFunction } from 'express';
+import express from 'express';
 import cors from 'cors';
 import logger from 'morgan';
 import path from 'path';
@@ -50,19 +50,24 @@ socketListener(io);
 app.use(express.json());
 app.use(logger('dev'));
 app.use(authMiddleware);
-app.use(express.static(path.join(__dirname, '../client/build')));
-
-app.get('/', (req: Request, res: Response, next: NextFunction): void => {
-  try {
-    res.sendFile(path.join(__dirname, '../client/build', '../client/build/index.html'));
-  } catch (e) {
-    console.log(e);
-    next(e);
-  }
-});
 
 app.use('/api', router);
 app.use(router);
+app.use(express.static(path.join(__dirname, '../client/build')));
+// app.get('/', (req: Request, res: Response, next: NextFunction): void => {
+//   try {
+//     res.sendFile(path.join(__dirname, '../client/build', '../client/build/index.html'));
+//   } catch (e) {
+//     console.log(e);
+//     next(e);
+//   }
+// });
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build/index.html'));
+});
 
 app.use(errorHandler);
-export const server = httpServer.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT} 🚀`));
+export const server = httpServer.listen(PORT, () => {
+  console.log(`🚀 Server running on http://localhost:${PORT} 🚀`);
+});

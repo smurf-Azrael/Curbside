@@ -5,7 +5,7 @@ import { useApi } from '../contexts/ApiProvider';
 import { useAuth } from '../contexts/AuthContext';
 import InputField from '../components/InputField';
 import Map from '../components/SetProfileMap';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import '../styling/SetProfileView.scss';
 import Header from '../components/Header';
 import { User } from '../interfaces/User'
@@ -19,17 +19,12 @@ export default function SetProfileView() {
 
   const api = useApi();
   const {currentUser} = useAuth();
+  const { id } = useParams();
   const navigate = useNavigate();
-
-  useEffect(()=>{
-    if (!currentUser) {
-      navigate('/')
-    }
-  }, [currentUser, navigate])
 
   useEffect(() => {
     const loadUserData = async () => {
-      const res = await api.get(`/users/${currentUser!.id}`);
+      const res = await api.get(`/users/${id}`);
       if (res.ok) {
         setUser(res.body.data.user);
         setPosition({lng:res.body.data.user.longitude, lat:res.body.data.user.latitude})
@@ -40,7 +35,7 @@ export default function SetProfileView() {
       }
     };
     loadUserData();
-  }, [api, currentUser, navigate])
+  }, [api, id, navigate])
 
   async function handleSubmit (event: FormEvent) {
     event.preventDefault();
