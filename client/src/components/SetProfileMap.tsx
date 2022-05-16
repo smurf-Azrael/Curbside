@@ -12,8 +12,8 @@ function Map({ position, setPosition, radius }: mapSetUp) {
       <div className='map' id='map' >
         {/* @ts-ignore:next-line */}
         <MapContainer
-          center={{ lng: 13.38, lat: 52.51 }}
-          zoom={11}
+          center={position}
+          zoom={12}
           scrollWheelZoom={true}
           style={{ height: '300px', width: '100%' }}
         >
