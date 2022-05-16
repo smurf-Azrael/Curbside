@@ -3,7 +3,7 @@
   flex-direction: column;
   background-color: #ffffff;
   border-radius: 10px;
-  min-width: 150px;
+  flex-grow: 1;
   margin: 5px;
 
   .card-product-image-holder {
@@ -35,9 +35,10 @@
 
     .product-info-title {
       text-align: left;
-      font-weight: bold;
+      font-weight: 500;
       margin-bottom: 7px;
       line-height: 1.3em;
+      word-break: break-all;
 
 
       &.max-two-lines {
@@ -56,6 +57,7 @@
       text-align: left;
       padding-bottom: 5px;
       margin-bottom: 3px;
+      word-break: break-all;
 
       &.max-three-lines {
         overflow: hidden;
