@@ -6,18 +6,12 @@ import { Listing } from '../interfaces/Listing';
 import * as L from 'leaflet';
 import ReactDOM from 'react-dom'
 import 'leaflet.markercluster';
-import cluster from 'cluster';
 // @ts-ignore
 import('leaflet.markercluster/dist/leaflet.markercluster.js')
 // @ts-ignore
 import('leaflet.markercluster/dist/MarkerCluster.css')
 // @ts-ignore
 import('leaflet.markercluster/dist/MarkerCluster.Default.css')
-
-const customIcon = new Icon({
-  iconUrl: "/icons8-select-24.png",
-  iconSize: [17, 17]
-})
 
 const MapListings = ({listings}:{listings:Listing[]}) => {
   const [activeListing, setActiveListing] = useState<Listing | null>(null)
@@ -27,7 +21,6 @@ const MapListings = ({listings}:{listings:Listing[]}) => {
 
   useEffect(()=>{
     clusterLayer.current?.remove();
-
 
     if(!map.current){
       return;
@@ -61,23 +54,6 @@ const MapListings = ({listings}:{listings:Listing[]}) => {
     L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {maxZoom: 17}).addTo(map.current)
   },[])
   
-
-  // const listingMarkers = listings.map(listing=>{
-  //   let markerPosition  : {lat: number, lng: number} = {lat: listing.latitude, lng: listing.longitude}
-  //   return <Marker 
-  //     position={markerPosition} 
-  //     icon={customIcon} 
-  //     key={listing.id}
-  //     eventHandlers={{
-  //       click: (e) => {
-  //         console.log('marker clicked', e)
-  //         setActiveListing(listing)
-  //       },
-  //     }}
-  //     />
-  // })
-
-  const {userPosition} : {userPosition: {lat: number, lng: number} }= {userPosition: {lat: 52.5200, lng: 13.4050 }}
   return (
     <div style={{width: '100vh', height: '100vh'}} id="mapId">
     </div>
