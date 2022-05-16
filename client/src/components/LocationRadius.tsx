@@ -1,4 +1,3 @@
-//@ts-nocheck
 import React, { useState, useEffect, useRef } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { Form, InputGroup, FormControl } from 'react-bootstrap';
@@ -19,15 +18,15 @@ export default function LocationRadius({
   const booleanCheckApplyFilters = useRef(false);
   const [radius, setRadius] = useState<number>(locationGroupField.radius);
   const [position, setPosition] = useState<{ lat: number , lng: number }>({ lat: locationGroupField.latitude, lng: locationGroupField.longitude });
-  const [locationResult, setLocationResult] = useState<{ location: string | undefined, lat: string | undefined, lng: string | undefined }>({}); // location: undefined, lat: undefined, lng: undefined 
-  const [clickPosition, setClickPosition] = useState<{ lat: number | undefined, lng: number | undefined }>({}); //lat: undefined, lng: undefined
+  const [locationResult, setLocationResult] = useState<{ location: string | undefined, lat: string | undefined, lng: string | undefined }>({location: undefined, lat: undefined, lng: undefined}); // location: undefined, lat: undefined, lng: undefined 
+  const [clickPosition, setClickPosition] = useState<{ lat: number | undefined, lng: number | undefined }>({lat: undefined, lng: undefined}); //lat: undefined, lng: undefined
   const [address, setAddress] = useState<string>(locationGroupField.address);
 
   useEffect(() => {
     if (clickPosition && clickPosition?.lat) {
       const response = () => {
-        const latCopy = clickPosition.lat?.toString();
-        const lngCopy = clickPosition.lng?.toString();
+        const latCopy = clickPosition.lat!.toString();
+        const lngCopy = clickPosition.lng!.toString();
         const positionLessAccurate = [
           latCopy?.slice(0, latCopy?.indexOf('.') + 5),
           lngCopy?.slice(0, lngCopy?.indexOf('.') + 5)
@@ -39,7 +38,7 @@ export default function LocationRadius({
             setAddress(res.display_name)
           ))
           .then(() => {
-            setPosition(clickPosition)
+            setPosition({lat: parseFloat(latCopy), lng: parseFloat(lngCopy)})
           });
       };
       response();
@@ -48,7 +47,7 @@ export default function LocationRadius({
 
   useEffect(() => {
     if (locationResult.lat && locationResult?.lng) {
-      setPosition({ lat: parseFloat(locationResult?.lat, 10), lng: parseFloat(locationResult?.lng, 10) });
+      setPosition({ lat: parseFloat(locationResult?.lat), lng: parseFloat(locationResult?.lng) });
     }
   }, [locationResult]);
 
@@ -119,7 +118,9 @@ export default function LocationRadius({
               defaultValue={10}
               aria-label="Small"
               valueLabelDisplay="auto"
-              onChange={e => setRadius(parseInt(e.target.value, 10) < 1 ? 1 : parseInt(e.target.value, 10))}
+              onChange={(e) => {
+                setRadius(parseInt((e.target as HTMLInputElement).value, 10) < 1 ? 1 : parseInt((e.target as HTMLInputElement).value, 10))
+              }}
             />
           </div>
           <div style={{ minWidth: "100px" }}>
