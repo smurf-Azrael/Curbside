@@ -33,7 +33,7 @@ export default function FiltersComponent({ filtersAreVisible, closeFiltersModal,
           <Form.Group className="auto-complete-search-frame">
             <Form.Label> Category </Form.Label>
             <FormControl>
-              <AutoCompleteSearch SetTagStack={fields.SetTagStack} />
+              <AutoCompleteSearch tagStack={fields.tagStack} />
             </FormControl>
           </Form.Group>
 
