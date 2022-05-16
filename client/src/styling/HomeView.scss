@@ -34,9 +34,9 @@
         i {
           margin: 0 8px;
         }
-        
+
       }
-    
+
     }
 
     .search-bar-container {
@@ -45,43 +45,28 @@
       border-radius: 24px;
       background-color: white;
       padding: 8px;
-  
+
       button {
         border: none;
         background-color: transparent;
         width: 8%;
       }
-  
+
       i {
         margin-top: 5px;
       }
-  
+
       input {
         width: 90%;
         border: none;
       }
-  
+
       input:focus-visible {
         outline: none;
       }
     }
-  
   }
 
-
-  .listings-container {
-    display: flex;
-    flex-wrap: wrap;
-    width: 96%;
-    max-width: 500px;
-    justify-content: flex-start;
-    margin: 0;
-
-    a {
-      display: inline-flex;
-      width: 50%;
-    }
-  }
   .map-btn-float{
     position:fixed;
     // width:60px;
