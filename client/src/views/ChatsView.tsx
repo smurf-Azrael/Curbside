@@ -6,7 +6,7 @@ import { useAuth } from '../contexts/AuthContext';
 import '../styling/ChatsView.scss';
 
 const ChatsView = () => {
-  const auth = useAuth();
+  const { currentUser } = useAuth();
   const [chats, setChats] = useState<ChatPreview[]>([]);
   const api = useApi();
   const navigate = useNavigate();
@@ -17,18 +17,20 @@ const ChatsView = () => {
       console.log(res);
       if (res.ok) {
         setChats(res.body.data);
+        console.log(res.body.data)
       } else {
         console.log('failing to load user chats data');
         // handleErrors
       }
     };
     loadUserData();
-  }, [api]);
+  }, [api, currentUser]);
   return (
     <AppBody>
       <div className='ChatsView'>
         {chats.map((chat) => (
           <div
+            className='chatElement'
             key={chat.id}
             onClick={() => navigate(`/chats/${chat.listingId}`, {state:{ 
               photoUrls: chat.listingPhotoUrls,
@@ -42,12 +44,11 @@ const ChatsView = () => {
               status: chat.listingStatus 
             }})}
           >
-            <div className="chat-element">
-              <img className="image-preview" src={chat.listingPhotoUrls[0]} alt="product sold" />
-              <div className="info-container">
-                <div className="top-info">
-                  <p>{auth.currentUser?.id === chat.buyerId ? `${chat.sellerFirstName} ${chat.sellerLastName[0]}.` : chat.buyerName}</p>
-                  <p>
+              <div className="imagePreview" style={{backgroundImage: `url("${chat.listingPhotoUrls[0]}")`}} />
+              <div className="infoContainer">
+                <div className="topInfo">
+                  <p className='userName'>{currentUser?.id === chat.buyerId ? `${chat.sellerFirstName} ${chat.sellerLastName[0]}.` : chat.buyerName}</p>
+                  <p className='date'>
                     {new Date(chat.updatedAt).toLocaleDateString('en-BE', {
                       month: 'short',
                       day: '2-digit',
@@ -56,11 +57,10 @@ const ChatsView = () => {
                     })}
                   </p>
                 </div>
-                <p className="listing-title">{chat.listingTitle}</p>
-                <p>{chat.lastMessage.body}</p>
+                <p className="listingTitle">{chat.listingTitle}</p>
+                <p className='lastMessage'>{chat.lastMessage.body}</p>
               </div>
             </div>
-          </div>
         ))}
       </div>
     </AppBody>
