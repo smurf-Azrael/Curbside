@@ -15,7 +15,7 @@ export default function LocationRadius({
 
   const urlSearch = 'https://nominatim.openstreetmap.org/search?format=json&q='
   const [radius, setRadius] = useState<number>(25);
-  const [position, setPosition] = useState<{ lat: number, lng: number }>({ lat: 50, lng: 10 });
+  const [position, setPosition] = useState<{ lat: number, lng: number }>({ lat: 50.52, lng: 13.388 });
   const [locationResult, setLocationResult] = useState<{ location: string | undefined, lat: string | undefined, lng: string | undefined }>({ location: undefined, lat: undefined, lng: undefined });
   const [clickPosition, setClickPosition] = useState<{ lat: number | undefined, lng: number | undefined }>({ lat: undefined, lng: undefined });
   const [address, setAddress] = useState<string>();
