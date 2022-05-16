@@ -10,6 +10,8 @@ import AppBody from "../components/AppBody";
 import ButtonSmall from "../components/ButtonSmall";
 import MapListings from "../components/MapListings"
 import CardListings from "../components/CardListings";
+import { Link } from 'react-router-dom'
+import { Listing } from '../interfaces/Listing'
 
 export default function HomeView() {
   const api = useApi()
@@ -134,10 +136,6 @@ export default function HomeView() {
           applyFilters={applyFilters}
           fields={fields}
         />
-<<<<<<< HEAD
-        <div className='listings-container'>
-          <CardListings listings={listings} isLoading={isLoading}/>
-=======
         <LocationRadius
             locationIsVisible={locationIsVisible}
             closeLocationModal={closeLocationModal}
@@ -152,7 +150,6 @@ export default function HomeView() {
           {!isLoading && listings.length === 0 && <p>No listing matched your request...</p>}
           {loadingError && <p>Couldn't load listings :/</p>}
           {isLoading && <img style={{ height: '20vw', maxHeight: '200px', borderRadius: '20px' }} src={loader} alt="Loading..." />}
->>>>>>> 6272e8df847c2cd1e08a6341ec5d3a222b3af4ec
         </div>
         <MapListings listings={listings}/>
         <ButtonSmall content={"Map"} fill={false} />
