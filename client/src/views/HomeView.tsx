@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useApi } from "../contexts/ApiProvider"
 import { useEffect, useState, useRef, useCallback, KeyboardEvent } from "react"
 import { Link } from "react-router-dom";
@@ -11,12 +10,13 @@ import LocationPreviewComponent from "../components/LocationPreviewComponent";
 import loader from '../assets/loader.gif';
 import AppBody from "../components/AppBody";
 import { useAuth } from '../contexts/AuthContext';
+import { LocationGroupInterface } from "../interfaces/LocationGroup";
 
 export default function HomeView() {
   const api = useApi();
   const loadUserLocation = async () => {
     const res = await api.get(`/users/${currentUser?.id}`);
-    let userLocation = {};
+    let userLocation ;
     if (res.ok) {
       userLocation = {
         latitude: res.body.data.user.latitude,
@@ -42,11 +42,11 @@ export default function HomeView() {
   const [locationIsVisible, setLocationIsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [loadingError, setLoadingError] = useState<boolean>(false);
-  const tagStack = useRef([]);
+  const tagStack = useRef<string[]>([]);
 
   const { currentUser } = useAuth();
 
-  const [locationGroupField, setLocationGroupField] = useState<any[]>({
+  const [locationGroupField, setLocationGroupField] = useState<{ latitude: number; longitude: number; radius: number; address: string; }>({
     latitude: 52.04,
     longitude: 13.03,
     radius: 25,
@@ -54,17 +54,18 @@ export default function HomeView() {
   });
 
 
-  const tagsField = useRef<{ [key: string]: string }>({}) // categories need to be decided {catName: false, }
+  // const tagsField = useRef<{ [key: string]: string }>({}) // categories need to be decided {catName: false, }
   const sortByField = useRef<HTMLSelectElement>(null);
   const maxPriceField = useRef<HTMLInputElement>(null);
   const minPriceField = useRef<HTMLInputElement>(null);
   const conditionField = useRef<HTMLSelectElement>(null);
-  const fields = { tagsField, sortByField, maxPriceField, minPriceField, conditionField, tagStack };
+  const fields = { sortByField, maxPriceField, minPriceField, conditionField, tagStack };
 
   const offset = useRef<number>(0);
   const searchField = useRef<HTMLInputElement>(null);
 
-  const getListings = useCallback(async (offset: number, locationGroupField) => {
+  const getListings = useCallback(async (offset: number, locationGroupField: LocationGroupInterface) => {
+    console.log('tagsField.current', tagStack.current)
     const longitude = locationGroupField?.longitude || 13.38 //CHANGE TO PULL FROM SOMEWHERE
     const latitude = locationGroupField?.latitude || 52.52 // CHANGE TO PULL FROM SOMEWHERE
     const radius = locationGroupField?.radius || 50;
@@ -125,7 +126,7 @@ export default function HomeView() {
 
   useEffect(() => {
     const loadData = async () => {
-      const res = await getListings(0);
+      const res = await getListings(0, locationGroupField);
       if (res.ok) {
         offset.current = res.body.data.offset;
         setListings(res.body.data.listings);
@@ -148,7 +149,7 @@ export default function HomeView() {
 
 function pressEnter(event: KeyboardEvent<HTMLInputElement>): any {
   if (event.key === 'Enter') {
-    loadData();
+    handleSearch();
   }
 }
 

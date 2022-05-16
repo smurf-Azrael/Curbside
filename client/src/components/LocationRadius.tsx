@@ -1,4 +1,4 @@
-// @ts-nocheck
+//@ts-nocheck
 import React, { useState, useEffect, useRef } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { Form, InputGroup, FormControl } from 'react-bootstrap';
@@ -18,7 +18,7 @@ export default function LocationRadius({
   const urlSearch = 'https://nominatim.openstreetmap.org/search?format=json&q=';
   const booleanCheckApplyFilters = useRef(false);
   const [radius, setRadius] = useState<number>(locationGroupField.radius);
-  const [position, setPosition] = useState<{ lat: number, lng: number }>({ lat: locationGroupField.latitude, lng: locationGroupField.longitude });
+  const [position, setPosition] = useState<{ lat: number , lng: number }>({ lat: locationGroupField.latitude, lng: locationGroupField.longitude });
   const [locationResult, setLocationResult] = useState<{ location: string | undefined, lat: string | undefined, lng: string | undefined }>({}); // location: undefined, lat: undefined, lng: undefined 
   const [clickPosition, setClickPosition] = useState<{ lat: number | undefined, lng: number | undefined }>({}); //lat: undefined, lng: undefined
   const [address, setAddress] = useState<string>(locationGroupField.address);
