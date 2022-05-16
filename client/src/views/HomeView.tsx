@@ -8,6 +8,7 @@ import '../styling/HomeView.scss';
 import LocationPreviewComponent from "../components/LocationPreviewComponent";
 import AppBody from "../components/AppBody";
 import CardListings from "../components/CardListings";
+import MapListings from "../components/MapListings";
 
 
 
@@ -139,8 +140,8 @@ export default function HomeView() {
           closeLocationModal={closeLocationModal}
           setLocationGroupField={setLocationGroupField}
         />
-        <CardListings listings={listings} isLoading={isLoading} loadingError={loadingError}/>
-        
+        {/* <CardListings listings={listings} isLoading={isLoading} loadingError={loadingError}/> */}
+        <MapListings listings={listings}/>
         <div className="map-btn-float" style={{}} >
           <RoundedButton content={<i className="bi bi-map"></i>}/>
         </div>
