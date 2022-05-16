@@ -16,7 +16,7 @@ export default function LocationRadius({
 
   const urlSearch = 'https://nominatim.openstreetmap.org/search?format=json&q=';
   const booleanCheckApplyFilters = useRef(false);
-  const [radius, setRadius] = useState<number>(locationGroupField.radius);
+  const [radius, setRadius] = useState<number >(locationGroupField.radius);
   const [position, setPosition] = useState<{ lat: number , lng: number }>({ lat: locationGroupField.latitude, lng: locationGroupField.longitude });
   const [locationResult, setLocationResult] = useState<{ location: string | undefined, lat: string | undefined, lng: string | undefined }>({location: undefined, lat: undefined, lng: undefined}); // location: undefined, lat: undefined, lng: undefined 
   const [clickPosition, setClickPosition] = useState<{ lat: number | undefined, lng: number | undefined }>({lat: undefined, lng: undefined}); //lat: undefined, lng: undefined
@@ -60,7 +60,7 @@ export default function LocationRadius({
   }, [locationGroupField])
 
   function pressEnter(event: React.KeyboardEvent<HTMLInputElement>) {
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && address) {
       getCityInformation(address)
     }
   }
@@ -104,8 +104,9 @@ export default function LocationRadius({
           name="location"
           label='Location'
           type='location'
+          placeholder='Search...'
           value={address}
-          onChange={(e: any): void => setAddress(e.target.value[0].toUpperCase() + e.target.value.slice(1))}
+          onChange={(e: any): void => setAddress(e.target.value ? e.target.value[0].toUpperCase() + e.target.value.slice(1) : "")}
           onKeyPress={(e: any) => pressEnter(e)}
         />
         <Form style={{ display: "flex", justifyContent: 'space-between', width: "100%", gap: '10px' }}>
@@ -127,8 +128,9 @@ export default function LocationRadius({
             <InputGroup >
               <FormControl
                 style={{ width: '30px' }}
-                value={radius}
-                onChange={e => setRadius((parseInt(e.target.value, 10) < 1 || e.target.value === "") ? 1 : parseInt(e.target.value, 10))}
+                value={radius || ""}
+                onChange={e => setRadius(e.target.value ? parseInt(e.target.value, 10) : 0)}
+                // onChange={e => setRadius((parseInt(e.target.value, 10) < 1 || e.target.value === "") ? 1 : parseInt(e.target.value, 10))}
               />
               <InputGroup.Text style={{ width: '50px', marginRight: '0' }} id="basic-addon2">km</InputGroup.Text>
             </InputGroup>
