@@ -5,6 +5,7 @@ import { Listing } from '../interfaces/Listing';
 import * as L from 'leaflet';
 import ReactDOM from 'react-dom'
 import 'leaflet.markercluster';
+import MapListingPreview from './MapListingPreview';
 // @ts-ignore
 import('leaflet.markercluster/dist/leaflet.markercluster.js')
 // @ts-ignore
@@ -64,6 +65,7 @@ const MapListings = ({listings}:{listings:Listing[]}) => {
   return (
     <>
       <div style={{width: '100vw', height: '100vh'}} id="mapId"></div>
+      {activeListing? <MapListingPreview activeListing={activeListing}/>: null}
     </>
     )
 }

@@ -1,3 +1,5 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap-icons/font/bootstrap-icons.css";
 import './App.scss';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ApiProvider from './contexts/ApiProvider';
@@ -12,6 +14,7 @@ import ProfileView from './views/ProfileView';
 import ChatView from './views/ChatView';
 import ListingDetailView from './views/ListingDetailView';
 import ChatsView from './views/ChatsView';
+import { listingChatPreview } from './interfaces/Listing';
 
 function App() {
   return (
@@ -27,12 +30,11 @@ function App() {
               <Route path="/signup" element={<SignupView />} />
               <Route path="/verify" element={<VerifyView />} />
               <Route path="/set-profile" element={<SetProfileView />} />
-              <Route path="/listing/:listingId/chat/:buyerId" element={<ChatView />} />
-              <Route path="/listing/:listingId/chat" element={<ChatView />} />
               <Route path="/listing/:id" element={<ListingDetailView />} />
               <Route path="/profile/:id" element={<ProfileView />} />
               <Route path="/favorites" />
               <Route path="/chats" element={<ChatsView />} />
+              <Route path="/chats/:listingId" element={<ChatView />} />
               <Route path="/add-listing" element={<AddListingView />} />
             </Routes>
           </AuthProvider>

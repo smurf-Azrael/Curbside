@@ -25,7 +25,8 @@ export const socketListener = (io: Server): Server => io.on('connection', (socke
     if (chatId) {
       const message = await prisma.message.create({ data: { body, chatId, senderId } });
       cb({ ok: true, data: { chatId, message } });
-      io.in(chatId!).emit('messageResponse', { ok: true, data: { message } });
+      // io.in(chatId!).emit('messageResponse', { ok: true, data: { message } });
+      socket.to(chatId!).emit('messageResponse', { ok: true, data: { message } });
     }
   });
 

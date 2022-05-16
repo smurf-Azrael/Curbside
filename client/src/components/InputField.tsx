@@ -8,6 +8,7 @@ export default function InputField({
   label,
   type,
   placeholder,
+  defaultValue,
   error,
   fieldref,
   as,
@@ -27,6 +28,7 @@ export default function InputField({
         multiple={multiple}
         type={type || 'text'}
         placeholder={placeholder}
+        defaultValue={defaultValue}
         ref={fieldref}
         as={as}
         required={required}
@@ -47,6 +49,7 @@ interface inputInterface {
   label?: string;
   type?: string;
   placeholder?: string;
+  defaultValue?: string;
   error?: string;
   fieldref?: MutableRefObject<HTMLInputElement | null>;
   as?: ElementType<any> | undefined;

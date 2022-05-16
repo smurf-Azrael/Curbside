@@ -1,6 +1,5 @@
-//@ts-nocheck
 import React, { useState, useEffect } from 'react'
-import { useParams, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useApi } from "../contexts/ApiProvider";
 import '../styling/ListingDetailView.scss';
 import ButtonWide from '../components/ButtonWide';
@@ -8,20 +7,20 @@ import SimpleMap from '../components/SimpleMap';
 import ImageCarousel from '../components/ImageCarousel';
 import { useAuth } from '../contexts/AuthContext';
 import AppBody from '../components/AppBody';
-// import { Listing } from '../interfaces/Listing';
+import { Listing } from '../interfaces/Listing';
 
 const ListingDetailView = () => {
   // Need to add heart button functionality
-  const [listing, setListing] = useState();
+  const [listing, setListing] = useState<Listing>();
   const api = useApi();
   const { currentUser } = useAuth();
   const {id} = useParams();
+  const navigate = useNavigate()
 
   useEffect(() => {
     const loadListingData = async () => {
       const res = await api.get(`/listings/${id}`);
       if (res.ok) {
-        console.log(res.body.data.listing)
         setListing(res.body.data.listing);
       } else {
         console.log('failing to load listing data');
@@ -43,24 +42,22 @@ const ListingDetailView = () => {
           </section>
         </section>
           {currentUser && listing.userId !== currentUser.id ? (<section className='listing-button-wrapper'>
-            <Link to={`/listing/${id}/chat`} >
-              <ButtonWide content={'Start a chat to buy'} fill={true} />
-            </Link>
+            <ButtonWide clickFunction={() => navigate(`/chats/${listing.id}`, {state: listing})} content={'Start a chat to buy'} fill={true} />
           </section>) : '' }
         <section className='listing-details-gallery-wrapper'>
           <ImageCarousel carouselItems={listing.photoUrls} />
         </section>
         <section className='listing-details-data-wrapper'>
           <div className='price-favorite-button-wrapper'>
-            <h4 style={{fontWeight:"bold", fontSize:"2rem"}}>{`${(listing.priceInCents / 100).toLocaleString('en-US')} ${listing.currency.toUpperCase()}`}</h4>
-            <i className="bi bi-heart-fill" style={{fontSize:"1.9rem", color:"gray"}}></i>
+            <h4>{`${(listing.priceInCents / 100).toLocaleString('en-US', { style: 'currency', currency: 'EUR' })}`}</h4>
+            <i className="bi bi-heart-fill" ></i>
           </div>
-          <h4 style={{fontWeight:"bold"}}>{listing.title}</h4>
-          <p><span style={{fontWeight:"bold", color:"gray"}}>Condition:</span>{listing.condition === 'gentlyUsed' ? 'gently used': listing.condition}</p>
-          <p><span style={{fontWeight:"bold", color:"gray"}}>Description: </span>{listing.description}</p>
-          <p style={{fontWeight:"bold", color:"gray"}}>Location: </p>
+          <h4>{listing.title}</h4>
+          <p><span className='listing-detail-title'>Condition:</span>{listing.condition === 'gentlyUsed' ? 'gently used': listing.condition}</p>
+          <p><span className='listing-detail-title'>Description: </span>{listing.description}</p>
+          <p className='listing-detail-title'>Location: </p>
         </section>
-        <SimpleMap position={{lng: listing.longitude, lat: listing.latitude}} />
+        <SimpleMap position={{lng: listing.longitude, lat: listing.latitude}} radius={1} />
       </section>
     </AppBody>
   ) : (

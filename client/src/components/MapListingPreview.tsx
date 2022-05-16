@@ -1,6 +1,8 @@
 import React from 'react'
+import { Listing } from '../interfaces/Listing';
 
-function MapListingPreview() {
+
+function MapListingPreview({activeListing}: {activeListing:Listing}) {
   return (
     <div>MapListingPreview</div>
   )

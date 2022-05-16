@@ -3,7 +3,7 @@ export interface Listing {
   createdAt: Date,
   currency: string,
   description: string,
-  id: number,
+  id: string,
   latitude: number,
   longitude: number,
   photoUrls: string[],
@@ -15,4 +15,16 @@ export interface Listing {
   userId: string,
   userLastName: string,
   userPhotoUrl: string,
+}
+
+export interface listingChatPreview {
+  id: string,
+  title: string, 
+  buyerId?: string, 
+  sellerId: string, 
+  userFirstName:string,
+  userLastName:string,
+  photoUrls: string[],
+  status: string,
+  priceInCents: number
 }

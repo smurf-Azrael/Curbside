@@ -1,7 +1,6 @@
-// @ts-nocheck
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Modal from 'react-bootstrap/Modal';
-import { Form, Col, Row, InputGroup, FormControl } from 'react-bootstrap';
+import { Form, InputGroup, FormControl } from 'react-bootstrap';
 import InputField from './InputField';
 import Button from 'react-bootstrap/Button';
 import Map from './SetProfileMap';
@@ -10,18 +9,58 @@ import Slider from '@mui/material/Slider';
 export default function LocationRadius({
   locationIsVisible,
   closeLocationModal,
+  applyFilters,
+  locationGroupField,
   setLocationGroupField
 }: { [key: string]: any }) {
 
-  const urlSearch = 'https://nominatim.openstreetmap.org/search?format=json&q='
-  const [radius, setRadius] = useState<number>(25);
-  const [position, setPosition] = useState<{ lat: number, lng: number }>({ lat: 50.52, lng: 13.388 });
-  const [locationResult, setLocationResult] = useState<{ location: string | undefined, lat: string | undefined, lng: string | undefined }>({ location: undefined, lat: undefined, lng: undefined });
-  const [clickPosition, setClickPosition] = useState<{ lat: number | undefined, lng: number | undefined }>({ lat: undefined, lng: undefined });
-  const [address, setAddress] = useState<string>();
+  const urlSearch = 'https://nominatim.openstreetmap.org/search?format=json&q=';
+  const booleanCheckApplyFilters = useRef(false);
+  const [radius, setRadius] = useState<number >(locationGroupField.radius);
+  const [position, setPosition] = useState<{ lat: number , lng: number }>({ lat: locationGroupField.latitude, lng: locationGroupField.longitude });
+  const [locationResult, setLocationResult] = useState<{ location: string | undefined, lat: string | undefined, lng: string | undefined }>({location: undefined, lat: undefined, lng: undefined}); // location: undefined, lat: undefined, lng: undefined 
+  const [clickPosition, setClickPosition] = useState<{ lat: number | undefined, lng: number | undefined }>({lat: undefined, lng: undefined}); //lat: undefined, lng: undefined
+  const [address, setAddress] = useState<string>(locationGroupField.address);
+
+  useEffect(() => {
+    if (clickPosition && clickPosition?.lat) {
+      const response = () => {
+        const latCopy = clickPosition.lat!.toString();
+        const lngCopy = clickPosition.lng!.toString();
+        const positionLessAccurate = [
+          latCopy?.slice(0, latCopy?.indexOf('.') + 5),
+          lngCopy?.slice(0, lngCopy?.indexOf('.') + 5)
+        ];
+        fetch(urlSearch + positionLessAccurate.join(','))
+          .then(res => res.json())
+          .then(res => formatResponse(res))
+          .then(res => (
+            setAddress(res.display_name)
+          ))
+          .then(() => {
+            setPosition({lat: parseFloat(latCopy), lng: parseFloat(lngCopy)})
+          });
+      };
+      response();
+    }
+  }, [clickPosition])
+
+  useEffect(() => {
+    if (locationResult.lat && locationResult?.lng) {
+      setPosition({ lat: parseFloat(locationResult?.lat), lng: parseFloat(locationResult?.lng) });
+    }
+  }, [locationResult]);
+
+  useEffect(() => {
+    setPosition({ lat: locationGroupField.latitude, lng: locationGroupField.longitude })
+    if (booleanCheckApplyFilters) {
+      applyFilters()
+    }
+    booleanCheckApplyFilters.current = false;
+  }, [locationGroupField])
 
   function pressEnter(event: React.KeyboardEvent<HTMLInputElement>) {
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && address) {
       getCityInformation(address)
     }
   }
@@ -47,48 +86,15 @@ export default function LocationRadius({
     return selectedPlace;
   }
 
-  useEffect(() => {
-    if (clickPosition && clickPosition?.lat) {
-      const response = async () => {
-        const latCopy = clickPosition.lat?.toString();
-        const lngCopy = clickPosition.lng?.toString();
-        const positionLessAccurate = [
-          latCopy?.slice(0, latCopy?.indexOf('.') + 5),
-          lngCopy?.slice(0, lngCopy?.indexOf('.') + 5)
-        ]
-        await fetch(urlSearch + positionLessAccurate.join(','))
-          .then(res => res.json())
-          .then(res => formatResponse(res))
-          .then(res => (
-            setAddress(res.display_name)
-          ))
-          .then(() => {
-            setPosition(clickPosition)
-          });
-      };
-      response();
-    }
-  }, [clickPosition])
-
-  useEffect(() => {
-
-    if (locationResult.lat && locationResult?.lng) {
-      setPosition({ lat: parseFloat(locationResult?.lat, 10), lng: parseFloat(locationResult?.lng, 10) });
-    }
-  }, [locationResult]);
-
-  useEffect(() => {
-
-    if (position.lat && position.lng && address) {
-      const locationData = {
-        lat: position.lat,
-        lng: position.lng,
-        radius: radius,
-        address: address
-      }
-      setLocationGroupField(locationData)
-    }
-  }, [position, radius])
+  function saveAndClose() {
+    setLocationGroupField({
+      latitude: position.lat,
+      longitude: position.lng,
+      radius: radius,
+      address: address,
+    });
+    booleanCheckApplyFilters.current = true;
+  }
 
   return (
     <Modal show={locationIsVisible} onHide={closeLocationModal}>
@@ -98,30 +104,33 @@ export default function LocationRadius({
           name="location"
           label='Location'
           type='location'
+          placeholder='Search...'
           value={address}
-          onChange={(e: any): void => setAddress(e.target.value)}
+          onChange={(e: any): void => setAddress(e.target.value ? e.target.value[0].toUpperCase() + e.target.value.slice(1) : "")}
           onKeyPress={(e: any) => pressEnter(e)}
         />
         <Form style={{ display: "flex", justifyContent: 'space-between', width: "100%", gap: '10px' }}>
           <div style={{ width: 'calc(100% - 110px - 20px)' }}>
             <Slider
               sx={{
-                width: 300,
                 color: '#357960',
               }}
               value={radius}
               defaultValue={10}
               aria-label="Small"
               valueLabelDisplay="auto"
-              onChange={e => setRadius(parseInt(e.target.value, 10) < 1 ? 1 : parseInt(e.target.value, 10))}
+              onChange={(e) => {
+                setRadius(parseInt((e.target as HTMLInputElement).value, 10) < 1 ? 1 : parseInt((e.target as HTMLInputElement).value, 10))
+              }}
             />
           </div>
           <div style={{ minWidth: "100px" }}>
             <InputGroup >
               <FormControl
                 style={{ width: '30px' }}
-                value={radius}
-                onChange={e => setRadius(parseInt(e.target.value, 10) < 1 ? 1 : parseInt(e.target.value, 10))}
+                value={radius || ""}
+                onChange={e => setRadius(e.target.value ? parseInt(e.target.value, 10) : 0)}
+                // onChange={e => setRadius((parseInt(e.target.value, 10) < 1 || e.target.value === "") ? 1 : parseInt(e.target.value, 10))}
               />
               <InputGroup.Text style={{ width: '50px', marginRight: '0' }} id="basic-addon2">km</InputGroup.Text>
             </InputGroup>
@@ -130,7 +139,7 @@ export default function LocationRadius({
         {position?.lat && position?.lng && <Map position={position} setPosition={setClickPosition} radius={radius} />}
       </Modal.Body>
       <Modal.Footer>
-        <Button variant='primary' onClick={closeLocationModal}>Save</Button>
+        <Button variant='primary' onClick={saveAndClose}>Save</Button>
       </Modal.Footer>
     </Modal>
   )
