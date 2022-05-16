@@ -111,7 +111,6 @@ export const getListings = async (id: string):Promise<IListing | null> => {
     }
   });
   const listings = dbListing ? (converterHelpers.convertDataBaseListingToListing(dbListing)) : dbListing;
-  console.log('listings', listings);
   return listings;
 };
 
