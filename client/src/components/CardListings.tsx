@@ -8,7 +8,7 @@ import '../styling/CardListings.scss'
 
 function CardListings({listings , isLoading,loadingError}:{listings:Listing[] , isLoading:boolean,loadingError:boolean}) {
   const listings4Display= listings.map(listing => {
-    return (<Link key={listing.id} to={`/listing/${listing.id}`} style={{ textDecoration: "none", color: "black" }}>
+    return (<Link key={listing.id} to={`/listing/${listing.id}`} style={{ textDecoration: "none", color: "#3f3e3e" }}>
       <ListingPreview  listing={listing} />
     </Link>)
   })
