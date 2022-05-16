@@ -33,9 +33,9 @@ export default function HomeView() {
   const searchField = useRef<HTMLInputElement>(null);
 
   const getListings = useCallback(async (offset: number) => {
-    const longitude = locationGroupField.lat//CHANGE TO PULL FROM SOMEWHERE
-    const latitude = locationGroupField.lng // CHANGE TO PULL FROM SOMEWHERE
-    const radius = locationGroupField.radius || 10;
+    const longitude = locationGroupField.lng || 13.38 //CHANGE TO PULL FROM SOMEWHERE
+    const latitude = locationGroupField.lat || 52.52 // CHANGE TO PULL FROM SOMEWHERE
+    const radius = locationGroupField.radius || 50;
     const maxPrice = maxPriceField.current?.value || undefined;
     const minPrice = minPriceField.current?.value || 0;
     const sortBy = sortByField.current?.value || 'closest';
