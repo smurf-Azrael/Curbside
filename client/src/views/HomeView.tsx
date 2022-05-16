@@ -7,12 +7,8 @@ import RoundedButton from '../components/RoundedButton';
 import '../styling/HomeView.scss';
 import LocationPreviewComponent from "../components/LocationPreviewComponent";
 import AppBody from "../components/AppBody";
-import ButtonSmall from "../components/ButtonSmall";
-import MapListings from "../components/MapListings"
 import CardListings from "../components/CardListings";
-import { Link } from 'react-router-dom'
-import { Listing } from '../interfaces/Listing'
-import ListingPreview from './ListingPreview'
+
 
 
 export default function HomeView() {
@@ -143,16 +139,8 @@ export default function HomeView() {
           closeLocationModal={closeLocationModal}
           setLocationGroupField={setLocationGroupField}
         />
-        <div className='listings-container' >
-          {listings.map(listing => {
-            return (<Link key={listing.id} to={`/listing/${listing.id}`} style={{ textDecoration: "none", color: "black" }}>
-              <ListingPreview listing={listing} />
-            </Link>)
-          })}
-          {!isLoading && listings.length === 0 && <p>No listing matched your request...</p>}
-          {loadingError && <p>Couldn't load listings :/</p>}
-          {isLoading && <img style={{ height: '20vw', maxHeight: '200px', borderRadius: '20px' }} src={loader} alt="Loading..." />}
-        </div>
+        <CardListings listings={listings} isLoading={isLoading} loadingError={loadingError}/>
+        
         <div className="map-btn-float" style={{}} >
           <RoundedButton content={<i className="bi bi-map"></i>}/>
         </div>
