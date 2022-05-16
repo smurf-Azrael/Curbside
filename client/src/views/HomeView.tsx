@@ -12,7 +12,7 @@ import loader from '../assets/loader.gif';
 import AppBody from "../components/AppBody";
 
 export default function HomeView() {
-  const api = useApi()
+  const api = useApi();
 
   const [listings, setListings] = useState<any[]>([]);
   const [FiltersAreVisible, setFiltersAreVisible] = useState(false);
@@ -20,7 +20,7 @@ export default function HomeView() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [loadingError, setLoadingError] = useState<boolean>(false);
   const [tagStack, SetTagStack] = useState<any[]>([]);
-  const [locationGroupField, setLocationGroupField] = useState<any[]>({})
+  const [locationGroupField, setLocationGroupField] = useState<any[]>({});
 
   const tagsField = useRef<{ [key: string]: string }>({}) // categories need to be decided {catName: false, }
   const sortByField = useRef<HTMLSelectElement>(null);
@@ -101,6 +101,8 @@ export default function HomeView() {
     }
   }
 
+  console.log('rendering again')
+
 
   return (
     <AppBody>
@@ -150,7 +152,7 @@ export default function HomeView() {
           {isLoading && <img style={{ height: '20vw', maxHeight: '200px', borderRadius: '20px' }} src={loader} alt="Loading..." />}
         </div>
         <div className="map-btn-float" style={{}} >
-          <RoundedButton content={<i className="bi bi-map"></i>}/>
+          <RoundedButton content={<i className="bi bi-map"></i>} />
         </div>
       </div>
     </AppBody>
