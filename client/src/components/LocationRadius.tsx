@@ -16,39 +16,12 @@ export default function LocationRadius({
 }: { [key: string]: any }) {
 
   const urlSearch = 'https://nominatim.openstreetmap.org/search?format=json&q=';
-
+  const booleanCheckApplyFilters = useRef(false);
   const [radius, setRadius] = useState<number>(locationGroupField.radius);
   const [position, setPosition] = useState<{ lat: number, lng: number }>({ lat: locationGroupField.latitude, lng: locationGroupField.longitude });
   const [locationResult, setLocationResult] = useState<{ location: string | undefined, lat: string | undefined, lng: string | undefined }>({}); // location: undefined, lat: undefined, lng: undefined 
   const [clickPosition, setClickPosition] = useState<{ lat: number | undefined, lng: number | undefined }>({}); //lat: undefined, lng: undefined
   const [address, setAddress] = useState<string>(locationGroupField.address);
-
-  function pressEnter(event: React.KeyboardEvent<HTMLInputElement>) {
-    if (event.key === 'Enter') {
-      getCityInformation(address)
-    }
-  }
-
-  async function getCityInformation(query: string | undefined) {
-    const selectedPlace = await fetch(urlSearch + query)
-      .then(res => res.json())
-      .then(res => formatResponse(res))
-      .then(res => {
-        setLocationResult({
-          location: res.display_name,
-          lat: res.lat,
-          lng: res.lon
-        })
-      })
-  }
-
-  function formatResponse(response: ApiResponse[]) {
-    let selectedPlace = response.filter(el => (el.type === 'city' || el.type === 'village'))[0];
-    if (!selectedPlace) {
-      selectedPlace = response[0];
-    }
-    return selectedPlace;
-  }
 
   useEffect(() => {
     if (clickPosition && clickPosition?.lat) {
@@ -78,7 +51,6 @@ export default function LocationRadius({
       setPosition({ lat: parseFloat(locationResult?.lat, 10), lng: parseFloat(locationResult?.lng, 10) });
     }
   }, [locationResult]);
-  let booleanCheckApplyFilters = useRef(false);
 
   useEffect(() => {
     setPosition({ lat: locationGroupField.latitude, lng: locationGroupField.longitude })
@@ -88,16 +60,39 @@ export default function LocationRadius({
     booleanCheckApplyFilters.current = false;
   }, [locationGroupField])
 
+  function pressEnter(event: React.KeyboardEvent<HTMLInputElement>) {
+    if (event.key === 'Enter') {
+      getCityInformation(address)
+    }
+  }
+
+  async function getCityInformation(query: string | undefined) {
+    const selectedPlace = await fetch(urlSearch + query)
+      .then(res => res.json())
+      .then(res => formatResponse(res))
+      .then(res => {
+        setLocationResult({
+          location: res.display_name,
+          lat: res.lat,
+          lng: res.lon
+        })
+      })
+  }
+
+  function formatResponse(response: ApiResponse[]) {
+    let selectedPlace = response.filter(el => (el.type === 'city' || el.type === 'village'))[0];
+    if (!selectedPlace) {
+      selectedPlace = response[0];
+    }
+    return selectedPlace;
+  }
 
   function saveAndClose() {
-    console.log('saveed');
-
     setLocationGroupField({
       latitude: position.lat,
       longitude: position.lng,
       radius: radius,
       address: address,
-      saved: true
     });
     booleanCheckApplyFilters.current = true;
   }
