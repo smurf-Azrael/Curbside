@@ -1,0 +1,13 @@
+.CardListings {
+  display: flex;
+  flex-wrap: wrap;
+  width: 96%;
+  max-width: 500px;
+  justify-content: flex-start;
+  margin: 0;
+
+  a {
+    display: inline-flex;
+    width: 50%;
+  }
+}

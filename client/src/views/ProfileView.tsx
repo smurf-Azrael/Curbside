@@ -6,12 +6,14 @@ import { useApi } from "../contexts/ApiProvider";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import ListingPreview from "../components/ListingPreview";
 import { Link } from "react-router-dom";
 import AppBody from "../components/AppBody";
+import CardListings from "../components/CardListings";
 
 function ProfileView() {
   const [userListings, setUserListings] = useState([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [loadingError, setLoadingError] = useState<boolean>(false);
   const [user, setUser] = useState();
   const api = useApi();
   const navigate = useNavigate()
@@ -19,20 +21,23 @@ function ProfileView() {
   const { currentUser } = useAuth();
 
   useEffect(() => {
-
     const loadUserData = async () => {
       const res = await api.get(`/users/${id}`);
       if (res.ok) {
         setUser(res.body.data.user);
         setUserListings(res.body.data.listings);
+        setLoadingError(false);
       } else {
         console.log("failing to load user listing data");
         navigate('/')
+        setLoadingError(false);
         // handleErrors
       }
+      setIsLoading(false);
     };
     loadUserData();
   }, [api, navigate, id]);
+
   return user ? (
     <AppBody>
         <section className="ProfileView">
@@ -56,14 +61,7 @@ function ProfileView() {
               <div className="option-name" style={{ textAlign: "left" }}>My Listings</div>
               <div className="option-name" style={{ textAlign: "left" }}>My Favorites</div>
           </nav>
-          <div className="profile-my-listings-wrapper">
-            {userListings.length > 0 &&
-              userListings.map((listing) => {
-                return (<Link key={listing.id} to={`/listing/${listing.id}`} style={{ textDecoration: "none", color: "black" }}>
-                      <ListingPreview  listing={listing} />
-                </Link>)
-            })}
-          </div>
+          <CardListings listings={userListings} isLoading={isLoading} loadingError={loadingError}/>
         </section>
       </AppBody>
   ) : (<></>)

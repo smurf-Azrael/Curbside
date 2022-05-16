@@ -60,25 +60,4 @@
       padding-right: 1.5rem;
     }
   }
-
-  .profile-listings-shown-options {
-    h6 {
-      width: 94%;
-      margin: 0;
-    }
-  }
-
-  .profile-my-listings-wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    width: 96%;
-    max-width: 500px;
-    justify-content: flex-start;
-    margin: 0;
-
-    a {
-      display: inline-flex;
-      width: 50%;
-    }
-  }
 }
