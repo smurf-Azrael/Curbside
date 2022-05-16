@@ -6,7 +6,6 @@ import 'leaflet/dist/leaflet.css';
 
 function Map({ position, setPosition, radius }: mapSetUp) {
 
-
   return (
     <section className='map-component' >
       {/* --- (5) Add leaflet map container --- */}
@@ -18,7 +17,7 @@ function Map({ position, setPosition, radius }: mapSetUp) {
           scrollWheelZoom={true}
           style={{ height: '300px', width: '100%' }}
         >
-          {radius && <Circle center={[position.lat, position.lng]} radius={radius * 1000 || 10000} />}
+          {radius && <Circle center={[position?.lat, position?.lng]} radius={radius * 1000 || 10000} />}
 
           <TileLayer
             // @ts-ignore:next-line

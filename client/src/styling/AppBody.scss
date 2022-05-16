@@ -12,4 +12,10 @@
     height: auto;
     width: 100%;
   }
+
+  &.noFooter {
+    & > .wrapper {
+      margin-bottom: 0;
+    }
+  }
 }

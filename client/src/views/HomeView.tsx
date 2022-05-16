@@ -21,21 +21,21 @@ export default function HomeView() {
   const [loadingError, setLoadingError] = useState<boolean>(false);
   const [tagStack, SetTagStack] = useState<any[]>([]);
   const [locationGroupField, setLocationGroupField] = useState<any[]>({})
-  
+
   const tagsField = useRef<{ [key: string]: string }>({}) // categories need to be decided {catName: false, }
   const sortByField = useRef<HTMLSelectElement>(null);
   const maxPriceField = useRef<HTMLInputElement>(null);
   const minPriceField = useRef<HTMLInputElement>(null);
   const conditionField = useRef<HTMLSelectElement>(null);
   const fields = { tagsField, sortByField, maxPriceField, minPriceField, conditionField, SetTagStack };
-  
+
   const offset = useRef<number>(0);
   const searchField = useRef<HTMLInputElement>(null);
 
   const getListings = useCallback(async (offset: number) => {
-    const longitude = locationGroupField.lat//CHANGE TO PULL FROM SOMEWHERE
-    const latitude =  locationGroupField.lng // CHANGE TO PULL FROM SOMEWHERE
-    const radius = locationGroupField.radius || 10;
+    const longitude = locationGroupField.lng || 13.38 //CHANGE TO PULL FROM SOMEWHERE
+    const latitude = locationGroupField.lat || 52.52 // CHANGE TO PULL FROM SOMEWHERE
+    const radius = locationGroupField.radius || 50;
     const maxPrice = maxPriceField.current?.value || undefined;
     const minPrice = minPriceField.current?.value || 0;
     const sortBy = sortByField.current?.value || 'closest';
@@ -135,20 +135,22 @@ export default function HomeView() {
           fields={fields}
         />
         <LocationRadius
-            locationIsVisible={locationIsVisible}
-            closeLocationModal={closeLocationModal}
-            // locationGroupField={locationGroupField}
-            setLocationGroupField={setLocationGroupField}
-          />
+          locationIsVisible={locationIsVisible}
+          closeLocationModal={closeLocationModal}
+          setLocationGroupField={setLocationGroupField}
+        />
         <div className='listings-container' >
           {listings.map(listing => {
             return (<Link key={listing.id} to={`/listing/${listing.id}`} style={{ textDecoration: "none", color: "black" }}>
-              <ListingPreview  listing={listing} />
+              <ListingPreview listing={listing} />
             </Link>)
           })}
           {!isLoading && listings.length === 0 && <p>No listing matched your request...</p>}
           {loadingError && <p>Couldn't load listings :/</p>}
           {isLoading && <img style={{ height: '20vw', maxHeight: '200px', borderRadius: '20px' }} src={loader} alt="Loading..." />}
+        </div>
+        <div className="map-btn-float" style={{}} >
+          <RoundedButton content={<i className="bi bi-map"></i>}/>
         </div>
       </div>
     </AppBody>
