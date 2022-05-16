@@ -1,5 +1,4 @@
 import {useEffect, useState, useRef} from 'react'
-import { Icon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import '../styling/MapListings.scss'
 import { Listing } from '../interfaces/Listing';
@@ -14,7 +13,7 @@ import('leaflet.markercluster/dist/MarkerCluster.css')
 import('leaflet.markercluster/dist/MarkerCluster.Default.css')
 
 const MapListings = ({listings}:{listings:Listing[]}) => {
-  const [activeListing, setActiveListing] = useState<Listing | null>(null)
+  const [activeListing, setActiveListing] = useState<Listing | null | undefined>(null)
   const map = useRef<L.Map>();
   const clusterLayer = useRef<L.MarkerClusterGroup>();
   
@@ -33,11 +32,19 @@ const MapListings = ({listings}:{listings:Listing[]}) => {
 
     clusterLayer.current = L.markerClusterGroup()
 
-    listings.forEach(listing=> 
-      L.circleMarker(L.latLng(listing.latitude, listing.longitude), {radius: 5})
-      .bindTooltip(`Title:${listing.title}`)
-      .addTo(clusterLayer.current!)
-    )
+    listings.forEach(listing=> {
+      
+      let oneMarker= L.circleMarker(L.latLng(listing.latitude, listing.longitude), {radius: 5})
+      //@ts-ignore
+      oneMarker.options['id'] = listing.id;
+      oneMarker.addTo(clusterLayer.current!)
+      oneMarker.on('click', (click)=>{
+        let clickedListing = listings.find(l => l.id === listing.id)
+        console.log(clickedListing)
+        setActiveListing(clickedListing)
+      })
+    }
+      )
 
     map.current.addLayer(clusterLayer.current)
   },[listings])
@@ -55,8 +62,9 @@ const MapListings = ({listings}:{listings:Listing[]}) => {
   },[])
   
   return (
-    <div style={{width: '100vh', height: '100vh'}} id="mapId">
-    </div>
+    <>
+      <div style={{width: '100vw', height: '100vh'}} id="mapId"></div>
+    </>
     )
 }
 
