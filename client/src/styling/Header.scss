@@ -41,4 +41,37 @@
     font-size: 24px;
   }
 
+  &.ChatHeader {
+    justify-content: flex-start;
+    gap: 16px;
+    align-items: center;
+
+    .listingImage {
+      border-radius: 24px;
+      height: 44px;
+      width: 44px;
+      background-size: cover;
+      background-position: center;
+      background-color: #2d2d2d;
+    }
+
+    .listingTitle {
+      font-weight: 900;
+      margin-bottom: 0;
+    }
+
+    .listingPrice {
+      text-align: left;
+      margin-bottom: 0;
+      font-size: 12px;
+      color: var(--main-gray);
+    }
+
+    .sellerName {
+      color: var(--main-gray);
+      margin-bottom: 0;
+      margin-left: auto;
+    }
+  }
+
 }

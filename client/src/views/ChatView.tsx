@@ -1,10 +1,14 @@
 import { useRef, useState, useEffect } from 'react'
 import InputField from '../components/InputField'
 import { useApi } from '../contexts/ApiProvider'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { Socket } from 'socket.io-client'
-import Header from '../components/Header'
+import ChatHeader from '../components/ChatHeader'
+import { listingChatPreview } from '../interfaces/Listing'
+import "../styling/ChatView.scss"
+
+
 
 let socket: Socket;
 
@@ -12,9 +16,10 @@ const ChatView = () => {
   const api = useApi();
   const navigate = useNavigate();
   const { currentUser } = useAuth();
-  let { buyerId, listingId } = useParams();
+  let { listingId } = useParams();
   let chatId = useRef<number | null>(null);
   const [messages, setMessages] = useState<any[]>([])
+  const { state }  = useLocation() as {state: listingChatPreview};
 
   if (!currentUser) {
     navigate('/')
@@ -34,6 +39,8 @@ const ChatView = () => {
               chatId.current = res.data.chatId;
               socket.emit("joinChat", chatId.current);
               setMessages([res.data.message])
+            } else {
+              setMessages((messages)=> [...messages, res.data.message])
             }
           }
         })
@@ -49,12 +56,12 @@ const ChatView = () => {
         const io = await api.getSocket();
         socket = io as Socket;
       }
-      const id = buyerId ? buyerId : currentUser?.id;
+      const buyerId = state.buyerId ? state.buyerId : currentUser?.id;
       if (socket) {
         console.log('socket connection exists')
         socket.connect();
         socket.emit(
-          "getChat", listingId, id, (res: { ok: boolean, data: any }) => {
+          "getChat", listingId, buyerId, (res: { ok: boolean, data: any }) => {
             if (res.ok) {
               chatId.current = res.data.chatId
               console.log('joining chat')
@@ -82,24 +89,28 @@ const ChatView = () => {
         socket.disconnect()
       }
     };
-  }, [api, buyerId, listingId, currentUser])
+  }, [api, state, listingId, currentUser])
 
   return (
-    <>
-    <Header prevRoute/>
-    {messages.length > 0 && messages.map(message => {
-      return (<div key={message.id}>
-        {message.body}
-      </div>)
-    })
-    }
-      <InputField
-        name={'newMessage'}
-        as={'textarea'}
-        fieldref={newMsgField}
-      />
-      <button type='submit' onClick={sendMessage}>Send</button>
-    </>
+    <div className='ChatView'>
+      <ChatHeader listing={state}/>
+      <div className='messages'>
+      {messages.length > 0 && messages.map(message => {
+        return (<div key={message.id}>
+          {message.body}
+        </div>)
+      })
+      }
+      </div>
+      <div className='messageInput'>
+        <InputField
+          name={'newMessage'}
+          as={'textarea'}
+          fieldref={newMsgField}
+        />
+        <button type='submit' onClick={sendMessage}>Send</button>
+      </div>
+    </div>
   )
 }
 

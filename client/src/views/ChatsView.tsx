@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import AppBody from '../components/AppBody';
 import { useApi } from '../contexts/ApiProvider';
 import { useAuth } from '../contexts/AuthContext';
@@ -9,6 +9,7 @@ const ChatsView = () => {
   const auth = useAuth();
   const [chats, setChats] = useState<ChatPreview[]>([]);
   const api = useApi();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadUserData = async () => {
@@ -27,15 +28,25 @@ const ChatsView = () => {
     <AppBody>
       <div className='ChatsView'>
         {chats.map((chat) => (
-          <Link
-            to={`/listing/${chat.listingId}/chat/${chat.buyerId}`}
-            style={{ textDecoration: 'none', color: 'black' }}
+          <div
+            key={chat.id}
+            onClick={() => navigate(`/chats/${chat.listingId}`, {state:{ 
+              photoUrls: chat.listingPhotoUrls,
+              id: chat.listingId,
+              buyerId: chat.buyerId,
+              sellerId: chat.sellerId,
+              userFirstName: chat.sellerFirstName,
+              userLastName: chat.sellerLastName,
+              title: chat.listingTitle,
+              priceInCents: chat.priceInCents,
+              status: chat.listingStatus 
+            }})}
           >
             <div className="chat-element">
-              <img className="image-preview" src={chat.listingPhotoUrl} alt="product sold" />
+              <img className="image-preview" src={chat.listingPhotoUrls[0]} alt="product sold" />
               <div className="info-container">
                 <div className="top-info">
-                  <p>{auth.currentUser?.id === chat.buyerId ? chat.sellerName : chat.buyerName}</p>
+                  <p>{auth.currentUser?.id === chat.buyerId ? `${chat.sellerFirstName} ${chat.sellerLastName[0]}.` : chat.buyerName}</p>
                   <p>
                     {new Date(chat.updatedAt).toLocaleDateString('en-BE', {
                       month: 'short',
@@ -49,7 +60,7 @@ const ChatsView = () => {
                 <p>{chat.lastMessage.body}</p>
               </div>
             </div>
-          </Link>
+          </div>
         ))}
       </div>
     </AppBody>
@@ -61,12 +72,13 @@ export default ChatsView;
 interface ChatPreview {
   id: string;
   sellerId: string;
-  sellerName: string;
+  sellerFirstName: string;
+  sellerLastName: string;
   buyerId: string;
   buyerName: string;
   listingId: string;
   listingTitle: string;
-  listingPhotoUrl?: string;
+  listingPhotoUrls: string[];
   listingStatus: string;
   priceInCents: number;
   currency: string;
