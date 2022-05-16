@@ -4,12 +4,15 @@ import ButtonSmall from './ButtonSmall';
 import curbside from './../assets/CurbsideSmall.png';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { listingChatPreview } from '../interfaces/Listing';
+import AddListingView from '../views/AddListingView';
+import { list } from 'firebase/storage';
 
 export default function ChatHeader({listing}: HeaderProps) {
   const navigate = useNavigate();
-  const { currentUser, logOut } = useAuth()
-
-
+  const photoUrl = listing.photoUrls[0];
+  const sellerName = `${listing.userFirstName} ${listing.userLastName[0]}.`
+  const price = (listing.priceInCents / 100).toLocaleString('en-US', { style: 'currency', currency: 'EUR' });
   function PrevRoute() {
     return ( 
       <button 
@@ -23,22 +26,20 @@ export default function ChatHeader({listing}: HeaderProps) {
   return (
     <div className='Header ChatHeader'>
       <PrevRoute />
-      <img src={listing.photoUrl} alt={listing.title} />
+      <div className='listingImage' style={{backgroundImage: `url("${photoUrl}")`}}>
+      </div>
+      <div className='listingInfo'>
+        <p className='listingTitle'>{listing.title}</p>
+        <p className='listingPrice'>{price}</p>
+      </div>
+      <p className='sellerName'>{sellerName}</p>
+
       
     </div>
   )
 }
 
 
-
 interface HeaderProps {
-  listing:  ListingPreview
-}
-
-interface ListingPreview {
-  id: string;
-  title: string;
-  photoUrl?: string;
-  listingStatus: string;
-  priceInCents: number;
+  listing:  listingChatPreview
 }
