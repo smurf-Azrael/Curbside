@@ -17,10 +17,7 @@ export default function HomeView() {
   const loadUserLocation = async () => {
     const res = await api.get(`/users/${currentUser?.id}`);
     let userLocation = {};
-    console.log('RES', res)
     if (res.ok) {
-      console.log('ok!!')
-      console.log('res.body.data.user.latitude', res.body.data.user.latitude)
       userLocation = {
         latitude: res.body.data.user.latitude,
         longitude: res.body.data.user.longitude,
@@ -68,10 +65,8 @@ export default function HomeView() {
   const searchField = useRef<HTMLInputElement>(null);
 
   const getListings = useCallback(async (offset: number, locationGroupField) => {
-    console.log('locationGroupField', locationGroupField)
     const longitude = locationGroupField?.longitude || 13.38 //CHANGE TO PULL FROM SOMEWHERE
     const latitude = locationGroupField?.latitude || 52.52 // CHANGE TO PULL FROM SOMEWHERE
-
     const radius = locationGroupField?.radius || 50;
     const maxPrice = maxPriceField.current?.value || undefined;
     const minPrice = minPriceField.current?.value || 0;
@@ -103,14 +98,11 @@ export default function HomeView() {
   async function applyFilters() {
     closeFiltersModal();
     closeLocationModal();
-    console.log('trigger search');
-    console.log('locationGroupField', locationGroupField);
 
     const res = await getListings(0, locationGroupField);
     if (res.ok) {
       offset.current = res.body.data.offset;
       setListings(res.body.data.listings);
-
     } else {
       //handleError
     }
@@ -132,7 +124,6 @@ export default function HomeView() {
   }
 
   useEffect(() => {
-    console.log('USEEFFECT')
     const loadData = async () => {
       const res = await getListings(0);
       if (res.ok) {
@@ -146,10 +137,7 @@ export default function HomeView() {
       setIsLoading(false);
     }
     loadData();
-    console.log('CurrentUser BOOL', currentUser)
     if (currentUser) {
-      console.log('LOADING USER');
-      console.log('CURRENT', currentUser);
       (async () => {
         loadUserLocation();
         // locationGroupField.current = await loadUserLocation();
