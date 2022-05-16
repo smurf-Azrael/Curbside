@@ -6,6 +6,8 @@ import { useAuth } from '../contexts/AuthContext';
 import InputField from '../components/InputField';
 import Map from '../components/SetProfileMap';
 import { useNavigate } from 'react-router-dom';
+import '../styling/SetProfileView.scss';
+import Header from '../components/Header';
 
 export default function SetProfileView() {
   const nameRef = React.useRef<HTMLInputElement>(null);
@@ -64,30 +66,37 @@ export default function SetProfileView() {
 
   return (
     <>
-      <Card>
-        <Card.Body>
-          <h2 className="text-center mb-4">Set up Profile</h2>
-          <Form onSubmit={handleSubmit}>
-            <InputField
-              name="name"
-              label='Name'
-              type='text'
-              fieldref={nameRef}
-              error={formErrors.name}
-            />
-            <InputField
-              name="lastName"
-              label='Last Name'
-              type='text'
-              fieldref={lastNameRef}
-              error={formErrors.lastName}
-            />
-          <p>My Location</p>
-          <Map position={position} setPosition={setPosition}/>
-          <Button type="submit" className="w-100" >Submit</Button>
-          </Form>
-        </Card.Body>
-      </Card>
+      <Header prevRoute />
+      <div className="SetProfileView">
+        <Card>
+          <Card.Body>
+            <h2 className="text-center mb-2">Profile Details</h2>
+            <Form onSubmit={handleSubmit}>
+              <InputField
+                name="name"
+                label='Name'
+                type='text'
+                fieldref={nameRef}
+                error={formErrors.name}
+              />
+              <InputField
+                name="lastName"
+                label='Last Name'
+                type='text'
+                fieldref={lastNameRef}
+                error={formErrors.lastName}
+              />
+            <p>Location</p>
+            <p className='comment'>Click on the map to select your location</p>
+            <Map position={position} setPosition={setPosition}/>
+            <p className='comment'>
+              This location will be used for the items you sell
+            </p>
+            <Button type="submit" className="w-100 mb-1 mt-3" >Save</Button>
+            </Form>
+          </Card.Body>
+        </Card>
+      </div>
     </>
   )
 }
