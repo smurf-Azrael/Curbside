@@ -21,9 +21,10 @@ export const getUserRating = async (userId: string): Promise<number> => {
       rating: true
     }
   });
-  // Get Average rating
+
   if (dbUserRatings === null || undefined) { throw new CustomError(USER_NOT_FOUND, 404); }
 
+  // Get Average rating
   const ratingArr = Object.values(dbUserRatings);
   const sum = (acc: number, obj:{rating:number}): number => (acc + obj.rating);
   const avg = ratingArr.reduce(sum, 0) / ratingArr.length;
