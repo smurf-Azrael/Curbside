@@ -44,7 +44,7 @@ function ProfileView() {
               />
             </div>
             <div className="profile-basic-info-edit-wrapper">
-              <p style={{ fontWeight: "bold" }}>
+              <p>
                 {user.firstName} {user.lastName[0]}.
               </p>
               <Link to="/set-profile">
@@ -52,19 +52,17 @@ function ProfileView() {
               </Link>
             </div>
           </div>
-          <div className="profile-favorites-wrapper">
-            <Link to="/favorites">
-              {currentUser && user.id === currentUser.id && <ButtonSmall content={"My favorites"} fill={false} />}
-            </Link>
-          </div>
-          <p style={{ textAlign: "left" }}>Listings</p>
+          <nav className="profile-listings-shown-options-wrapper">
+              <div className="option-name" style={{ textAlign: "left" }}>My Listings</div>
+              <div className="option-name" style={{ textAlign: "left" }}>My Favorites</div>
+          </nav>
           <div className="profile-my-listings-wrapper">
             {userListings.length > 0 &&
-              userListings.map((listing) => (
-                <div key={listing.id} className="listing-container">
-                  <ListingPreview  listing={listing} />
-                </div>
-              ))}
+              userListings.map((listing) => {
+                return (<Link key={listing.id} to={`/listing/${listing.id}`} style={{ textDecoration: "none", color: "black" }}>
+                      <ListingPreview  listing={listing} />
+                </Link>)
+            })}
           </div>
         </section>
       </AppBody>
