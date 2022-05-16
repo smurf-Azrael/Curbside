@@ -24,6 +24,7 @@ router.get('/chats', fullUserRequired, chatsController.getChatsByUserId);
 router.post('/ratings', loginRequired, ratingsController.addRatings);
 
 router.get('/login', fullUserRequired, (req: Request, res: Response) => {
+  console.log('LOGIN');
   res.send({
     data: {
       user: {
@@ -36,6 +37,6 @@ router.get('/login', fullUserRequired, (req: Request, res: Response) => {
   });
 });
 
-router.get('*', (req: Request, res: Response) => {
-  res.status(404).send({ error: PAGE_NOT_FOUND });
-});
+// router.get('*', (req: Request, res: Response) => {
+//   res.status(404).send({ error: PAGE_NOT_FOUND });
+// });

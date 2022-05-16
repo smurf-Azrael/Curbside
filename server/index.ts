@@ -15,7 +15,7 @@ import { USER_NOT_AUTHENTICATED } from './errors/SharedErrorMessages';
 import { getUserById } from './queries/user.queries';
 import { auth } from 'firebase-admin';
 
-dotenv.config({ path: path.resolve(__dirname, `./config/${process.env.NODE_ENV}.env`) });
+dotenv.config({ path: path.resolve(__dirname, `./config/env.${process.env.NODE_ENV}`) });
 
 const PORT = process.env.PORT;
 
@@ -50,19 +50,23 @@ socketListener(io);
 app.use(express.json());
 app.use(logger('dev'));
 app.use(authMiddleware);
-app.use(express.static(path.join(__dirname, '../client/build')));
-
-app.get('/', (req: Request, res: Response, next: NextFunction): void => {
-  try {
-    res.sendFile(path.join(__dirname, '../client/build', '../client/build/index.html'));
-  } catch (e) {
-    console.log(e);
-    next(e);
-  }
-});
 
 app.use('/api', router);
-app.use(router);
+app.use(express.static(path.join(__dirname, '../client/build')));
+// app.get('/', (req: Request, res: Response, next: NextFunction): void => {
+//   try {
+//     res.sendFile(path.join(__dirname, '../client/build', '../client/build/index.html'));
+//   } catch (e) {
+//     console.log(e);
+//     next(e);
+//   }
+// });
+
+// app.use(router);
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build/index.html'));
+});
 
 app.use(errorHandler);
 export const server = httpServer.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT} 🚀`));
