@@ -55,10 +55,11 @@ const getChats = async (userId: string): Promise<IChat[]> => {
     listingId: chat.listingId,
     listingStatus: chat.listing.status === ListingStatus.available ? IListingStatus.available : chat.listing.status === ListingStatus.reserved ? IListingStatus.reserved : IListingStatus.sold,
     sellerId: chat.sellerId,
-    sellerName: `${chat.seller.firstName} ${chat.seller.lastName}`,
+    sellerFirstName: chat.seller.firstName!,
+    sellerLastName: chat.seller.lastName!,
     buyerName: `${chat.buyer.firstName} ${chat.buyer.lastName}`,
     priceInCents: chat.listing.priceInCents,
-    listingPhotoUrl: chat.listing.photoUrls[0],
+    listingPhotoUrls: [chat.listing.photoUrls[0]],
     lastMessage: { chatId: chat.id, id: chat.messages[0].id, senderId: chat.messages[0].senderId, createdAt: chat.messages[0].createdAt, body: chat.messages[0].body },
     createdAt: chat.createdAt,
     updatedAt: chat.updatedAt
