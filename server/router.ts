@@ -4,7 +4,7 @@ import listingController from './controllers/listing.controller';
 import { fullUserRequired, loginRequired } from './middlewares/login-required.middleware';
 import chatController from './controllers/chat.controller';
 import ratingController from './controllers/rating.controller';
-import modelController from './controllers/favorites.controller';
+import favoriteController from './controllers/favorites.controller';
 
 export const router = Router();
 
@@ -23,7 +23,7 @@ router.get('/chats', fullUserRequired, chatController.getChatsByUserId);
 
 router.post('/ratings', loginRequired, ratingController.addRatings);
 
-router.patch('/favorites/:id', modelController.addFavorite);
+router.patch('/favorites/:id', favoriteController.addFavorite);
 // router.get('favorites/:id', modelController.getFavorites);
 
 router.get('/login', fullUserRequired, (req: Request, res: Response) => {

@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from 'express';
-import { FavoriteDTO } from '../interfaces/favorite.dto';
 import { ProfileDTO } from '../interfaces/profile.interface.dto';
 import { FinalizeUserDTO, InitialUserDTO } from '../interfaces/user.interface.dto';
 import userModel from '../models/user.model';
