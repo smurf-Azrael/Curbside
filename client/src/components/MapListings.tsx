@@ -62,7 +62,7 @@ const MapListings = ({ listings }: { listings: Listing[] }) => {
   }, [])
 
   return (
-    <div style={{display:'flex', flexGrow:'1'}}>
+    <div className='map-set-height'>
       <div style={{ flexGrow:'1', zIndex: '0', position:'relative'}} id="mapId"></div>
       {activeListing ? <MapListingPreview activeListing={activeListing} /> : null}
     </div>
