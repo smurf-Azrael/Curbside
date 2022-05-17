@@ -62,10 +62,10 @@ const MapListings = ({ listings }: { listings: Listing[] }) => {
   }, [])
 
   return (
-    <>
-      <div style={{ width: '100vw', height: '100vh', zIndex: "0" }} id="mapId"></div>
+    <div style={{display:'flex', flexGrow:'1'}}>
+      <div style={{ flexGrow:'1', zIndex: '0', position:'relative'}} id="mapId"></div>
       {activeListing ? <MapListingPreview activeListing={activeListing} /> : null}
-    </>
+    </div>
   )
 }
 
