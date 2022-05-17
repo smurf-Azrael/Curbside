@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useApi } from '../contexts/ApiProvider';
 import '../styling/ListingDetailView.scss';
@@ -9,7 +9,6 @@ import { useAuth } from '../contexts/AuthContext';
 import AppBody from '../components/AppBody';
 import { Listing } from '../interfaces/Listing';
 import FullScreenLoadingIndicator from '../components/FullScreenLoadingIndicator';
-import { TrySharp } from '@mui/icons-material';
 const stockimgLink =
   'https://media.istockphoto.com/vectors/user-icon-people-icon-isolated-on-white-background-vector-vector-id1210939712?k=20&m=1210939712&s=612x612&w=0&h=xJqEPQnMiNofprbLXWdEtJQ75QL79lQ5N76J4JOdTIM=';
 const ListingDetailView = () => {
