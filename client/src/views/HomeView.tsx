@@ -1,14 +1,15 @@
-import { useApi } from "../contexts/ApiProvider"
-import { useEffect, useState, useRef, useCallback, KeyboardEvent } from "react"
-import FiltersComponent from "../components/FiltersComponent";
-import LocationRadius from "../components/LocationRadius";
+import { useApi } from '../contexts/ApiProvider';
+import { useEffect, useState, useRef, useCallback, KeyboardEvent } from 'react';
+import FiltersComponent from '../components/FiltersComponent';
+import LocationRadius from '../components/LocationRadius';
 import RoundedButton from '../components/RoundedButton';
 import '../styling/HomeView.scss';
-import LocationPreviewComponent from "../components/LocationPreviewComponent";
-import AppBody from "../components/AppBody";
+import LocationPreviewComponent from '../components/LocationPreviewComponent';
+import AppBody from '../components/AppBody';
 import { useAuth } from '../contexts/AuthContext';
-import { LocationGroupInterface } from "../interfaces/LocationGroup";
-import CardListings from "../components/CardListings";
+import { LocationGroupInterface } from '../interfaces/LocationGroup';
+import CardListings from '../components/CardListings';
+import FullScreenLoadingIndicator from '../components/FullScreenLoadingIndicator';
 
 export default function HomeView() {
   const api = useApi();
@@ -20,18 +21,18 @@ export default function HomeView() {
         latitude: res.body.data.user.latitude,
         longitude: res.body.data.user.longitude,
         radius: 25,
-        address: res.body.data.user.city
-      }
+        address: res.body.data.user.city,
+      };
     } else {
-      console.log("failing to load user listing data or user not logged in");
+      console.log('failing to load user listing data or user not logged in');
       userLocation = {
         latitude: 51.4,
         longitude: 14.3,
         radius: 25,
-        address: "Berlin"
-      }
+        address: 'Berlin',
+      };
     }
-    setLocationGroupField(userLocation)
+    setLocationGroupField(userLocation);
     // return userLocation
   };
 
@@ -44,13 +45,17 @@ export default function HomeView() {
 
   const { currentUser } = useAuth();
 
-  const [locationGroupField, setLocationGroupField] = useState<{ latitude: number; longitude: number; radius: number; address: string; }>({
+  const [locationGroupField, setLocationGroupField] = useState<{
+    latitude: number;
+    longitude: number;
+    radius: number;
+    address: string;
+  }>({
     latitude: 52.04,
     longitude: 13.03,
     radius: 25,
-    address: "Berlin"
+    address: 'Berlin',
   });
-
 
   // const tagsField = useRef<{ [key: string]: string }>({}) // categories need to be decided {catName: false, }
   const sortByField = useRef<HTMLSelectElement>(null);
@@ -62,22 +67,25 @@ export default function HomeView() {
   const offset = useRef<number>(0);
   const searchField = useRef<HTMLInputElement>(null);
 
-  const getListings = useCallback(async (offset: number, locationGroupField: LocationGroupInterface) => {
-    const longitude = locationGroupField?.longitude || 13.38 //CHANGE TO PULL FROM SOMEWHERE
-    const latitude = locationGroupField?.latitude || 52.52 // CHANGE TO PULL FROM SOMEWHERE
-    const radius = locationGroupField?.radius || 50;
-    const maxPrice = maxPriceField.current?.value || undefined;
-    const minPrice = minPriceField.current?.value || 0;
-    const sortBy = sortByField.current?.value || 'closest';
-    const condition = conditionField.current?.value || 'all';
-    const search = searchField.current?.value || undefined;
-    const tagString = tagStack.current.map(el => el.replace(/\s+/g, '')).join(' ');
-    const tags = tagString !== '' ? tagString : undefined;
-    const query = { search, offset, radius, condition, tags, maxPrice, minPrice, sortBy, latitude, longitude };
-    // add 'search' to query
-    const res = await api.get('/listings', query)
-    return res;
-  }, [api])
+  const getListings = useCallback(
+    async (offset: number, locationGroupField: LocationGroupInterface) => {
+      const longitude = locationGroupField?.longitude || 13.38; //CHANGE TO PULL FROM SOMEWHERE
+      const latitude = locationGroupField?.latitude || 52.52; // CHANGE TO PULL FROM SOMEWHERE
+      const radius = locationGroupField?.radius || 50;
+      const maxPrice = maxPriceField.current?.value || undefined;
+      const minPrice = minPriceField.current?.value || 0;
+      const sortBy = sortByField.current?.value || 'closest';
+      const condition = conditionField.current?.value || 'all';
+      const search = searchField.current?.value || undefined;
+      const tagString = tagStack.current.map((el) => el.replace(/\s+/g, '')).join(' ');
+      const tags = tagString !== '' ? tagString : undefined;
+      const query = { search, offset, radius, condition, tags, maxPrice, minPrice, sortBy, latitude, longitude };
+      // add 'search' to query
+      const res = await api.get('/listings', query);
+      return res;
+    },
+    [api]
+  );
 
   // async function handleScroll() {
   //   const res = await getListings(offset.current);
@@ -88,10 +96,10 @@ export default function HomeView() {
   //     //handleError
   //   }
   // }
-  const openFiltersModal = () => setFiltersAreVisible(true)
-  const closeFiltersModal = () => setFiltersAreVisible(false)
-  const openLocationModal = () => setLocationIsVisible(true)
-  const closeLocationModal = () => setLocationIsVisible(false)
+  const openFiltersModal = () => setFiltersAreVisible(true);
+  const closeFiltersModal = () => setFiltersAreVisible(false);
+  const openLocationModal = () => setLocationIsVisible(true);
+  const closeLocationModal = () => setLocationIsVisible(false);
 
   async function applyFilters() {
     closeFiltersModal();
@@ -112,7 +120,7 @@ export default function HomeView() {
       offset.current = res.body.data.offset;
       setListings(res.body.data.listings);
       setLoadingError(false);
-      searchField.current!.value = "";
+      searchField.current!.value = '';
     } else {
       // handleErrors
       // setListings(mocks.listings);
@@ -128,12 +136,12 @@ export default function HomeView() {
         offset.current = res.body.data.offset;
         setListings(res.body.data.listings);
         setLoadingError(false);
-        searchField.current!.value = "";
+        searchField.current!.value = '';
       } else {
         setLoadingError(false);
       }
       setIsLoading(false);
-    }
+    };
     loadData();
     if (currentUser) {
       (async () => {
@@ -141,8 +149,7 @@ export default function HomeView() {
         // locationGroupField.current = await loadUserLocation();
       })();
     }
-  }, [api, getListings, currentUser])
-
+  }, [api, getListings, currentUser]);
 
   function pressEnter(event: KeyboardEvent<HTMLInputElement>): any {
     if (event.key === 'Enter') {
@@ -154,6 +161,7 @@ export default function HomeView() {
 
   return (
     <AppBody>
+      {isLoading ? <FullScreenLoadingIndicator></FullScreenLoadingIndicator> : <></>}
       <div>
         <div className={`HomeView ${toggleClasses && 'hide-content'}`}>
           <p>Hello! I am a map</p>
