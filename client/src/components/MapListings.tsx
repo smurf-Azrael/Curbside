@@ -1,23 +1,18 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef } from 'react';
 import 'leaflet/dist/leaflet.css';
 import { Listing } from '../interfaces/Listing';
 import * as L from 'leaflet';
-import ReactDOM from 'react-dom'
+import ReactDOM from 'react-dom';
 import 'leaflet.markercluster';
 import MapListingPreview from './MapListingPreview';
-import { lightBlue } from '@mui/material/colors';
-// @ts-ignore
-import('leaflet.markercluster/dist/leaflet.markercluster.js')
-// @ts-ignore
-import('leaflet.markercluster/dist/MarkerCluster.css')
-// @ts-ignore
-import('leaflet.markercluster/dist/MarkerCluster.Default.css')
+import 'leaflet.markercluster/dist/leaflet.markercluster.js';
+import 'leaflet.markercluster/dist/MarkerCluster.css';
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 
 const MapListings = ({ listings }: { listings: Listing[] }) => {
-  const [activeListing, setActiveListing] = useState<Listing | null | undefined>(null)
+  const [activeListing, setActiveListing] = useState<Listing | null | undefined>(null);
   const map = useRef<L.Map>();
   const clusterLayer = useRef<L.MarkerClusterGroup>();
-
 
   useEffect(() => {
     clusterLayer.current?.remove();
@@ -28,51 +23,48 @@ const MapListings = ({ listings }: { listings: Listing[] }) => {
 
     if (clusterLayer && clusterLayer.current) {
       map.current.removeLayer(clusterLayer.current);
-      clusterLayer.current?.remove()
+      clusterLayer.current?.remove();
     }
 
-    clusterLayer.current = L.markerClusterGroup()
+    clusterLayer.current = L.markerClusterGroup();
 
-    listings.forEach(listing => {
-
-      let oneMarker = L.circleMarker(L.latLng(listing.latitude, listing.longitude), { radius: 5 })
+    listings.forEach((listing) => {
+      let oneMarker = L.circleMarker(L.latLng(listing.latitude, listing.longitude), { radius: 5 });
       //@ts-ignore
       oneMarker.options['id'] = listing.id;
-      oneMarker.addTo(clusterLayer.current!)
+      oneMarker.addTo(clusterLayer.current!);
       oneMarker.on('click', () => {
-        let clickedListing = listings.find(l => l.id === listing.id)
-        setActiveListing(clickedListing)
-        if (clickedListing?.id === listing.id){
-          oneMarker.setStyle({ color: '#357960'})
+        let clickedListing = listings.find((l) => l.id === listing.id);
+        setActiveListing(clickedListing);
+        if (clickedListing?.id === listing.id) {
+          oneMarker.setStyle({ color: '#357960' });
         }
+      });
+    });
 
-      })
-    }
-    )
-
-    map.current.addLayer(clusterLayer.current)
-  }, [listings])
+    map.current.addLayer(clusterLayer.current);
+  }, [listings]);
 
   useEffect(() => {
-    const mapNode = ReactDOM.findDOMNode(document.getElementById('mapId')) as HTMLDivElement
+    const mapNode = ReactDOM.findDOMNode(document.getElementById('mapId')) as HTMLDivElement;
 
     if (!mapNode || map.current) {
-      return
+      return;
     }
 
-    map.current = L.map(mapNode).setZoom(9).setView(L.latLng(52.5200, 13.405))
+    map.current = L.map(mapNode).setZoom(9).setView(L.latLng(52.52, 13.405));
 
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { maxZoom: 17 }).addTo(map.current)
-  }, [])
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { maxZoom: 17 }).addTo(
+      map.current
+    );
+  }, []);
 
   return (
     <>
-      <div style={{ width: '100vw', height: '100vh', zIndex: "0" }} id="mapId"></div>
+      <div style={{ width: '100vw', height: '100vh', zIndex: '0' }} id="mapId"></div>
       {activeListing ? <MapListingPreview activeListing={activeListing} /> : null}
     </>
-  )
-}
+  );
+};
 
-export default MapListings
-
-
+export default MapListings;
