@@ -29,7 +29,7 @@ export default function Signup() {
     const password = passwordRef.current!.value;
     const confirmPassword = passwordConfirmRef.current!.value;
     const errors: SignUpError = {};
-    
+
     if (!email) {
       errors.email = "Email must not be empty"
     }
@@ -48,7 +48,7 @@ export default function Signup() {
     setLoading(true);
     const res = await signUp(emailRef.current!.value, passwordRef.current!.value);
     if (res.ok) {
-      navigate("/set-profile");
+      navigate(`/set-profile/${res.body.data.id}`);
     } else {
       const error = res.error
       if (error.code === 'auth/email-already-in-use') {

@@ -12,7 +12,6 @@ function CardListings({listings , isLoading,loadingError}:{listings:Listing[] , 
     </Link>)
   })
 
-
   return (
     <div className="CardListings">
       {listings4Display}

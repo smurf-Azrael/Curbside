@@ -14,7 +14,6 @@ import ProfileView from './views/ProfileView';
 import ChatView from './views/ChatView';
 import ListingDetailView from './views/ListingDetailView';
 import ChatsView from './views/ChatsView';
-import { listingChatPreview } from './interfaces/Listing';
 
 function App() {
   return (
@@ -29,7 +28,7 @@ function App() {
               <Route path="/login" element={<LoginView />} />
               <Route path="/signup" element={<SignupView />} />
               <Route path="/verify" element={<VerifyView />} />
-              <Route path="/set-profile" element={<SetProfileView />} />
+              <Route path="/set-profile/:id" element={<SetProfileView />} />
               <Route path="/listing/:id" element={<ListingDetailView />} />
               <Route path="/profile/:id" element={<ProfileView />} />
               <Route path="/favorites" />
