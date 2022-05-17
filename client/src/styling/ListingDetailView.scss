@@ -1,3 +1,67 @@
+.noscroll {
+  overflow: hidden;
+}
+.scrollable {
+  overflow: unset;
+}
+
+.cancelAndConfirmButtons {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.candidatesWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 100000;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.2);
+
+  .candidatesCard {
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    bottom: 10%;
+    left: 30px;
+    right: 30px;
+    background-color: white;
+    border-radius: 15px;
+    padding: 15px;
+    max-height: 30%;
+    overflow-y: scroll;
+    .candidate {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 5px;
+
+      p {
+        margin: 0;
+        margin-left: 10px;
+        // align-self: center;
+      }
+
+      .check {
+        height: 40px;
+        width: 40px;
+        padding: 10px;
+        border-radius: 20px;
+        background-color: rgb(0, 212, 0);
+        object-fit: cover;
+        margin-left: auto;
+      }
+    }
+  }
+}
+
 .ListingDetailView {
   display: flex;
   flex-direction: column;

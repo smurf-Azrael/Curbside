@@ -8,6 +8,7 @@ export interface IChat {
   sellerLastName: string,
   buyerId: string,
   buyerName: string,
+  buyerPhotoUrl?: string,
   listingId: string,
   listingTitle: string,
   listingPhotoUrls?: string[],

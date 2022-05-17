@@ -1,8 +1,10 @@
 import { Listing, ListingCondition, ListingStatus } from '@prisma/client';
+import { CustomError } from '../errors/CustomError.class';
+import { LISTING_NOT_FOUND } from '../errors/SharedErrorMessages';
 import { IListing, IListingCondition } from '../interfaces/listing.interface';
 import { AddListingDTO, FinalizeListingDTO, GetListingQueryParams } from '../interfaces/listing.interface.dto';
 import { prisma } from '../prisma/client';
-import converterHelpers from './query-helpers/converter.helpers';
+import converterHelpers, { convertDataBaseListingToListing } from './query-helpers/converter.helpers';
 
 export const createListing = async (listingDetails: AddListingDTO): Promise<IListing> => {
   const dbListing: Listing = await prisma.listing.create({
@@ -104,6 +106,19 @@ export const getListingsByUserId = async (userId: string):Promise<IListing[]> =>
   return listings;
 };
 
+export const getListingById = async (id: string):Promise<IListing> => {
+  const dbListing = await prisma.listing.findUnique({
+    where: {
+      id
+    }
+  });
+  if (!dbListing) {
+    throw new CustomError(LISTING_NOT_FOUND, 404);
+  }
+  const listing = convertDataBaseListingToListing(dbListing);
+  return listing;
+};
+
 export const getListings = async (id: string):Promise<IListing | null> => {
   const dbListing : Listing | null = await prisma.listing.findFirst({
     where: {
@@ -130,6 +145,7 @@ export default {
   getIdsInRadius,
   getListingsInRadius,
   getListingsByUserId,
+  getListingById,
   getListings,
   updateListing
 };

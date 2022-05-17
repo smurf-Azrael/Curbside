@@ -11,6 +11,7 @@ import { storage } from '../firebase';
 import AppBody from '../components/AppBody';
 import FullScreenLoadingIndicator from '../components/FullScreenLoadingIndicator';
 import AutoCompleteSearch from '../components/AutoCompleteSearch';
+import { User } from '../interfaces/User';
 
 export default function AddListingView() {
   const titleField = useRef<HTMLInputElement>(null);
@@ -21,11 +22,10 @@ export default function AddListingView() {
   const [files, setFiles] = useState([]);
   const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
   const [loading, setLoading] = useState<boolean>();
-  // const [tags, setTags] = useState<string[]>([]);
+  const [user, setUser] = useState<User>();
   const tags = useRef<string[]>(null);
 
   const handleFileSelect = (event: any): void => {
-    console.log(event.target.files);
     setFiles(event.target.files);
   };
 
@@ -38,6 +38,24 @@ export default function AddListingView() {
       navigate('/');
     }
   }, [navigate, currentUser]);
+
+  useEffect(() => {
+    if (currentUser) {
+      const loadUserData = async () => {
+        const res = await api.get(`/users/${currentUser.id}`);
+        if (res.ok) {
+          setUser(res.body.data.user);
+        } else {
+          console.log("failing to load user listing data");
+          navigate('/')
+          // handleErrors
+        }
+        setLoading(false);
+      };
+      loadUserData();
+    }
+  }, [api, navigate, currentUser]);
+
 
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
@@ -60,7 +78,11 @@ export default function AddListingView() {
     if (files.length === 0) {
       errors.photos = 'Please upload at least one photo';
     }
+    if (tags.current?.length === 0) {
+      errors.tags = 'Please add at least one category';
+    }
     setFormErrors(errors);
+
     const urls: string[] = [];
     if (!errors.title && !errors.description && !errors.price && files.length > 0) {
       for (let file of files) {
@@ -82,8 +104,8 @@ export default function AddListingView() {
       userId: currentUser?.id,
       currency: 'eur',
       photoUrls: urls,
-      latitude: 52.52,
-      longitude: 13.405,
+      latitude: user?.latitude,
+      longitude: user?.longitude,
       title,
       description,
       condition,
@@ -96,8 +118,8 @@ export default function AddListingView() {
     if (res.ok) {
       navigate('/');
     } else {
-      //should have errors
-      console.log('ERRRORR');
+      console.log('Failed to post listing');
+      return <p>Sorry, something went wrong and listing could not be posted</p>//should have errors
     }
   };
 
@@ -157,27 +179,9 @@ export default function AddListingView() {
 
           <p style={{ marginRight: 'auto', marginBottom: '5px', marginLeft: '3px' }}>Categories</p>
           <AutoCompleteSearch tagStack={tags} />
-
-          {/* <div className='location-div-container'>
-                <div className='location-input-div'>
-                  <InputField
-                    name="location"
-                    placeholder="Location"
-                    label="Location"
-                    error={formErrors.location}
-                  // fieldref={locationField}
-                  />
-                </div>
-                <div className='location-picker-btn-div'>
-                  <button className='location-picker-btn'>
-                    <i className="bi bi-geo-fill"></i>
-                  </button>
-                </div>
-              </div> */}
+          {formErrors.tags && <p className="custom-manual-error">Please add at least one category</p>}
 
           <div className="add-item-buttons">
-            {/* <button type="submit" style={{ border: 'none', padding: '0' }}> */}
-            {/* <ButtonWide clickFunction={() => navigate('/')} content={'Cancel'} fill={false} /> */}
             <ButtonWide type={'submit'} content={'Create'} fill={true} />
           </div>
         </form>
