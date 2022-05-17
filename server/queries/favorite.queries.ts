@@ -32,8 +32,29 @@ export const getFavorites = async (userId: string): Promise<any> => {
   return userFavoritesPackage;
 };
 
+export const deleteFavorite = async (userId:string, favoriteId:any): Promise<any> => {
+  console.log('favorite', favoriteId);
+  const dbUser: any = await prisma.user.update({
+    where: {
+      id: userId
+    },
+    data: {
+      favorites: {
+        disconnect: [{ id: favoriteId }]
+      }
+    },
+    include: {
+      favorites: true
+    }
+  });
+  console.log('dbUser', dbUser);
+  const userFavoritesPackage = { user: dbUser.id, favorites: dbUser.favorites };
+  console.log('-----------userFavoritesPackage', userFavoritesPackage);
+  return userFavoritesPackage;
+};
+
 export default {
   addFavorite,
-  getFavorites
-  // deleteFavorites
+  getFavorites,
+  deleteFavorite
 };
