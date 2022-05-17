@@ -3,10 +3,11 @@ import { IChat } from '../interfaces/chat.interface';
 import { IListingStatus } from '../interfaces/listing.interface';
 import { prisma } from '../prisma/client';
 
-const getChats = async (userId: string): Promise<IChat[]> => {
+const getChats = async (userId: string, listingId: string | undefined = undefined): Promise<IChat[]> => {
   const chats = await prisma.chat.findMany({
     where: {
-      OR: [{ sellerId: userId }, { buyerId: userId }]
+      OR: [{ sellerId: userId }, { buyerId: userId }],
+      listingId
     },
     include: {
       buyer: {
@@ -18,7 +19,8 @@ const getChats = async (userId: string): Promise<IChat[]> => {
       seller: {
         select: {
           firstName: true,
-          lastName: true
+          lastName: true,
+          photoUrl: !!listingId
         }
       },
       listing: {
