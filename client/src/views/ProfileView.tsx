@@ -68,7 +68,7 @@ function ProfileView() {
               </Link>
             </div>
           </div>
-          {user.id === currentUser.id ? <nav className="profile-listings-shown-options-wrapper">
+          {currentUser && user.id === currentUser.id ? <nav className="profile-listings-shown-options-wrapper">
               <button onClick={handleActivateMyListings} className={`option-name ${activeListingSelection.myListings === true ? 'active' : ''}`} >My Listings</button>
               <button onClick={handleActivateMyFavorites} className={`option-name ${activeListingSelection.myFavorites === true ? 'active' : ''}`} >My Favorites</button>
           </nav> : <p className="option-name">Listings</p>}
