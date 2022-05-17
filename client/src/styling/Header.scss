@@ -74,4 +74,16 @@
     }
   }
 
+  
+}
+.log-out-box{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  // justify-content: center;
+
+  .log-out-btn-group{
+    display: flex;
+    gap: 15px;
+  }
 }
