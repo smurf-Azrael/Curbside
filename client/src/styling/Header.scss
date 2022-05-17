@@ -41,6 +41,17 @@
     font-size: 24px;
   }
 
+  .treesPlanted {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 0;
+    img {
+      margin-right: 8px;
+    }
+    color: var(--main-gray);
+    font-weight: 600;
+  };
+
   &.ChatHeader {
     justify-content: flex-start;
     gap: 16px;
