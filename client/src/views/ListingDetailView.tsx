@@ -11,6 +11,7 @@ import AppBody from '../components/AppBody';
 import { Listing } from '../interfaces/Listing';
 import FullScreenLoadingIndicator from '../components/FullScreenLoadingIndicator';
 import ProfileImage from '../components/ProfileImage';
+import Modal from 'react-bootstrap/esm/Modal';
 const stockimgLink = 'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png';
 const ListingDetailView = () => {
   // Need to add heart button functionality
@@ -50,7 +51,7 @@ const ListingDetailView = () => {
     }
   };
 
-  const handleMarkAsSold = async (buyerId: string) => {
+  const handleMarkAsSold = async (buyerId?: string) => {
     try {
       setLoading(true);
       const response = await api.patch(`/listings/${listing!.id}`, {
@@ -170,6 +171,34 @@ const ListingDetailView = () => {
           <></>
         )}
       </AppBody>
+      <Modal
+        size="sm"
+        centered
+        show={showMarkAsSoldOptionWithoutCandidates}
+        onHide={() => setShowMarkAsSoldOptionWithoutCandidates(false)}
+      >
+        <Modal.Header closeButton>Mark this item as sold?</Modal.Header>
+        <Modal.Body>
+          <div className="ratingModalWrapper">
+            <p>No users have initiated a chat with you about this item. Are you sure you want to mark it as sold?</p>
+            <div className="cancelAndConfirmButtons">
+              <ButtonWide
+                fill={false}
+                clickFunction={() => setShowMarkAsSoldOptionWithoutCandidates(false)}
+                content="Cancel"
+              ></ButtonWide>
+              <ButtonWide
+                fill={true}
+                clickFunction={() => {
+                  handleMarkAsSold();
+                  setShowMarkAsSoldOptionWithoutCandidates(false);
+                }}
+                content="Save"
+              ></ButtonWide>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 };
