@@ -22,10 +22,10 @@ router.patch('/listings/:id', fullUserRequired, listingsController.patchListingB
 router.get('/chats', fullUserRequired, chatsController.getChatsByUserId);
 router.get('/chats/:listingId', fullUserRequired, chatsController.getUsersByListingIdAndSellerId);
 
-router.post('/ratings', loginRequired, ratingsController.addRatings);
+router.post('/ratings', fullUserRequired, ratingsController.addRatings);
 
-router.delete('/transactions/:listingId', loginRequired, transactionController.deleteTransaction);
-router.get('/transactions', loginRequired, transactionController.getTransactionByBuyerAndSellerId);
+router.delete('/transactions/:listingId', fullUserRequired, transactionController.deleteTransaction);
+router.get('/transactions', fullUserRequired, transactionController.getTransactionByBuyerAndSellerId);
 
 router.get('/login', fullUserRequired, (req: Request, res: Response) => {
   console.log('LOGIN');

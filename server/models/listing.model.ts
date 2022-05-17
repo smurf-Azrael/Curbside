@@ -91,7 +91,7 @@ export const getListingByListingIdModel = async (id:string) : Promise<IListingPa
 export const updateListing = async (listingId: string, listingDetails: FinalizeListingDTO): Promise<IListing> => {
   try {
     const currListing = await listingQueries.getListingById(listingId);
-    if (listingDetails.status && listingDetails.buyerId && listingDetails.status !== currListing.status) {
+    if (listingDetails.status && listingDetails.status !== currListing.status) {
       // add transaction
       if (currListing.status === 'sold') {
         console.log('UPDATE LISTING');
@@ -108,7 +108,7 @@ export const updateListing = async (listingId: string, listingDetails: FinalizeL
     const listing: IListing = await listingQueries.updateListing(listingId, listingDetails);
     return listing;
   } catch (error) {
-    console.log('/models/listingsById.model getListingByIdModel ERROR', error);
+    console.log('/models/listingsById.model updateListing ERROR', error);
     throw error;
   }
 };
