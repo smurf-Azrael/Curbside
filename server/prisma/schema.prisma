@@ -69,9 +69,9 @@ enum ListingCondition {
 model Transaction {
   id        String   @id @default(cuid())
   listingId String
-  buyerId   String
+  buyerId   String?
   sellerId  String
-  buyer     User     @relation(name: "buyer", fields: [buyerId], references: [id], onDelete: Cascade)
+  buyer     User?    @relation(name: "buyer", fields: [buyerId], references: [id], onDelete: Cascade)
   seller    User     @relation(name: "seller", fields: [sellerId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
 }
