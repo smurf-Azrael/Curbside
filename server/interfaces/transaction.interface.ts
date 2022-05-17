@@ -4,6 +4,7 @@ export interface ITransaction {
   sellerId: string,
   buyerId: string,
   createdAt: Date
+  ratingGiven?: boolean
 }
 
 export interface ITransactionDTO {
