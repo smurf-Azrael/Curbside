@@ -163,10 +163,6 @@ export default function HomeView() {
   return (
     <AppBody>
       {isLoading ? <FullScreenLoadingIndicator></FullScreenLoadingIndicator> : <></>}
-      {/* <div> */}
-      {/* <div className={`HomeView ${toggleComponent && 'hide-content'}`}>
-          <p>Hello! I am a map</p>
-        </div> */}
       <div className="HomeView">
         <LocationPreviewComponent />{/*Empty for now, but will possibly show preview of your location  */}
 
@@ -205,14 +201,12 @@ export default function HomeView() {
           setLocationGroupField={setLocationGroupField}
         />
 
-        <div className={`${toggleComponent && 'hide-content'}`} >
-          <CardListings listings={listings} isLoading={isLoading} loadingError={loadingError} />
-        </div>
 
-        <div className={`map-set-height ${!toggleComponent && 'hide-content'}`} >
+        {toggleComponent ? 
           <MapListings listings={listings} />
-        </div>
-
+        :
+          <CardListings listings={listings} isLoading={isLoading} loadingError={loadingError} />
+        }
 
       </div>
 
@@ -221,7 +215,6 @@ export default function HomeView() {
           <RoundedButton onClick={() => setToggleComponent(prev => !prev)} content={<i className="bi bi-map"></i>} />
         </div>
       </div>
-      {/* </div> */}
     </AppBody>
   )
 }
