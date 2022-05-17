@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import AppBody from "../components/AppBody";
 import CardListings from "../components/CardListings";
 import ProfileImage from "../components/ProfileImage";
+import FullScreenLoadingIndicator from "../components/FullScreenLoadingIndicator";
 
 function ProfileView() {
   const [userListings, setUserListings] = useState([]);
@@ -56,6 +57,7 @@ function ProfileView() {
 
   return (
     <AppBody>
+      {isLoading && <FullScreenLoadingIndicator />}
       {user ? (<section className="ProfileView">
           <div className="profile-about-info-wrapper">
             <ProfileImage user={user} />

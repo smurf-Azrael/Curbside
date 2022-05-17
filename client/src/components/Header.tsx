@@ -82,8 +82,6 @@ export default function Header({ prevRoute, }: HeaderProps) {
   )
 }
 
-
-
 interface HeaderProps {
   prevRoute?: boolean;
 }
