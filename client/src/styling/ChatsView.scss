@@ -1,6 +1,6 @@
 .ChatsView {
   padding: 16px;
-
+  height: 100%;
   .chatElement {
     display: flex;
     padding: 16px;
@@ -11,9 +11,9 @@
     margin-bottom: 16px;
 
     .imagePreview {
-      border-radius: 20px;
-      min-height: 44px;
-      min-width: 44px;
+      border-radius: 50%;
+      min-height: 50px;
+      min-width: 50px;
       background-position: center;
       background-size: cover;
       margin-right: 16px;
@@ -40,6 +40,12 @@
       .listingTitle {
         font-weight: 600;
         font-size: 18px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1; /* number of lines to show */
+        -webkit-box-orient: vertical;
+        text-align: left;
       }
 
       .lastMessage {
