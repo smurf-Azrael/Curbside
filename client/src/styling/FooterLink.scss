@@ -4,10 +4,19 @@
   border-radius: 10px;
   color: #dad7d7;
 
+  &:hover {
+    color: white;
+    text-decoration: none;
+  }
   i {
     text-shadow: #3d3d3c 0px 0 20px;
+
+    &:hover {
+      color: white;
+      font-weight: 900;
+    }
   }
-  
+
   &.active {
     color: white;
     font-weight: 900;
