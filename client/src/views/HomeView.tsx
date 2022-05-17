@@ -17,6 +17,7 @@ export default function HomeView() {
   const loadUserLocation = async () => {
     const res = await api.get(`/users/${currentUser?.id}`);
     let userLocation;
+    console.log('res.body.data.user', res.body.data.user)
     if (res.ok) {
       userLocation = {
         latitude: res.body.data.user.latitude,

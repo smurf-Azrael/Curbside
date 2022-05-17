@@ -1,12 +1,11 @@
 .SetProfileView {
-  padding-top: 120px;
-  padding-bottom: 80px;
+  padding-top: 25px;
+  padding-bottom: 140px;
   max-width: 500px;
   height: 100%;
   display: flex;
   flex-direction: column;
-  // flex-grow: 1;
-  justify-content: center;
+  margin: 60px auto;
   background-color: var(--main-background-color);
 
   .card {
