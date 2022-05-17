@@ -69,7 +69,6 @@ export default function HomeView() {
 
   const getListings = useCallback(
     async (offset: number, locationGroupField: LocationGroupInterface) => {
-      console.log('tagsField.current', tagStack.current);
       const longitude = locationGroupField?.longitude || 13.38; //CHANGE TO PULL FROM SOMEWHERE
       const latitude = locationGroupField?.latitude || 52.52; // CHANGE TO PULL FROM SOMEWHERE
       const radius = locationGroupField?.radius || 50;
@@ -158,31 +157,28 @@ export default function HomeView() {
     }
   }
 
+  const [toggleClasses, setToggleClasses] = useState<boolean>(true);
+
   return (
-    <>
-      {isLoading && <FullScreenLoadingIndicator></FullScreenLoadingIndicator>}
-      <AppBody>
-        <div className="HomeView">
-          <LocationPreviewComponent />
-          {/*Empty for now, but will possibly show preview of your location  */}
+    <AppBody>
+      {isLoading ? <FullScreenLoadingIndicator></FullScreenLoadingIndicator> : <></>}
+      <div>
+        <div className={`HomeView ${toggleClasses && 'hide-content'}`}>
+          <p>Hello! I am a map</p>
+        </div>
+        <div className={`HomeView ${!toggleClasses && 'hide-content'}`}>
+          <LocationPreviewComponent />{/*Empty for now, but will possibly show preview of your location  */}
 
           <div className="global-search-area">
-            <div className="search-bar-container">
-              <button onClick={() => handleSearch()}>
-                <i className="bi bi-search"></i>
-              </button>
-              <input
-                ref={searchField}
-                className="main-input"
-                placeholder="Search.."
-                onKeyPress={(e) => pressEnter(e)}
-              />
+            <div className='search-bar-container'>
+              <button onClick={() => handleSearch()}><i className="bi bi-search"></i></button>
+              <input ref={searchField} className="main-input" placeholder="Search.." onKeyPress={(e) => pressEnter(e)} />
             </div>
-            <div className="search-buttons-group">
+            <div className='search-buttons-group' >
               <button className="search-location-button search-btn" onClick={openLocationModal}>
                 <span>
                   <i className="bi bi-geo-alt"></i>
-                  {locationGroupField.address ? locationGroupField.address : 'Location'}
+                  {locationGroupField.address ? locationGroupField.address : "Location"}
                 </span>
               </button>
               <button className="search-filter-button search-btn" onClick={openFiltersModal}>
@@ -208,11 +204,14 @@ export default function HomeView() {
             setLocationGroupField={setLocationGroupField}
           />
           <CardListings listings={listings} isLoading={isLoading} loadingError={loadingError} />
-          <div className="map-btn-float" style={{}}>
-            <RoundedButton content={<i className="bi bi-map"></i>} />
+        </div>
+        <div>
+          <div className="map-btn-float" >
+            <RoundedButton onClick={() => setToggleClasses(prev => !prev)} content={<i className="bi bi-map"></i>} />
           </div>
         </div>
-      </AppBody>
-    </>
-  );
+      </div>
+    </AppBody>
+  )
 }
+
