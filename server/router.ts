@@ -25,6 +25,7 @@ router.get('/chats/:listingId', fullUserRequired, chatsController.getUsersByList
 router.post('/ratings', loginRequired, ratingsController.addRatings);
 
 router.delete('/transactions/:listingId', loginRequired, transactionController.deleteTransaction);
+router.get('/transactions', loginRequired, transactionController.getTransactionByBuyerAndSellerId);
 
 router.get('/login', fullUserRequired, (req: Request, res: Response) => {
   console.log('LOGIN');

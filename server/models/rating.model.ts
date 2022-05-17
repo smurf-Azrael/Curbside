@@ -8,7 +8,7 @@ export const addRating = async (ratingDetails: AddRatingDTO): Promise<IRating> =
     const rating: IRating = await ratingsQueries.createRating(ratingDetails);
     return rating;
   } catch (error) {
-    console.log('/models/listings.model addListing ERROR', error);
+    console.log('/models/listings.model addRating ERROR', error);
     throw error;
   }
 };
