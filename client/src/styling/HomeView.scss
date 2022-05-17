@@ -66,16 +66,25 @@
       }
     }
   }
-
-  .map-btn-float{
-    position:fixed;
-    // width:60px;
-    // height:60px;
-    bottom:75px;
-    right:15px;
-    color:#FFF;
-    border-radius:50px;
-    text-align:center;
-    box-shadow: 2px 2px 3px #999;
-  }
+}
+.map-btn-float{
+  align-self: flex-end;
+  position:fixed;
+  bottom:75px;
+  right:15px;
+  border-radius:50px;
+  text-align:center;
+  box-shadow: 2px 2px 3px #999;
+}
+.map-btn-float:hover{
+  align-self: flex-end;
+  position:fixed;
+  bottom:75px;
+  right:15px;
+  border-radius:50px;
+  text-align:center;
+  box-shadow: 2px 2px 4px #999;
+}
+.hide-content{
+  display: none;
 }

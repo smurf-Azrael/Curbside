@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { useEffect, useState } from "react";
 import "../styling/ProfileView.scss";
 import ButtonSmall from "../components/ButtonSmall";
@@ -11,13 +10,14 @@ import AppBody from "../components/AppBody";
 import CardListings from "../components/CardListings";
 import ProfileImage from "../components/ProfileImage";
 import FullScreenLoadingIndicator from "../components/FullScreenLoadingIndicator";
+import { User } from '../interfaces/User';
 
 function ProfileView() {
   const [userListings, setUserListings] = useState([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [loadingError, setLoadingError] = useState<boolean>(false);
   const [activeListingSelection, setActiveListingSelection] = useState<ActiveListingSelection>({myListings: true, myFavorites: false});
-  const [user, setUser] = useState();
+  const [user, setUser] = useState<User>();
   const api = useApi();
   const navigate = useNavigate()
   const { id } = useParams();
@@ -57,7 +57,7 @@ function ProfileView() {
 
   return (
     <AppBody>
-      {isLoading && <FullScreenLoadingIndicator />}
+      {isLoading ? <FullScreenLoadingIndicator /> : <></>}
       {user ? (<section className="ProfileView">
           <div className="profile-about-info-wrapper">
             <ProfileImage user={user} />
@@ -65,7 +65,7 @@ function ProfileView() {
               <p>
                 {user.firstName} {user.lastName[0]}.
               </p>
-              <Link to="/set-profile">
+              <Link to={`/set-profile/${user.id}`}>
                 {currentUser && user.id === currentUser.id && <ButtonSmall content={"Edit"} fill={true} />}
               </Link>
             </div>
@@ -80,9 +80,9 @@ function ProfileView() {
           {activeListingSelection.myFavorites === true &&
             <div>My favorites not yet implemented</div>
           }
-        </section>) : (<></>)} 
+        </section>) : (<></>)}
       </AppBody>
-  ) 
+  )
 
 }
 

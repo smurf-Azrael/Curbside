@@ -1,35 +1,70 @@
-import React from 'react'
-import { MapContainer, TileLayer, Marker } from 'react-leaflet';
-import { Icon } from 'leaflet';
+import { useEffect, useState, useRef } from 'react';
 import 'leaflet/dist/leaflet.css';
-import '../styling/SimpleMap.scss'
+import { Listing } from '../interfaces/Listing';
+import * as L from 'leaflet';
+import ReactDOM from 'react-dom';
+import 'leaflet.markercluster';
+import MapListingPreview from './MapListingPreview';
+import 'leaflet.markercluster/dist/leaflet.markercluster.js';
+import 'leaflet.markercluster/dist/MarkerCluster.css';
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 
-const customIcon = new Icon({
-  iconUrl: "/icons8-select-24.png",
-  iconSize: [17, 17]
-})
+const MapListings = ({ listings }: { listings: Listing[] }) => {
+  const [activeListing, setActiveListing] = useState<Listing | null | undefined>(null);
+  const map = useRef<L.Map>();
+  const clusterLayer = useRef<L.MarkerClusterGroup>();
 
+  useEffect(() => {
+    clusterLayer.current?.remove();
 
-const MapListings = () => {
+    if (!map.current) {
+      return;
+    }
 
+    if (clusterLayer && clusterLayer.current) {
+      map.current.removeLayer(clusterLayer.current);
+      clusterLayer.current?.remove();
+    }
 
-  const {position} : {position: {lat: number, lng: number} }= {position: {lat: 52.5200, lng: 13.4050 }}
+    clusterLayer.current = L.markerClusterGroup();
+
+    listings.forEach((listing) => {
+      let oneMarker = L.circleMarker(L.latLng(listing.latitude, listing.longitude), { radius: 5 });
+      //@ts-ignore
+      oneMarker.options['id'] = listing.id;
+      oneMarker.addTo(clusterLayer.current!);
+      oneMarker.on('click', () => {
+        let clickedListing = listings.find((l) => l.id === listing.id);
+        setActiveListing(clickedListing);
+        if (clickedListing?.id === listing.id) {
+          oneMarker.setStyle({ color: '#357960' });
+        }
+      });
+    });
+
+    map.current.addLayer(clusterLayer.current);
+  }, [listings]);
+
+  useEffect(() => {
+    const mapNode = ReactDOM.findDOMNode(document.getElementById('mapId')) as HTMLDivElement;
+
+    if (!mapNode || map.current) {
+      return;
+    }
+
+    map.current = L.map(mapNode).setZoom(9).setView(L.latLng(52.52, 13.405));
+
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { maxZoom: 17 }).addTo(
+      map.current
+    );
+  }, []);
+
   return (
-    <section className='SimpleMap' >
-      <MapContainer
-        center={position}
-        zoom={14}
-        scrollWheelZoom={true}
-        style={{ height: '100vh', width: '100%' }}
-      >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-          url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
-        />
-        <Marker position={position} icon={customIcon}/>
-      </MapContainer>
-    </section>
-  )
-}
+    <>
+      <div style={{ width: '100vw', height: '100vh', zIndex: '0' }} id="mapId"></div>
+      {activeListing ? <MapListingPreview activeListing={activeListing} /> : null}
+    </>
+  );
+};
 
-export default MapListings
+export default MapListings;

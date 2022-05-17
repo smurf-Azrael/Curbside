@@ -10,6 +10,7 @@ import { useAuth } from '../contexts/AuthContext';
 import AppBody from '../components/AppBody';
 import { Listing } from '../interfaces/Listing';
 import FullScreenLoadingIndicator from '../components/FullScreenLoadingIndicator';
+import ProfileImage from '../components/ProfileImage';
 const stockimgLink = 'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png';
 const ListingDetailView = () => {
   // Need to add heart button functionality
@@ -108,16 +109,10 @@ const ListingDetailView = () => {
         {listing !== undefined ? (
           <section className="ListingDetailView">
             <section className="listing-owner-info-wrapper">
-              <section className="listing-owner-image-wrapper">
-                <img
-                  src={listing.userPhotoUrl ?? stockimgLink}
-                  alt={'user'}
-                  onError={({ currentTarget }) => {
-                    currentTarget.onerror = null; // prevents looping
-                    currentTarget.src = stockimgLink;
-                  }}
-                />
-              </section>
+              <ProfileImage
+                user={{ id: listing.userId, profileImage: listing.userPhotoUrl, firstName: listing.userFirstName }}
+              />
+
               <section className="listing-owner-name-buttons-wrapper">
                 <p className="listing-owner-name">{`${listing.userFirstName} ${listing.userLastName.slice(0, 1)}.`}</p>
               </section>
