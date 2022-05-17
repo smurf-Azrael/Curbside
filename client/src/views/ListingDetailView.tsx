@@ -30,9 +30,9 @@ const ListingDetailView = () => {
     loadListingData();
   },[api, id])
 
-  return listing !== undefined ? (
+  return (
     <AppBody>
-      <section className='ListingDetailView'>
+      {listing !== undefined ? (<section className='ListingDetailView'>
         <section className='listing-owner-info-wrapper'>
           <section className='listing-owner-image-wrapper'>
             <img src={listing.userPhotoUrl} alt={'user'} />
@@ -58,10 +58,9 @@ const ListingDetailView = () => {
           <p className='listing-detail-title'>Location: </p>
         </section>
         <SimpleMap position={{lng: listing.longitude, lat: listing.latitude}} radius={1} />
-      </section>
+      </section>):(<></>)}
+      
     </AppBody>
-  ) : (
-    <></>
   )
 }
 
