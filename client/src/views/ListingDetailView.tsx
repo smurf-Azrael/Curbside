@@ -9,6 +9,7 @@ import { useAuth } from '../contexts/AuthContext';
 import AppBody from '../components/AppBody';
 import { Listing } from '../interfaces/Listing';
 import FullScreenLoadingIndicator from '../components/FullScreenLoadingIndicator';
+import ProfileImage from '../components/ProfileImage';
 const stockimgLink =
   'https://media.istockphoto.com/vectors/user-icon-people-icon-isolated-on-white-background-vector-vector-id1210939712?k=20&m=1210939712&s=612x612&w=0&h=xJqEPQnMiNofprbLXWdEtJQ75QL79lQ5N76J4JOdTIM=';
 const ListingDetailView = () => {
@@ -56,16 +57,7 @@ const ListingDetailView = () => {
       {listing !== undefined ? (
         <section className="ListingDetailView">
           <section className="listing-owner-info-wrapper">
-            <section className="listing-owner-image-wrapper">
-              <img
-                src={listing.userPhotoUrl ?? stockimgLink}
-                alt={'user'}
-                onError={({ currentTarget }) => {
-                  currentTarget.onerror = null; // prevents looping
-                  currentTarget.src = stockimgLink;
-                }}
-              />
-            </section>
+            <ProfileImage user={{ id: listing.userId, profileImage: listing.userPhotoUrl, firstName: listing.userFirstName}}/>
             <section className="listing-owner-name-buttons-wrapper">
               <p className="listing-owner-name">{`${listing.userFirstName} ${listing.userLastName.slice(0, 1)}.`}</p>
             </section>
