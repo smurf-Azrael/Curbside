@@ -6,8 +6,8 @@ const addFavorite = async (req: Request, res: Response, next: NextFunction): Pro
   try {
     const userId = req.params.id;
     const favorites: string = req.body.favorites;
-    const { user, favoritesList } : FavoriteDTO | any = await favoriteModel.addFavorite(userId, favorites);
-    res.status(200).send({ data: { user, favoritesList } });
+    const userFavoritesPackage : FavoriteDTO | any = await favoriteModel.addFavorite(userId, favorites);
+    res.status(200).send({ data: { userFavoritesPackage } });
   } catch (error) {
     next(error);
   }

@@ -15,7 +15,7 @@ export const addFavorite = async (userId: string, listingId: string): Promise<an
       favorites: true
     }
   });
-  const userFavoritesPackage = { user: dbUser, favorites: dbUser.favorites };
+  const userFavoritesPackage = { user: dbUser.id, favorites: dbUser.favorites };
   return userFavoritesPackage;
 };
 
