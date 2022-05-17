@@ -1,10 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../styling/Footer.scss';
 import { useAuth } from '../contexts/AuthContext';
 import FooterLink from './FooterLink';
+import Modal from 'react-bootstrap/Modal';
+import ButtonWide from './ButtonWide';
+
 
 export default function Footer() {
-  const { currentUser } = useAuth();
+  const { currentUser, logOut } = useAuth();
+  const [logOutWindowVisible, setLogOutWindowVisible] = useState(false);
+  const [logOutMessageVisible, setLogOutMessageVisible] = useState(false);
+
+
+  function closeLogOutWindow() {
+    setLogOutWindowVisible(false)
+  };
+  function loggingOut() {
+    setLogOutMessageVisible(true)
+    setTimeout(() => {
+      logOut()
+      closeLogOutWindow();
+      setTimeout(() => { setLogOutMessageVisible(false) }, 500)
+    }, 1200)
+  }
+
   return (
     <div className="Footer">
       <FooterLink to="/">
@@ -19,9 +38,31 @@ export default function Footer() {
       <FooterLink to={`/profile/${currentUser?.id}`}>
         <i className="bi bi-person"></i>
       </FooterLink>
-      <FooterLink to="settings">
+      <button onClick={() => setLogOutWindowVisible(true)} style={{ border: 'none', backgroundColor: 'transparent' }} className='FooterLink' >
         <i className="bi bi-gear"></i>
-      </FooterLink>
+      </button>
+
+      <Modal
+        size='sm'
+        centered
+        show={logOutWindowVisible}
+        onHide={closeLogOutWindow}
+      >
+        <Modal.Header closeButton>Settings</Modal.Header>
+        <Modal.Body>
+          <div className={`log-out-box ${logOutMessageVisible && 'hide-div'}`} >
+            <div style={{ width: '100%' }} onClick={loggingOut} >
+              <ButtonWide content={'Log out'} fill={true} />
+            </div>
+            <div style={{ width: '100%' }} onClick={closeLogOutWindow}>
+              <ButtonWide content={'Cancel'} fill={false} />
+            </div>
+          </div>
+          <div className={`log-out-box ${!logOutMessageVisible && 'hide-div'}`}>
+            <p>See you very soon!</p>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   )
 }

@@ -15,3 +15,13 @@
   font-size: 25px;
   box-shadow: 0px 0px 8px 0.5px rgba(8, 1, 1, 0.199);
 }
+.log-out-box{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+
+  &.hide-div{
+    display: none;
+  }
+}
