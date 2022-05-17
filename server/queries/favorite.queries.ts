@@ -2,7 +2,6 @@ import { IUserFavoritesPackage } from '../interfaces/favorite.interface';
 import { prisma } from '../prisma/client';
 
 export const addFavorite = async (userId: string, listingId: string): Promise<IUserFavoritesPackage> => {
-  console.log('-------listingId', listingId);
   const dbUser: any = await prisma.user.update({
     where: {
       id: userId
@@ -29,7 +28,6 @@ export const getFavorites = async (userId: string): Promise<IUserFavoritesPackag
       favorites: true
     }
   });
-  console.log('dbUser', dbUser);
   const userFavoritesPackage = { user: dbUser.id, favorites: dbUser.favorites };
   return userFavoritesPackage;
 };
@@ -49,7 +47,6 @@ export const deleteFavorite = async (userId:string, favoriteId:any): Promise<any
       favorites: true
     }
   });
-  console.log('dbUser', dbUser);
   const userFavoritesPackage = { user: dbUser.id, favorites: dbUser.favorites };
   return userFavoritesPackage;
 };
