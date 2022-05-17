@@ -69,7 +69,6 @@ export default function HomeView() {
 
   const getListings = useCallback(
     async (offset: number, locationGroupField: LocationGroupInterface) => {
-      console.log('tagsField.current', tagStack.current);
       const longitude = locationGroupField?.longitude || 13.38; //CHANGE TO PULL FROM SOMEWHERE
       const latitude = locationGroupField?.latitude || 52.52; // CHANGE TO PULL FROM SOMEWHERE
       const radius = locationGroupField?.radius || 50;

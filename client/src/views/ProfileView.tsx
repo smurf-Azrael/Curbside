@@ -65,7 +65,7 @@ function ProfileView() {
               <p>
                 {user.firstName} {user.lastName[0]}.
               </p>
-              <Link to="/set-profile">
+              <Link to={`/set-profile/${user.id}`}>
                 {currentUser && user.id === currentUser.id && <ButtonSmall content={"Edit"} fill={true} />}
               </Link>
             </div>
@@ -80,9 +80,9 @@ function ProfileView() {
           {activeListingSelection.myFavorites === true &&
             <div>My favorites not yet implemented</div>
           }
-        </section>) : (<></>)} 
+        </section>) : (<></>)}
       </AppBody>
-  ) 
+  )
 
 }
 
