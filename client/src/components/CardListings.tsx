@@ -4,23 +4,15 @@ import { Listing } from '../interfaces/Listing';
 import ListingPreview from './ListingPreview';
 import '../styling/CardListings.scss';
 
-function CardListings({
-  listings,
-  isLoading,
-  loadingError,
-}: {
-  listings: Listing[];
-  isLoading: boolean;
-  loadingError: boolean;
-}) {
-  const listings4Display = listings.map((listing) => {
-    return (
-      <Link key={listing.id} to={`/listing/${listing.id}`} style={{ textDecoration: 'none', color: 'black' }}>
-        <ListingPreview listing={listing} />
-      </Link>
-    );
-  });
-  console.log('listings4Display', listings4Display);
+
+function CardListings({listings , isLoading,loadingError}:{listings:Listing[] , isLoading:boolean,loadingError:boolean}) {
+  const listings4Display= listings.map(listing => {
+    return (<Link key={listing.id} to={`/listing/${listing.id}`} style={{ textDecoration: "none", color: "#3f3e3e" }}>
+      <ListingPreview  listing={listing} />
+    </Link>)
+  })
+  console.log("listings4Display", listings4Display)
+
 
   return (
     <div className="CardListings">
