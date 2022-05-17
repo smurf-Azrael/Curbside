@@ -1,16 +1,27 @@
 import React from 'react'
 import { Listing } from '../interfaces/Listing';
+import { Link } from 'react-router-dom'
 import '../styling/MapListingPreview.scss';
-import {useNavigate} from 'react-router-dom'
 
 
 
 function MapListingPreview({activeListing}: {activeListing:Listing}) {
-  const navigate = useNavigate()
+
+  const price = (activeListing.priceInCents / 100).toLocaleString('en-US', { style: 'currency', currency: 'EUR' });
+
+
   return (
-    <button className='Card-Listing-Preview'
-    onClick={()=>navigate(`/listing/${activeListing.id}`)}
-    >{activeListing.title}</button>
+    <Link className='Card-Listing-Preview' to={`/listing/${activeListing.id}`}>
+      <img className='Preview-Img' src= {activeListing.photoUrls[0]}></img>
+      <div className= 'Preview-Text-Content'>
+        <div className='Preview-Title'>
+          {activeListing.title}
+        </div>
+        <div className='Preview-Price'>
+          {price}
+        </div>
+      </div>
+    </Link>
   )
 }
 

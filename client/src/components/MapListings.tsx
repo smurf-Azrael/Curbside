@@ -39,7 +39,7 @@ const MapListings = ({listings}:{listings:Listing[]}) => {
       //@ts-ignore
       oneMarker.options['id'] = listing.id;
       oneMarker.addTo(clusterLayer.current!)
-      oneMarker.on('click', (click)=>{
+      oneMarker.on('click', ()=>{
         let clickedListing = listings.find(l => l.id === listing.id)
         console.log(clickedListing)
         setActiveListing(clickedListing)
