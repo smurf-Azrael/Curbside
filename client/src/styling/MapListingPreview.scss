@@ -7,18 +7,11 @@
   width: 85%;
   color: black;
   text-decoration: none;
-
-  // padding: 2px 15px 3px 15px;
   border-radius: 6px;
   transition: 0.3s;
   display: flex;
   flex-direction: row;
-
   overflow: hidden;
-
-  &:hover{
-    box-shadow: 0 0 5px 1px #c3bcbc;
-  }
 
   
   .Preview-Img {
