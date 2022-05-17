@@ -7,8 +7,9 @@ import '../styling/HomeView.scss';
 import LocationPreviewComponent from '../components/LocationPreviewComponent';
 import AppBody from '../components/AppBody';
 import { useAuth } from '../contexts/AuthContext';
-import { LocationGroupInterface } from '../interfaces/LocationGroup';
-import CardListings from '../components/CardListings';
+import { LocationGroupInterface } from "../interfaces/LocationGroup";
+import CardListings from "../components/CardListings";
+import MapListings from "../components/MapListings";
 import FullScreenLoadingIndicator from '../components/FullScreenLoadingIndicator';
 
 export default function HomeView() {
@@ -203,15 +204,16 @@ export default function HomeView() {
             locationGroupField={locationGroupField}
             setLocationGroupField={setLocationGroupField}
           />
-          <CardListings listings={listings} isLoading={isLoading} loadingError={loadingError} />
-        </div>
+      {/* <CardListings listings={listings} isLoading={isLoading} loadingError={loadingError}/> */}
+      <MapListings listings={listings}/>        
+      </div>
         <div>
           <div className="map-btn-float" >
             <RoundedButton onClick={() => setToggleClasses(prev => !prev)} content={<i className="bi bi-map"></i>} />
           </div>
         </div>
       </div>
-    </AppBody>
-  )
+  </AppBody>
+)
 }
 
