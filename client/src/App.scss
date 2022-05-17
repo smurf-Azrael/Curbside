@@ -1,15 +1,15 @@
 // change the theme of Bootstrap components
 $theme-colors: (
-  "primary": #357960,
-  "danger": #ff4136,
-  "info": #357960
+  'primary': #357960,
+  'danger': #ff4136,
+  'info': #357960,
 );
 
 // Import Bootstrap and its default variables
 @import '~bootstrap/scss/bootstrap.scss';
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Work+Sans:wght@100;400;700&display=swap');
 
-:root{
+:root {
   /* --main-green-color: #13C1AC; */
   --main-green-color: #357960;
   --main-background-color: #efeded;
@@ -18,19 +18,23 @@ $theme-colors: (
   --footer-height: 60px;
 }
 
-html, body, #root, .App {
+html,
+body,
+#root,
+.App {
   height: 100%;
   box-sizing: border-box;
+  background-color: var(--main-background-color);
 }
-
 
 .App {
   text-align: center;
-  min-width:250px;
+  min-width: 250px;
   margin: auto;
   text-align: center;
   display: flex;
   flex-direction: column;
+
   font-family: 'Montserrat', 'Quicksand', sans-serif  ;
   color: #3f3e3e;
 
@@ -41,6 +45,4 @@ html, body, #root, .App {
     margin-bottom: 20px;
     border-bottom: 1px solid rgb(193, 189, 189);
   }
-
-
 }
