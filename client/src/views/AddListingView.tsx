@@ -11,6 +11,7 @@ import { storage } from '../firebase';
 import AppBody from '../components/AppBody';
 import FullScreenLoadingIndicator from '../components/FullScreenLoadingIndicator';
 import AutoCompleteSearch from '../components/AutoCompleteSearch';
+import { User } from '../interfaces/User';
 
 export default function AddListingView() {
   const titleField = useRef<HTMLInputElement>(null);
@@ -21,7 +22,7 @@ export default function AddListingView() {
   const [files, setFiles] = useState([]);
   const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
   const [loading, setLoading] = useState<boolean>();
-  // const [tags, setTags] = useState<string[]>([]);
+  const [user, setUser] = useState<User>();
   const tags = useRef<string[]>(null);
 
   const handleFileSelect = (event: any): void => {
@@ -38,6 +39,24 @@ export default function AddListingView() {
       navigate('/');
     }
   }, [navigate, currentUser]);
+
+  useEffect(() => {
+    if (currentUser) {
+      const loadUserData = async () => {
+        const res = await api.get(`/users/${currentUser.id}`);
+        if (res.ok) {
+          setUser(res.body.data.user);
+        } else {
+          console.log("failing to load user listing data");
+          navigate('/')
+          // handleErrors
+        }
+        setLoading(false);
+      };
+      loadUserData();
+    }
+  }, [api, navigate, currentUser]);
+
 
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
@@ -82,8 +101,8 @@ export default function AddListingView() {
       userId: currentUser?.id,
       currency: 'eur',
       photoUrls: urls,
-      latitude: 52.52,
-      longitude: 13.405,
+      latitude: user?.latitude,
+      longitude: user?.longitude,
       title,
       description,
       condition,
@@ -96,8 +115,8 @@ export default function AddListingView() {
     if (res.ok) {
       navigate('/');
     } else {
-      //should have errors
-      console.log('ERRRORR');
+      console.log('Failed to post listing');
+      return <p>Sorry, something went wrong and listing could not be posted</p>//should have errors
     }
   };
 
