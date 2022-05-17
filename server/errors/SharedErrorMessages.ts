@@ -8,4 +8,5 @@ export const USER_NOT_FOUND = 'User not found.';
 export const USER_NOT_FINALIZED = 'User not fully set up.';
 
 export const LISTING_NOT_FOUND = 'Listing not found';
-export const PAGE_NOT_FOUND = 'PAGE not found.';
+export const PAGE_NOT_FOUND = 'Page not found.';
+export const TRANSACTION_NOT_FOUND = 'Transaction not found.';
