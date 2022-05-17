@@ -50,14 +50,20 @@
       border-radius: 24px;
       height: 44px;
       width: 44px;
+      min-width: 44px;
       background-size: cover;
       background-position: center;
       background-color: #2d2d2d;
     }
 
     .listingTitle {
-      font-weight: 900;
+      font-weight: 600;
       margin-bottom: 0;
+      text-align: left;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      max-width: 15ch;
     }
 
     .listingPrice {
@@ -71,6 +77,7 @@
       color: var(--main-gray);
       margin-bottom: 0;
       margin-left: auto;
+      font-size: 12px;
     }
   }
 
