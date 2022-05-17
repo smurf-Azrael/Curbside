@@ -9,7 +9,7 @@ import 'leaflet.markercluster/dist/leaflet.markercluster.js';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 
-const MapListings = ({ listings }: { listings: Listing[] }) => {
+export default function MapListings ({ listings }: { listings: Listing[] }) {
   const [activeListing, setActiveListing] = useState<Listing | null | undefined>(null);
   const map = useRef<L.Map>();
   const clusterLayer = useRef<L.MarkerClusterGroup>();
@@ -60,11 +60,9 @@ const MapListings = ({ listings }: { listings: Listing[] }) => {
   }, []);
 
   return (
-    <>
-      <div style={{ width: '100vw', height: '100vh', zIndex: '0' }} id="mapId"></div>
+    <div className='map-set-height'>
+      <div style={{ flexGrow:'1', zIndex: '0', position:'relative'}} id="mapId"></div>
       {activeListing ? <MapListingPreview activeListing={activeListing} /> : null}
-    </>
-  );
-};
-
-export default MapListings;
+    </div>
+  )
+}
