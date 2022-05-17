@@ -1,16 +1,22 @@
 import React, { useState } from 'react';
 import '../styling/Header.scss';
-import ButtonSmall from './ButtonSmall';
 import curbside from './../assets/CurbsideSmall.png';
-import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import tree from "../assets/tree.gif"
 import Modal from 'react-bootstrap/Modal';
+import ButtonSmall from './ButtonSmall';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function Header({ prevRoute, }: HeaderProps) {
   const navigate = useNavigate();
   const { currentUser, logOut } = useAuth();
   const [logOutWindowVisible, setLogOutWindowVisible] = useState(false);
   const [logOutMessageVisible, setLogOutMessageVisible] = useState(false);
+  const baseDate = new Date(2022, 4, 17, 10, 21, 32); // May 17, 2022
+  const now = new Date();
+  let diffInHours = Math.round(Math.abs(baseDate.getTime() - now.getTime()) / (60*60*1000));
+  const treesPlanted = 1053 + diffInHours;  
+
   function PrevRoute() {
     return (
       <button
@@ -44,9 +50,7 @@ export default function Header({ prevRoute, }: HeaderProps) {
         <img src={curbside} alt='Curbside' />
       </button>
       {currentUser ?
-        (<div className='header-login' onClick={logOutWindow} >
-          <ButtonSmall content={'Log Out'} fill={false} />
-        </div>) :
+        (<p className='treesPlanted'><img src={tree} alt="trees" />{treesPlanted}!</p>) :
         (<div className='header-login' onClick={() => navigate('/login')} >
           <ButtonSmall content={'Log in'} fill={true} />
         </div>)
@@ -72,6 +76,7 @@ export default function Header({ prevRoute, }: HeaderProps) {
 
         </Modal.Body>
       </Modal>
+      
 
     </div>
   )

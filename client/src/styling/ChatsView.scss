@@ -1,5 +1,4 @@
-
-.ChatsView{
+.ChatsView {
   padding: 16px;
 
   .chatElement {
@@ -10,16 +9,16 @@
     background-color: white;
     border-radius: 10px;
     margin-bottom: 16px;
-    
+
     .imagePreview {
       border-radius: 20px;
-      min-height:44px;
+      min-height: 44px;
       min-width: 44px;
       background-position: center;
       background-size: cover;
       margin-right: 16px;
     }
-    
+
     .infoContainer {
       display: flex;
       flex-direction: column;
@@ -29,7 +28,7 @@
       * {
         margin-bottom: 0;
       }
-      
+
       .topInfo {
         display: flex;
         justify-content: space-between;
@@ -37,9 +36,9 @@
         font-size: 12px;
         color: var(--main-gray);
       }
-      
+
       .listingTitle {
-        font-weight: 900;
+        font-weight: 600;
         font-size: 18px;
       }
 
@@ -53,9 +52,6 @@
         -webkit-box-orient: vertical;
         text-align: left;
       }
-      
     }
   }
-  
-
 }
