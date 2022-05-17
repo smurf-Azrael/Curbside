@@ -42,6 +42,16 @@ export default function Header({ prevRoute, }: HeaderProps) {
       setTimeout(() => { setLogOutMessageVisible(false) }, 500)
     }, 1200)
   }
+  const closeLogOutWindow = () => setLogOutWindowVisible(false);
+  // const
+  function loggingOut() {
+    setLogOutMessage(true)
+
+    // setTimeout(() => {
+    //   closeLogOutWindow();
+    //   logOut()
+    // }, 1500)
+  }
 
   return (
     <div className='Header'>
