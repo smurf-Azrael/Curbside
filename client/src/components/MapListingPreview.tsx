@@ -17,8 +17,12 @@ function MapListingPreview({activeListing}: {activeListing:Listing}) {
         <div className='Preview-Title'>
           {activeListing.title}
         </div>
-        <div className='Preview-Price'>
-          {price}
+        <div className= 'Preview-Price-Listing-Container'>
+          <div className='Preview-Price'> {price} </div>
+          <div className='Preview-Rating'>
+            {activeListing.rating? activeListing.rating : "New User" }
+            <i className="bi bi-star-fill"></i>
+          </div>
         </div>
       </div>
     </Link>

@@ -36,6 +36,7 @@
     min-width: 68%;
     
     .Preview-Title {
+      max-width: 80%;
       margin-left: 3%;
       margin-top: 3%;
       font-size: 100%;
@@ -44,14 +45,43 @@
       white-space: nowrap;
       overflow: hidden;
     }
-    .Preview-Price {
-      margin-left: 3%;
-      margin-top: 20%;
-      font-size: 85%;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      overflow: hidden;
-      font-weight: bold;
+
+    .Preview-Price-Listing-Container{
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      width: 100%;
+
+      .Preview-Price {
+        margin-left: 3%;
+        margin-top: 20%;
+        font-size: 85%;
+        font-weight: bold;
+      }
+
+      .Preview-Rating {
+        display: flex;
+        justify-content: flex-end;
+        align-self: flex-end;
+        margin-left: 3%;
+        margin-right: 3%;
+        margin-top: 20%;
+        font-size: 85%;
+        font-weight: bold;
+        min-width: 40%;
+
+
+        .bi-star-fill{
+          align-self: flex-end;
+          // margin-right: 3%;
+          margin-left: 5%;
+          margin-bottom: 2.3%;
+          font-size: 80%;
+        }
+      }
+
+
+
     }
   }
 
