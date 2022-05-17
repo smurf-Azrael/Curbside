@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, FormEvent } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import InputField from '../components/InputField';
 import { useApi } from '../contexts/ApiProvider';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -7,6 +7,10 @@ import { Socket } from 'socket.io-client';
 import ChatHeader from '../components/ChatHeader';
 import { listingChatPreview } from '../interfaces/Listing';
 import '../styling/ChatView.scss';
+import ButtonWide from '../components/ButtonWide';
+import { Modal } from 'react-bootstrap';
+import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
+import StarRoundedIcon from '@mui/icons-material/StarRounded';
 
 let socket: Socket;
 
@@ -18,20 +22,67 @@ const ChatView = () => {
   let chatId = useRef<number | null>(null);
   const [messages, setMessages] = useState<any[]>([]);
   const { state } = useLocation() as { state: listingChatPreview };
-
   if (!currentUser) {
     navigate('/');
   }
-
   const newMsgField = useRef<HTMLInputElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const [curentUserIsConfirmedBuyerAndRatingIsNotGiven, setCurrentUserIsConfirmedBuyerAndRatingIsNotGiven] =
+    useState<boolean>(false);
+  const [ratingVisible, setRatingVisible] = useState<boolean>(false);
+
+  const handleRatingVisible = () => {
+    setRatingVisible((prev) => !prev);
+  };
+  const initialStars = [{ active: true }, { active: true }, { active: true }, { active: false }, { active: false }];
+  const [stars, setStars] = useState<{ active: boolean }[]>(initialStars);
+
+  useEffect(() => {
+    const getData = async () => {
+      const response = await api.get(`/transactions?sellerId=${state.sellerId}&buyerId=${state.buyerId}`);
+      if (response.body.data?.ratingGiven === false) {
+        setCurrentUserIsConfirmedBuyerAndRatingIsNotGiven(true);
+      }
+    };
+    getData();
+  }, [api, state.buyerId, state.sellerId]);
+
+  const handleStarClick = (index: number) => {
+    const newStars = [];
+    for (let i = 0; i < 5; i++) {
+      if (i <= index) {
+        newStars.push({ active: true });
+      } else {
+        newStars.push({ active: false });
+      }
+    }
+    setStars(newStars);
+  };
+
+  const handleSaveClick = async () => {
+    try {
+      const body = {
+        rating: stars.reduce((prev, curr) => (curr.active ? prev + 1 : prev), 0),
+        buyerId: state.buyerId,
+        sellerId: state.sellerId,
+      };
+      await api.post('/ratings', body);
+      setRatingVisible(false);
+      setCurrentUserIsConfirmedBuyerAndRatingIsNotGiven(false);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
+
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
   const sendMessage = () => {
     if (newMsgField.current && newMsgField.current.value) {
       const msg = newMsgField.current.value.trim();
@@ -96,6 +147,11 @@ const ChatView = () => {
 
   return (
     <div className="ChatView">
+      {curentUserIsConfirmedBuyerAndRatingIsNotGiven && (
+        <div className="ratingButton" onClick={handleRatingVisible}>
+          Rate User
+        </div>
+      )}
       <ChatHeader listing={state} />
       <div className="messages">
         {messages.length > 0 &&
@@ -132,6 +188,27 @@ const ChatView = () => {
           Send
         </button>
       </div>
+      <Modal size="sm" centered show={ratingVisible} onHide={() => setRatingVisible(false)}>
+        <Modal.Header closeButton>Rate {state.userFirstName}</Modal.Header>
+        <Modal.Body>
+          <div className="ratingModalWrapper">
+            <div className="stars">
+              {[...stars].map((star, i) =>
+                star.active ? (
+                  <div onClick={() => handleStarClick(i)}>
+                    <StarRoundedIcon fontSize="large" htmlColor="rgba(255,210,0,1)"></StarRoundedIcon>
+                  </div>
+                ) : (
+                  <div onClick={() => handleStarClick(i)}>
+                    <StarBorderRoundedIcon fontSize="large" htmlColor="rgba(255,210,0,1)"></StarBorderRoundedIcon>
+                  </div>
+                )
+              )}
+            </div>
+            <ButtonWide fill={true} clickFunction={handleSaveClick} content="Save"></ButtonWide>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 };

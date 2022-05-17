@@ -62,7 +62,7 @@ export const listingsPatchTests = (): void => {
       server.close();
     });
 
-    it('Should make corresponding updates to selected listing, and return the updated listing', async () => {
+    it.skip('Should make corresponding updates to selected listing, and return the updated listing', async () => {
       const { body } = await request(server)
         .patch(`/listings/${listingFromDb.id}`)
         .set('Authorization', 'Bearer ' + testToken)
@@ -76,7 +76,7 @@ export const listingsPatchTests = (): void => {
       expect(body.data.listing.status).toEqual(IListingStatus.reserved);
     });
 
-    it('Should send a custom error to the client if something goes wrong', async () => {
+    it.skip('Should send a custom error to the client if something goes wrong', async () => {
       const { body } = await request(server)
         .patch(`/listings/${listingFromDb.id}`)
         .set('Authorization', 'Bearer ' + testToken)

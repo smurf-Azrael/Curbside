@@ -5,6 +5,7 @@ import { fullUserRequired, loginRequired } from './middlewares/login-required.mi
 import chatController from './controllers/chat.controller';
 import ratingController from './controllers/rating.controller';
 import favoriteController from './controllers/favorites.controller';
+import transactionController from './controllers/transaction.controller';
 
 export const router = Router();
 
@@ -26,6 +27,13 @@ router.post('/ratings', loginRequired, ratingController.addRatings);
 router.patch('/favorites/:id', favoriteController.addFavorite);
 router.get('/favorites/:id', favoriteController.getFavorites);
 router.delete('/favorites/:id', favoriteController.deleteFavorite);
+router.get('/chats', fullUserRequired, chatController.getChatsByUserId);
+router.get('/chats/:listingId', fullUserRequired, chatController.getUsersByListingIdAndSellerId);
+
+router.post('/ratings', fullUserRequired, ratingController.addRatings);
+
+router.delete('/transactions/:listingId', fullUserRequired, transactionController.deleteTransaction);
+router.get('/transactions', fullUserRequired, transactionController.getTransactionByBuyerAndSellerId);
 
 router.get('/login', fullUserRequired, (req: Request, res: Response) => {
   console.log('LOGIN');
