@@ -1,5 +1,4 @@
 import { createContext, useState, useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { auth } from '../firebase';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { AuthContextType, User } from '../interfaces/AuthContextInterface';
@@ -34,7 +33,7 @@ export default function AuthProvider({ children }: { children: any }) {
       }
       setCurrentUser(user);
 
-      return { ok: res.ok }
+      return { ok: res.ok, id: userData.uid }
 
     } catch (error) {
       return {
