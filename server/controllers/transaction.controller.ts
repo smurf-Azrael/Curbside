@@ -19,7 +19,7 @@ const getTransactionByBuyerAndSellerId = async (req: Request, res: Response, nex
     if (!buyerId || !sellerId) {
       throw new CustomError('Buyer or seller not specified.', 400);
       // @ts-ignore
-    } else if (req.user.uid !== buyerId && req.user.uid !== sellerId) {
+    } else if (req.user.uid !== buyerId) {
       throw new CustomError('Not authorized', 400);
     } else {
       const transaction = await transactionModel.getTransactionByBuyerAndSellerId(buyerId as string, sellerId as string);
