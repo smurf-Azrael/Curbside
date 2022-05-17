@@ -125,6 +125,14 @@ const ListingDetailView = () => {
                   fill={true}
                 />
               </section>
+            ) : !currentUser ? (
+              <ButtonWide
+                fill={true}
+                content="Sign up to contact"
+                clickFunction={() => {
+                  navigate('/signup');
+                }}
+              ></ButtonWide>
             ) : listing!.status === 'available' ? (
               <ButtonWide fill={true} content="Mark as sold" clickFunction={openCandidates}></ButtonWide>
             ) : (
