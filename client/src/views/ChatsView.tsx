@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AppBody from '../components/AppBody';
+import EmptyState from '../components/EmptyState';
 import { useApi } from '../contexts/ApiProvider';
 import { useAuth } from '../contexts/AuthContext';
 import '../styling/ChatsView.scss';
@@ -28,6 +29,7 @@ const ChatsView = () => {
   return (
     <AppBody>
       <div className='ChatsView'>
+        {chats.length === 0 && <EmptyState text="No chats yet"/>}
         {chats.map((chat) => (
           <div
             className='chatElement'

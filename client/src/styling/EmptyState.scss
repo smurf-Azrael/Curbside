@@ -1,0 +1,25 @@
+.EmptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 8px;
+  
+  p {
+    color: var(--main-gray);
+    font-size: 44px;
+    margin-bottom: 0;
+    font-weight: bold;
+    max-width: 60vw;
+  }
+
+  img {
+    max-width: 150px;
+    transform: rotate(90deg);
+    &.second {
+      transform: rotate(-90deg);
+    }
+
+  }
+}
