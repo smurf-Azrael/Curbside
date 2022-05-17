@@ -1,11 +1,9 @@
-// @ts-nocheck
 import React from 'react';
-// import { useState } from 'react';
 import { useMapEvents } from 'react-leaflet';
-import { Marker, Popup } from 'react-leaflet';
+import { Marker } from 'react-leaflet';
 import { Icon } from 'leaflet';
 
-function SetProfileMapLayers({position, setPosition}) {
+function SetProfileMapLayers({position, setPosition}: {position: {lat: number, lng: number}, setPosition: React.Dispatch<React.SetStateAction<{lat: number, lng: number}>> }) {
   // const [position, setPosition] = useState({lng:13.38, lat:52.51})
   const customIcon = new Icon({
     iconUrl: "/icons8-select-24.png",
