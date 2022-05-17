@@ -2,9 +2,9 @@ import { Request, Response, Router } from 'express';
 import usersController from './controllers/user.controller';
 import listingsController from './controllers/listing.controller';
 import { fullUserRequired, loginRequired } from './middlewares/login-required.middleware';
-import { PAGE_NOT_FOUND } from './errors/SharedErrorMessages';
 import chatsController from './controllers/chat.controller';
 import ratingsController from './controllers/rating.controller';
+import transactionController from './controllers/transaction.controller';
 
 export const router = Router();
 
@@ -20,8 +20,11 @@ router.get('/listings/:id', listingsController.getListingByListingId);
 router.patch('/listings/:id', fullUserRequired, listingsController.patchListingByListingId);
 
 router.get('/chats', fullUserRequired, chatsController.getChatsByUserId);
+router.get('/chats/:listingId', fullUserRequired, chatsController.getUsersByListingIdAndSellerId);
 
 router.post('/ratings', loginRequired, ratingsController.addRatings);
+
+router.delete('/transactions/:listingId', loginRequired, transactionController.deleteTransaction);
 
 router.get('/login', fullUserRequired, (req: Request, res: Response) => {
   console.log('LOGIN');

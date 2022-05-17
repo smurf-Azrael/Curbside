@@ -12,6 +12,20 @@ const getChatsByUserId = async (req: Request, res: Response, next: NextFunction)
   }
 };
 
+const getUsersByListingIdAndSellerId = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    // @ts-ignore
+    const sellerId = req.user.uid;
+    // @ts-ignore
+    const listingId = req.params.listingId;
+    const users = await chatsModel.getUsersByListingIdAndSellerId(sellerId, listingId);
+    res.status(200).send({ data: users });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
-  getChatsByUserId
+  getChatsByUserId,
+  getUsersByListingIdAndSellerId
 };

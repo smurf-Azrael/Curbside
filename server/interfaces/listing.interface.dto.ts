@@ -22,6 +22,7 @@ export interface FinalizeListingDTO {
   longitude: number,
   latitude: number,
   status: IListingStatus
+  buyerId?: string,
 }
 
 export interface GetListingQueryParams {
