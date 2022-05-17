@@ -8,12 +8,14 @@ import ImageCarousel from '../components/ImageCarousel';
 import { useAuth } from '../contexts/AuthContext';
 import AppBody from '../components/AppBody';
 import { Listing } from '../interfaces/Listing';
+import FullScreenLoadingIndicator from '../components/FullScreenLoadingIndicator';
 
 const ListingDetailView = () => {
   // Need to add heart button functionality
   const [listing, setListing] = useState<Listing>();
   const api = useApi();
   const { currentUser } = useAuth();
+  const [loading, setLoading] = useState(true)
   const {id} = useParams();
   const navigate = useNavigate()
 
@@ -21,8 +23,10 @@ const ListingDetailView = () => {
     const loadListingData = async () => {
       const res = await api.get(`/listings/${id}`);
       if (res.ok) {
+        setLoading(false)
         setListing(res.body.data.listing);
       } else {
+        setLoading(false)
         console.log('failing to load listing data');
         // handleErrors
       }
@@ -32,6 +36,7 @@ const ListingDetailView = () => {
 
   return (
     <AppBody>
+      {loading ? <FullScreenLoadingIndicator /> : <></>}
       {listing !== undefined ? (<section className='ListingDetailView'>
         <section className='listing-owner-info-wrapper'>
           <section className='listing-owner-image-wrapper'>
