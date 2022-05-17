@@ -158,62 +158,64 @@ export default function HomeView() {
     }
   }
 
-  const [toggleClasses, setToggleClasses] = useState<boolean>(true);
+  const [toggleComponent, setToggleComponent] = useState<boolean>(true);
 
   return (
     <AppBody>
       {isLoading ? <FullScreenLoadingIndicator></FullScreenLoadingIndicator> : <></>}
+      <div className="HomeView">
+        <LocationPreviewComponent />{/*Empty for now, but will possibly show preview of your location  */}
+
+        <div className="global-search-area">
+          <div className='search-bar-container'>
+            <button onClick={() => handleSearch()}><i className="bi bi-search"></i></button>
+            <input ref={searchField} className="main-input" placeholder="Search.." onKeyPress={(e) => pressEnter(e)} />
+          </div>
+          <div className='search-buttons-group' >
+            <button className="search-location-button search-btn" onClick={openLocationModal}>
+              <span>
+                <i className="bi bi-geo-alt"></i>
+                {locationGroupField.address ? locationGroupField.address : "Location"}
+              </span>
+            </button>
+            <button className="search-filter-button search-btn" onClick={openFiltersModal}>
+              <span>
+                <i className="bi bi-sliders"></i>
+                Filter
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <FiltersComponent
+          filtersAreVisible={FiltersAreVisible}
+          closeFiltersModal={closeFiltersModal}
+          applyFilters={applyFilters}
+          fields={fields}
+        />
+        <LocationRadius
+          locationIsVisible={locationIsVisible}
+          closeLocationModal={closeLocationModal}
+          applyFilters={applyFilters}
+          locationGroupField={locationGroupField}
+          setLocationGroupField={setLocationGroupField}
+        />
+
+
+        {toggleComponent ?
+          <CardListings listings={listings} isLoading={isLoading} loadingError={loadingError} />
+          :
+          <MapListings listings={listings} />
+        }
+
+      </div>
+
       <div>
-        <div className={`HomeView ${toggleClasses && 'hide-content'}`}>
-          <p>Hello! I am a map</p>
-        </div>
-        <div className={`HomeView ${!toggleClasses && 'hide-content'}`}>
-          <LocationPreviewComponent />{/*Empty for now, but will possibly show preview of your location  */}
-
-          <div className="global-search-area">
-            <div className='search-bar-container'>
-              <button onClick={() => handleSearch()}><i className="bi bi-search"></i></button>
-              <input ref={searchField} className="main-input" placeholder="Search.." onKeyPress={(e) => pressEnter(e)} />
-            </div>
-            <div className='search-buttons-group' >
-              <button className="search-location-button search-btn" onClick={openLocationModal}>
-                <span>
-                  <i className="bi bi-geo-alt"></i>
-                  {locationGroupField.address ? locationGroupField.address : "Location"}
-                </span>
-              </button>
-              <button className="search-filter-button search-btn" onClick={openFiltersModal}>
-                <span>
-                  <i className="bi bi-sliders"></i>
-                  Filter
-                </span>
-              </button>
-            </div>
-          </div>
-
-          <FiltersComponent
-            filtersAreVisible={FiltersAreVisible}
-            closeFiltersModal={closeFiltersModal}
-            applyFilters={applyFilters}
-            fields={fields}
-          />
-          <LocationRadius
-            locationIsVisible={locationIsVisible}
-            closeLocationModal={closeLocationModal}
-            applyFilters={applyFilters}
-            locationGroupField={locationGroupField}
-            setLocationGroupField={setLocationGroupField}
-          />
-      {/* <CardListings listings={listings} isLoading={isLoading} loadingError={loadingError}/> */}
-      <MapListings listings={listings}/>        
-      </div>
-        <div>
-          <div className="map-btn-float" >
-            <RoundedButton onClick={() => setToggleClasses(prev => !prev)} content={<i className="bi bi-map"></i>} />
-          </div>
+        <div className="map-btn-float" >
+          <RoundedButton onClick={() => setToggleComponent(prev => !prev)} content={<i className="bi bi-map"></i>} />
         </div>
       </div>
-  </AppBody>
-)
+    </AppBody>
+  )
 }
 
