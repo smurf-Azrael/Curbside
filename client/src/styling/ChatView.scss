@@ -1,9 +1,33 @@
+.ratingModalWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.stars {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  padding: 15px;
+}
+
 .ChatView {
   height: 100%;
   display: flex;
   flex-direction: column;
   background-color: inherit;
   padding-top: 60px;
+
+  .ratingButton {
+    position: fixed;
+    top: 75px;
+    left: 15px;
+    right: 15px;
+    background-color: var(--main-green-color);
+    color: white;
+    padding: 10px;
+    border-radius: 15px;
+    box-shadow: 0px 5px 15px 5px rgba(0, 0, 0, 0.33);
+  }
 
   .messages {
     flex-grow: 1;
@@ -13,38 +37,40 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-  }
-  .messageWrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    .message {
-      padding-top: 0.7rem;
-      padding-bottom: 0.7rem;
-      padding-left: 1rem;
-      padding-right: 1rem;
-      min-width: 2rem;
-      max-width: 15rem;
-      width: max-content;
-      border-radius: 15px;
-      background-color: var(--main-green-color);
-      margin-top: 1rem;
-      color: white;
+    justify-content: end;
 
-      &.selfMessage {
-        background-color: rgb(22, 206, 22);
-        margin-left: auto;
+    .messageWrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      .message {
+        padding-top: 0.7rem;
+        padding-bottom: 0.7rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        min-width: 2rem;
+        max-width: 15rem;
+        width: max-content;
+        border-radius: 15px;
+        background-color: var(--main-green-color);
+        margin-top: 1rem;
+        color: white;
+
+        &.selfMessage {
+          background-color: rgb(22, 206, 22);
+          margin-left: auto;
+        }
       }
-    }
-    .timeStamp {
-      padding-left: 5px;
-      padding-right: 5px;
-      font-size: smaller;
-      padding-left: 1rem;
-      margin-top: 0.2rem;
+      .timeStamp {
+        padding-left: 5px;
+        padding-right: 5px;
+        font-size: smaller;
+        padding-left: 1rem;
+        margin-top: 0.2rem;
 
-      &.selfTimeStamp {
-        margin-left: auto;
+        &.selfTimeStamp {
+          margin-left: auto;
+        }
       }
     }
   }
