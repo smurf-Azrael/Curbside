@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import AppBody from '../components/AppBody';
 import EmptyState from '../components/EmptyState';
 import { useApi } from '../contexts/ApiProvider';
@@ -17,11 +17,9 @@ const ChatsView = () => {
   useEffect(() => {
     const loadUserData = async () => {
       const res = await api.get(`/chats`);
-      console.log(res);
       if (res.ok) {
         setChats(res.body.data);
         setIsLoading(false)
-
       } else {
         setIsLoading(false)
         console.log('failing to load user chats data');
