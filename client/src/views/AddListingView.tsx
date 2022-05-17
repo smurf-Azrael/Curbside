@@ -26,7 +26,6 @@ export default function AddListingView() {
   const tags = useRef<string[]>(null);
 
   const handleFileSelect = (event: any): void => {
-    console.log(event.target.files);
     setFiles(event.target.files);
   };
 
@@ -67,7 +66,6 @@ export default function AddListingView() {
     const condition = conditionField.current?.value;
     const price = priceField.current?.value;
     const errors: { [key: string]: string } = {};
-    console.log('tags at submit: ', tags);
     if (!title) {
       errors.title = 'Title is required';
     }
@@ -84,7 +82,7 @@ export default function AddListingView() {
       errors.tags = 'Please add at least one category';
     }
     setFormErrors(errors);
-    console.log({formErrors})
+
     const urls: string[] = [];
     if (!errors.title && !errors.description && !errors.price && files.length > 0) {
       for (let file of files) {
