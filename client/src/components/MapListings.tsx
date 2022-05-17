@@ -5,6 +5,7 @@ import * as L from 'leaflet';
 import ReactDOM from 'react-dom'
 import 'leaflet.markercluster';
 import MapListingPreview from './MapListingPreview';
+import { lightBlue } from '@mui/material/colors';
 // @ts-ignore
 import('leaflet.markercluster/dist/leaflet.markercluster.js')
 // @ts-ignore
@@ -40,8 +41,11 @@ const MapListings = ({ listings }: { listings: Listing[] }) => {
       oneMarker.addTo(clusterLayer.current!)
       oneMarker.on('click', () => {
         let clickedListing = listings.find(l => l.id === listing.id)
-        console.log(clickedListing)
         setActiveListing(clickedListing)
+        if (clickedListing?.id === listing.id){
+          oneMarker.setStyle({ color: '#357960'})
+        }
+
       })
     }
     )
