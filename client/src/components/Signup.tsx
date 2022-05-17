@@ -48,7 +48,7 @@ export default function Signup() {
     setLoading(true);
     const res = await signUp(emailRef.current!.value, passwordRef.current!.value);
     if (res.ok) {
-      navigate(`/set-profile/${res.body.data.id}`);
+      navigate(`/set-profile/${res.id}`);
     } else {
       const error = res.error
       if (error.code === 'auth/email-already-in-use') {

@@ -1,8 +1,7 @@
-//@ts-nocheck
 import Carousel from 'react-bootstrap/Carousel';
 import '../styling/ImageCarousel.scss';
 
-const ImageCarousel = ({carouselItems}) => {
+const ImageCarousel = ({carouselItems}: {carouselItems: string[]}) => {
   return (
     <Carousel className='Carousel'>
       {carouselItems.map(function(item) {
