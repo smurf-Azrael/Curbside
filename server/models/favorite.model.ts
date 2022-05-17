@@ -3,7 +3,7 @@ import favoriteQueries from '../queries/favorite.queries';
 
 const addFavorite = async (userId: string, favorites: string): Promise<IUserFavoritesPackage> => {
   try {
-    const favorite: any = await favoriteQueries.addFavorite(userId, favorites);
+    const favorite: IUserFavoritesPackage = await favoriteQueries.addFavorite(userId, favorites);
     return favorite;
   } catch (error) {
     console.log('/models/favorites.model addFavorite ERROR', error);
@@ -13,7 +13,7 @@ const addFavorite = async (userId: string, favorites: string): Promise<IUserFavo
 
 const getFavorites = async (userId: string): Promise<IUserFavoritesPackage> => {
   try {
-    const userFavoritesPackage: any = await favoriteQueries.getFavorites(userId);
+    const userFavoritesPackage: IUserFavoritesPackage = await favoriteQueries.getFavorites(userId);
     return userFavoritesPackage;
   } catch (error) {
     console.log('/model/favorites.model getFavorites ERROR', error);
@@ -23,7 +23,7 @@ const getFavorites = async (userId: string): Promise<IUserFavoritesPackage> => {
 
 const deleteFavorite = async (userId: string, favorites: string): Promise<IUserFavoritesPackage> => {
   try {
-    const deleteFavorite: any = await favoriteQueries.deleteFavorite(userId, favorites);
+    const deleteFavorite: IUserFavoritesPackage = await favoriteQueries.deleteFavorite(userId, favorites);
     return deleteFavorite;
   } catch (error) {
     console.log('/models/favorites.model deleteFavorite');
