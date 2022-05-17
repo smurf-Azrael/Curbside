@@ -19,8 +19,9 @@ function MapListingPreview({activeListing}: {activeListing:Listing}) {
         </div>
         <div className= 'Preview-Price-Listing-Container'>
           <div className='Preview-Price'> {price} </div>
+          <div className='Preview-'></div>
           <div className='Preview-Rating'>
-            {activeListing.rating? activeListing.rating : "New User" }
+            {activeListing.rating? activeListing.rating : "New" }
             <i className="bi bi-star-fill"></i>
           </div>
         </div>
