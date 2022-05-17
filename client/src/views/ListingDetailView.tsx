@@ -30,9 +30,9 @@ const ListingDetailView = () => {
     loadListingData();
   },[api, id])
 
-  return listing !== undefined ? (
+  return (
     <AppBody>
-      <section className='ListingDetailView'>
+      {listing !== undefined ? (<section className='ListingDetailView'>
         <section className='listing-owner-info-wrapper'>
           <section className='listing-owner-image-wrapper'>
             <img src={listing.userPhotoUrl} alt={'user'} />
@@ -42,7 +42,7 @@ const ListingDetailView = () => {
           </section>
         </section>
           {currentUser && listing.userId !== currentUser.id ? (<section className='listing-button-wrapper'>
-            <ButtonWide clickFunction={() => navigate(`/chats/${listing.id}`, {state: listing})} content={'Start a chat to buy'} fill={true} />
+            <ButtonWide clickFunction={() => navigate(`/chats/${listing.id}`, {state: listing})} content={'Contact seller'} fill={true} />
           </section>) : '' }
         <section className='listing-details-gallery-wrapper'>
           <ImageCarousel carouselItems={listing.photoUrls} />
@@ -58,10 +58,9 @@ const ListingDetailView = () => {
           <p className='listing-detail-title'>Location: </p>
         </section>
         <SimpleMap position={{lng: listing.longitude, lat: listing.latitude}} radius={1} />
-      </section>
+      </section>):(<></>)}
+      
     </AppBody>
-  ) : (
-    <></>
   )
 }
 

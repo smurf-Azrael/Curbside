@@ -9,6 +9,7 @@ import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import AppBody from "../components/AppBody";
 import CardListings from "../components/CardListings";
+import ProfileImage from "../components/ProfileImage";
 
 function ProfileView() {
   const [userListings, setUserListings] = useState([]);
@@ -53,16 +54,11 @@ function ProfileView() {
     })
   }
 
-  return user ? (
+  return (
     <AppBody>
-        <section className="ProfileView">
+      {user ? (<section className="ProfileView">
           <div className="profile-about-info-wrapper">
-            <div className="profile-image-wrapper">
-              <img
-                src={"https://gradient-avatar.glitch.me/" + user.id}
-                alt={"user"}
-              />
-            </div>
+            <ProfileImage user={user} />
             <div className="profile-basic-info-edit-wrapper">
               <p>
                 {user.firstName} {user.lastName[0]}.
@@ -72,19 +68,19 @@ function ProfileView() {
               </Link>
             </div>
           </div>
-          <nav className="profile-listings-shown-options-wrapper">
-              <div onClick={handleActivateMyListings} className={`option-name ${activeListingSelection.myListings === true ? 'active' : ''}`} >My Listings</div>
-              <div onClick={handleActivateMyFavorites} className={`option-name ${activeListingSelection.myFavorites === true ? 'active' : ''}`} >My Favorites</div>
-          </nav>
+          {user.id === currentUser.id ? <nav className="profile-listings-shown-options-wrapper">
+              <button onClick={handleActivateMyListings} className={`option-name ${activeListingSelection.myListings === true ? 'active' : ''}`} >My Listings</button>
+              <button onClick={handleActivateMyFavorites} className={`option-name ${activeListingSelection.myFavorites === true ? 'active' : ''}`} >My Favorites</button>
+          </nav> : <p className="option-name">Listings</p>}
           {activeListingSelection.myListings === true &&
             <CardListings listings={userListings} isLoading={isLoading} loadingError={loadingError}/>
           }
           {activeListingSelection.myFavorites === true &&
             <div>My favorites not yet implemented</div>
           }
-        </section>
+        </section>) : (<></>)} 
       </AppBody>
-  ) : (<></>)
+  ) 
 
 }
 
