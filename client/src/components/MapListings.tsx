@@ -71,3 +71,5 @@ const MapListings = ({listings}:{listings:Listing[]}) => {
 }
 
 export default MapListings
+
+

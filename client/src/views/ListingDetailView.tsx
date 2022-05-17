@@ -8,12 +8,14 @@ import ImageCarousel from '../components/ImageCarousel';
 import { useAuth } from '../contexts/AuthContext';
 import AppBody from '../components/AppBody';
 import { Listing } from '../interfaces/Listing';
+import FullScreenLoadingIndicator from '../components/FullScreenLoadingIndicator';
 
 const ListingDetailView = () => {
   // Need to add heart button functionality
   const [listing, setListing] = useState<Listing>();
   const api = useApi();
   const { currentUser } = useAuth();
+  const [loading, setLoading] = useState(true)
   const {id} = useParams();
   const navigate = useNavigate()
 
@@ -21,8 +23,10 @@ const ListingDetailView = () => {
     const loadListingData = async () => {
       const res = await api.get(`/listings/${id}`);
       if (res.ok) {
+        setLoading(false)
         setListing(res.body.data.listing);
       } else {
+        setLoading(false)
         console.log('failing to load listing data');
         // handleErrors
       }
@@ -30,9 +34,10 @@ const ListingDetailView = () => {
     loadListingData();
   },[api, id])
 
-  return listing !== undefined ? (
+  return (
     <AppBody>
-      <section className='ListingDetailView'>
+      {loading ? <FullScreenLoadingIndicator /> : <></>}
+      {listing !== undefined ? (<section className='ListingDetailView'>
         <section className='listing-owner-info-wrapper'>
           <section className='listing-owner-image-wrapper'>
             <img src={listing.userPhotoUrl} alt={'user'} />
@@ -42,7 +47,7 @@ const ListingDetailView = () => {
           </section>
         </section>
           {currentUser && listing.userId !== currentUser.id ? (<section className='listing-button-wrapper'>
-            <ButtonWide clickFunction={() => navigate(`/chats/${listing.id}`, {state: listing})} content={'Start a chat to buy'} fill={true} />
+            <ButtonWide clickFunction={() => navigate(`/chats/${listing.id}`, {state: listing})} content={'Contact seller'} fill={true} />
           </section>) : '' }
         <section className='listing-details-gallery-wrapper'>
           <ImageCarousel carouselItems={listing.photoUrls} />
@@ -58,10 +63,8 @@ const ListingDetailView = () => {
           <p className='listing-detail-title'>Location: </p>
         </section>
         <SimpleMap position={{lng: listing.longitude, lat: listing.latitude}} radius={1} />
-      </section>
+      </section>):(<></>)}
     </AppBody>
-  ) : (
-    <></>
   )
 }
 
