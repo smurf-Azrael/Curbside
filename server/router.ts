@@ -25,6 +25,7 @@ router.post('/ratings', loginRequired, ratingController.addRatings);
 
 router.patch('/favorites/:id', favoriteController.addFavorite);
 router.get('/favorites/:id', favoriteController.getFavorites);
+router.delete('/favorites/:id', favoriteController.deleteFavorite);
 
 router.get('/login', fullUserRequired, (req: Request, res: Response) => {
   console.log('LOGIN');

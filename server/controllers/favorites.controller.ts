@@ -5,8 +5,8 @@ import favoriteModel from '../models/favorite.model';
 const addFavorite = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const userId = req.params.id;
-    const favorites: string = req.body.favorites;
-    const userFavoritesPackage : FavoriteDTO | any = await favoriteModel.addFavorite(userId, favorites);
+    const favorite: string = req.body.favorites;
+    const userFavoritesPackage : FavoriteDTO | any = await favoriteModel.addFavorite(userId, favorite);
     res.status(200).send({ data: { ...userFavoritesPackage } });
   } catch (error) {
     next(error);
@@ -23,7 +23,19 @@ const getFavorites = async (req: Request, res: Response, next: NextFunction): Pr
   }
 };
 
+const deleteFavorite = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const userId = req.params.id;
+    const favorite: string = req.body.favorites;
+    const userFavoritesPackage: any = await favoriteModel.deleteFavorite(userId, favorite);
+    res.status(200).send({ data: { ...userFavoritesPackage } });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   addFavorite,
-  getFavorites
+  getFavorites,
+  deleteFavorite
 };

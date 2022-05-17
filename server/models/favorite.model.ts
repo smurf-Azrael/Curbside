@@ -1,7 +1,7 @@
 import { FavoriteDTO } from '../interfaces/favorite.dto';
 import favoriteQueries from '../queries/favorite.queries';
 
-const addFavorite = async (userId: string, favorites: string): Promise<FavoriteDTO | boolean> => {
+const addFavorite = async (userId: string, favorites: string): Promise<FavoriteDTO> => {
   try {
     const favorite: any = await favoriteQueries.addFavorite(userId, favorites);
     return favorite;
@@ -21,7 +21,17 @@ const getFavorites = async (userId: string): Promise<FavoriteDTO> => {
   }
 };
 
+const deleteFavorite = async (userId: string, favorites: string): Promise<any> => {
+  try {
+    const deleteFavorite: any = await favoriteQueries.deleteFavorite(userId, favorites);
+    return deleteFavorite;
+  } catch (error) {
+    console.log('/models/favorites.model deleteFavorite');
+  }
+};
+
 export default {
   addFavorite,
-  getFavorites
+  getFavorites,
+  deleteFavorite
 };
