@@ -1,6 +1,5 @@
-// @ts-nocheck
 import * as React from 'react';
-import { useState, useEffect, SetStateAction } from 'react';
+import { useState, useEffect } from 'react';
 import { useAutocomplete, AutocompleteGetTagProps } from '@mui/base/AutocompleteUnstyled';
 import { styled } from '@mui/material/styles';
 
@@ -57,12 +56,11 @@ interface TagProps extends ReturnType<AutocompleteGetTagProps> {
 }
 
 export default function AutoCompleteSearch({ tagStack }: { tagStack: any }) {
-  const [myList, setMyList] = useState([]);
+  const [myList, setMyList] = useState<string[]>([]);
 
   function Tag(props: TagProps) {
     const { label, onDelete, ...other } = props;
     function wrapperDelete() {
-      removeFromList(other['data-tag-index']);
       onDelete('e');
     }
     return (
@@ -72,6 +70,7 @@ export default function AutoCompleteSearch({ tagStack }: { tagStack: any }) {
       </div>
     );
   }
+
   const StyledTag = styled(Tag)<TagProps>(
     ({ theme }) => `
     display: flex;
@@ -105,6 +104,7 @@ export default function AutoCompleteSearch({ tagStack }: { tagStack: any }) {
     }
   `
   );
+
   const Listbox = styled('ul')(
     ({ theme }) => `
     width: 300px;
@@ -151,6 +151,7 @@ export default function AutoCompleteSearch({ tagStack }: { tagStack: any }) {
     }
   `
   );
+
   const {
     getRootProps,
     // getInputLabelProps,
@@ -170,38 +171,22 @@ export default function AutoCompleteSearch({ tagStack }: { tagStack: any }) {
   });
 
   useEffect(() => {
-    // SetTagStack(myList)
     tagStack.current = myList;
   }, [myList, tagStack]);
 
-  function addToList(item: string): any {
-    console.log('ehehe');
-    setMyList((prev): SetStateAction<never[]> => {
-      return [...prev, item];
-    });
-  }
-
-  function removeFromList(position: number) {
-    setMyList((prev) => {
-      console.log('before', prev);
-      const prevCopy = [...prev];
-      prevCopy.splice(position, 1);
-      console.log('removed', prevCopy);
-      return prevCopy;
-    });
-  }
-  function conoleData(data) {
-    console.log('this is the function that does not work: ',data);
-  }
-
+  useEffect(() => {
+    const tagArray = [];
+    for (let el of value) {
+      tagArray.push(el.title);
+    }
+    setMyList(tagArray);
+  }, [value])
 
   return (
     <Root>
       <div {...getRootProps()} className="auto-complete-search">
-        {/* <Label {...getInputLabelProps()}>Customized hook</Label> */}
         <InputWrapper ref={setAnchorEl} className={`auto-complete-search ${focused ? 'focused' : ''}`}>
           {value.map((option: FilmOptionType, index: number) => {
-            conoleData(value);
             return <StyledTag label={option.title} {...getTagProps({ index })} />;
           })}
           <input {...getInputProps()} />
@@ -212,11 +197,8 @@ export default function AutoCompleteSearch({ tagStack }: { tagStack: any }) {
         <Listbox {...getListboxProps()}>
           {(groupedOptions as typeof tags).map((option, index) => (
             <li {...getOptionProps({ option, index })}>
-              {/* <div> */}
-              <span onClick={() => addToList(option.title)}>
                 <span>{option.title}</span>
                 <i className="bi bi-check"></i>
-              </span>
             </li>
           ))}
         </Listbox>
