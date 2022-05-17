@@ -20,6 +20,7 @@ export default function SetProfileView() {
   const api = useApi();
   const {currentUser} = useAuth();
   const { id } = useParams();
+  console.log('id: ', id);
   const navigate = useNavigate();
 
   useEffect(() => {

@@ -11,8 +11,6 @@ function CardListings({listings , isLoading,loadingError}:{listings:Listing[] , 
       <ListingPreview  listing={listing} />
     </Link>)
   })
-  console.log("listings4Display", listings4Display)
-
 
   return (
     <div className="CardListings">
