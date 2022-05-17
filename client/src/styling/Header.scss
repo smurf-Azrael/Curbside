@@ -92,4 +92,25 @@
     }
   }
 
+  
+}
+.log-out-box{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+<<<<<<< HEAD
+=======
+  // justify-content: center;
+>>>>>>> 38f31aaa9dd8a765dacc1960152cba8407f27a90
+
+  .log-out-btn-group{
+    display: flex;
+    gap: 15px;
+  }
+<<<<<<< HEAD
+  &.hide-div{
+    display: none;
+  }
+=======
+>>>>>>> 38f31aaa9dd8a765dacc1960152cba8407f27a90
 }
