@@ -54,15 +54,10 @@ function ProfileView() {
     })
   }
 
-  return user ? (
+  return (
     <AppBody>
-        <section className="ProfileView">
+      {user ? (<section className="ProfileView">
           <div className="profile-about-info-wrapper">
-            {/* <div className="profile-image-wrapper" style={{backgroundImage: user.profileImage ? `url("${user.profileImage}")` : `url("https://gradient-avatar.glitch.me/${id}")`}}>
-              <span>
-                {user.profileImage ? '' : user.firstName[0]}
-              </span>
-            </div> */}
             <ProfileImage user={user} />
             <div className="profile-basic-info-edit-wrapper">
               <p>
@@ -83,9 +78,9 @@ function ProfileView() {
           {activeListingSelection.myFavorites === true &&
             <div>My favorites not yet implemented</div>
           }
-        </section>
+        </section>) : (<></>)} 
       </AppBody>
-  ) : (<></>)
+  ) 
 
 }
 
