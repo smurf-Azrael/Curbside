@@ -59,7 +59,6 @@ const ListingDetailView = () => {
         </section>
         <SimpleMap position={{lng: listing.longitude, lat: listing.latitude}} radius={1} />
       </section>):(<></>)}
-      
     </AppBody>
   )
 }
