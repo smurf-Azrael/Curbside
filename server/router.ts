@@ -24,7 +24,7 @@ router.get('/chats', fullUserRequired, chatController.getChatsByUserId);
 router.post('/ratings', loginRequired, ratingController.addRatings);
 
 router.patch('/favorites/:id', favoriteController.addFavorite);
-// router.get('favorites/:id', modelController.getFavorites);
+router.get('/favorites/:id', favoriteController.getFavorites);
 
 router.get('/login', fullUserRequired, (req: Request, res: Response) => {
   console.log('LOGIN');
