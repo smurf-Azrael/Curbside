@@ -42,7 +42,7 @@ const ListingDetailView = () => {
           </section>
         </section>
           {currentUser && listing.userId !== currentUser.id ? (<section className='listing-button-wrapper'>
-            <ButtonWide clickFunction={() => navigate(`/chats/${listing.id}`, {state: listing})} content={'Start a chat to buy'} fill={true} />
+            <ButtonWide clickFunction={() => navigate(`/chats/${listing.id}`, {state: listing})} content={'Contact seller'} fill={true} />
           </section>) : '' }
         <section className='listing-details-gallery-wrapper'>
           <ImageCarousel carouselItems={listing.photoUrls} />
