@@ -37,9 +37,13 @@ const ListingDetailView = () => {
   }, [api, id]);
 
   const [candidates, setCandidates] = useState<{ buyerName: string; buyerId: string; buyerPhotoUrl?: string }[]>([]);
+  const [showMarkAsSoldOptionWithoutCandidates, setShowMarkAsSoldOptionWithoutCandidates] = useState<boolean>();
   const openCandidates = async () => {
     try {
       const res = await api.get(`/chats/${listing!.id}`);
+      if (res.body.data.length === 0) {
+        setShowMarkAsSoldOptionWithoutCandidates(true);
+      }
       setCandidates(res.body.data);
     } catch (e) {
       console.log(e);
