@@ -1,14 +1,14 @@
 // change the theme of Bootstrap components
 $theme-colors: (
-  "primary": #357960,
-  "danger": #ff4136,
-  "info": #357960
+  'primary': #357960,
+  'danger': #ff4136,
+  'info': #357960,
 );
 
 // Import Bootstrap and its default variables
 @import '~bootstrap/scss/bootstrap.scss';
 
-:root{
+:root {
   /* --main-green-color: #13C1AC; */
   --main-green-color: #357960;
   --main-background-color: #efeded;
@@ -17,19 +17,23 @@ $theme-colors: (
   --footer-height: 60px;
 }
 
-html, body, #root, .App {
+html,
+body,
+#root,
+.App {
   height: 100%;
   box-sizing: border-box;
+  background-color: var(--main-background-color);
 }
-
 
 .App {
   text-align: center;
-  min-width:250px;
+  min-width: 250px;
   margin: auto;
   text-align: center;
   display: flex;
   flex-direction: column;
+
   font-family: 'Montserrat', 'Quicksand', sans-serif  ;
 
   h3 {
@@ -39,6 +43,4 @@ html, body, #root, .App {
     margin-bottom: 20px;
     border-bottom: 1px solid rgb(193, 189, 189);
   }
-
-
 }

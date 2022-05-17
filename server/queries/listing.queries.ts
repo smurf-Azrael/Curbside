@@ -68,7 +68,7 @@ export const getListingsInRadius = async (spatialQueryRes: {id:string}[], queryP
         },
         {
           tags: {
-            search: tags ? tags.includes('AllCategories') ? undefined : tags : undefined
+            search: tags ? tags.includes('Allcategories') ? undefined : tags : undefined
           }
         },
         {
