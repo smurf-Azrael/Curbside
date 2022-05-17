@@ -26,7 +26,6 @@ export default function AddListingView() {
   const tags = useRef<string[]>(null);
 
   const handleFileSelect = (event: any): void => {
-    console.log(event.target.files);
     setFiles(event.target.files);
   };
 
@@ -79,7 +78,11 @@ export default function AddListingView() {
     if (files.length === 0) {
       errors.photos = 'Please upload at least one photo';
     }
+    if (tags.current?.length === 0) {
+      errors.tags = 'Please add at least one category';
+    }
     setFormErrors(errors);
+
     const urls: string[] = [];
     if (!errors.title && !errors.description && !errors.price && files.length > 0) {
       for (let file of files) {
@@ -176,27 +179,9 @@ export default function AddListingView() {
 
           <p style={{ marginRight: 'auto', marginBottom: '5px', marginLeft: '3px' }}>Categories</p>
           <AutoCompleteSearch tagStack={tags} />
-
-          {/* <div className='location-div-container'>
-                <div className='location-input-div'>
-                  <InputField
-                    name="location"
-                    placeholder="Location"
-                    label="Location"
-                    error={formErrors.location}
-                  // fieldref={locationField}
-                  />
-                </div>
-                <div className='location-picker-btn-div'>
-                  <button className='location-picker-btn'>
-                    <i className="bi bi-geo-fill"></i>
-                  </button>
-                </div>
-              </div> */}
+          {formErrors.tags && <p className="custom-manual-error">Please add at least one category</p>}
 
           <div className="add-item-buttons">
-            {/* <button type="submit" style={{ border: 'none', padding: '0' }}> */}
-            {/* <ButtonWide clickFunction={() => navigate('/')} content={'Cancel'} fill={false} /> */}
             <ButtonWide type={'submit'} content={'Create'} fill={true} />
           </div>
         </form>
