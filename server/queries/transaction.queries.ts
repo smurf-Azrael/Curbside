@@ -45,7 +45,20 @@ const deleteTransaction = async (userId: string, listingId: string): Promise<ITr
   return convertDbTransactionToTransaction(dbTransaction);
 };
 
+const getTransactionByBuyerAndSellerId = async (buyerId: string, sellerId: string): Promise<ITransaction | null> => {
+  const dbTransaction = await prisma.transaction.findFirst({
+    where: {
+      buyerId, sellerId
+    }
+  });
+  if (!dbTransaction) {
+    return null;
+  }
+  return convertDbTransactionToTransaction(dbTransaction);
+};
+
 export default {
   addTransaction,
-  deleteTransaction
+  deleteTransaction,
+  getTransactionByBuyerAndSellerId
 };

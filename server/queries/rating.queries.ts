@@ -31,7 +31,18 @@ export const getUserRating = async (userId: string): Promise<number> => {
   return avg;
 };
 
+export const getRatingByBuyerAndSeller = async (buyerId: string, sellerId: string): Promise<IRating | null> => {
+  const rating = prisma.rating.findFirst({
+    where: {
+      buyerId,
+      sellerId
+    }
+  });
+  return rating;
+};
+
 export default {
   createRating,
-  getUserRating
+  getUserRating,
+  getRatingByBuyerAndSeller
 };

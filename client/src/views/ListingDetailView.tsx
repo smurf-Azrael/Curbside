@@ -114,7 +114,7 @@ const ListingDetailView = () => {
           <section className="ListingDetailView">
             <section className="listing-owner-info-wrapper">
               <ProfileImage
-                user={{ id: listing.userId, profileImage: listing.userPhotoUrl, firstName: listing.userFirstName }}
+                user={{ id: listing.userId, photoUrl: listing.userPhotoUrl, firstName: listing.userFirstName }}
               />
 
               <section className="listing-owner-name-buttons-wrapper">
