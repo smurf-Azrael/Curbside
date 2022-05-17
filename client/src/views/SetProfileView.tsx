@@ -32,7 +32,9 @@ export default function SetProfileView() {
       const res = await api.get(`/users/${currentUser!.id}`);
       if (res.ok) {
         setUser(res.body.data.user);
-        setPosition({lng:res.body.data.user.longitude, lat:res.body.data.user.latitude})
+        if (res.body.data.user.longitude && res.body.data.user.latitude) {
+          setPosition({lng:res.body.data.user.longitude, lat:res.body.data.user.latitude})
+        }
       } else {
         console.log("failing to load user listing data");
         navigate('/')

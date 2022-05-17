@@ -8,6 +8,7 @@ import ratingQueries from '../queries/rating.queries';
 import userQueries from '../queries/user.queries';
 import { addListingInputValidation } from './model-helpers/listing.model.validation';
 import distanceHelpers from './model-helpers/distance.helpers';
+import { addTransaction } from '../queries/transaction.queries';
 
 const addListing = async (listingDetails: AddListingDTO): Promise<IListing> => {
   try {
@@ -89,6 +90,21 @@ export const getListingByListingIdModel = async (id:string) : Promise<IListingPa
 
 export const updateListing = async (listingId: string, listingDetails: FinalizeListingDTO): Promise<IListing> => {
   try {
+    const currListing = await listingQueries.getListingById(listingId);
+    if (listingDetails.status && listingDetails.buyerId && listingDetails.status !== currListing.status) {
+      // add transaction
+      if (currListing.status === 'sold') {
+        console.log('UPDATE LISTING');
+      } else {
+        // check if transaction with listing id already exists
+        // if yes => update listing with new buyerid
+
+        // if not => add new transaction
+        const transaction = await addTransaction({ listingId, buyerId: listingDetails.buyerId, sellerId: currListing.userId });
+        console.log('transaction: ', transaction);
+      }
+    }
+    delete listingDetails.buyerId;
     const listing: IListing = await listingQueries.updateListing(listingId, listingDetails);
     return listing;
   } catch (error) {

@@ -12,9 +12,9 @@ function MapListingPreview({ activeListing }: { activeListing: Listing }) {
 
   return (
     <Link className='Card-Listing-Preview' to={`/listing/${activeListing.id}`}>
-      <img className='Preview-Img' src={activeListing.photoUrls[0]}></img>
-      <div className='Preview-Text-Content'>
-        <h6 className='Preview-Title'>
+      <img className='Preview-Img' alt={'item for sale'} src= {activeListing.photoUrls[0]} />
+      <div className= 'Preview-Text-Content'>
+        <h6 >
           {activeListing.title}
         </h6>
         <div className='Preview-Price-Listing-Container'>

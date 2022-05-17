@@ -202,10 +202,10 @@ export default function HomeView() {
         />
 
 
-        {toggleComponent ? 
-          <MapListings listings={listings} />
-        :
+        {toggleComponent ?
           <CardListings listings={listings} isLoading={isLoading} loadingError={loadingError} />
+          :
+          <MapListings listings={listings} />
         }
 
       </div>

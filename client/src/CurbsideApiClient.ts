@@ -79,6 +79,10 @@ export default class CurbsideApiClient {
     return this.request({method:'PATCH', url, body, ...options})
   }
 
+  async delete(url: string,  options?:options){
+    return this.request({method: 'DELETE', url, ...options});
+  }
+
   async getSocket() {
     const token = await auth.currentUser?.getIdToken(true)
     if (token && BASE_API_URL) {
