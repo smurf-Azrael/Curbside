@@ -24,9 +24,9 @@ router.get('/chats', fullUserRequired, chatController.getChatsByUserId);
 
 router.post('/ratings', loginRequired, ratingController.addRatings);
 
-router.patch('/favorites/:id', fullUserRequired, favoriteController.addFavorite);
-router.get('/favorites/:id', fullUserRequired, favoriteController.getFavorites);
-router.delete('/favorites/:id', fullUserRequired, favoriteController.deleteFavorite);
+router.patch('/favorites', fullUserRequired, favoriteController.addFavorite);
+router.get('/favorites', fullUserRequired, favoriteController.getFavorites);
+router.delete('/favorites', fullUserRequired, favoriteController.deleteFavorite);
 
 router.get('/chats', fullUserRequired, chatController.getChatsByUserId);
 router.get('/chats/:listingId', fullUserRequired, chatController.getUsersByListingIdAndSellerId);
