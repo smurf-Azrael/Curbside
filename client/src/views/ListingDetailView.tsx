@@ -199,6 +199,7 @@ const ListingDetailView = () => {
                     style: 'currency',
                     currency: 'EUR',
                   })}`}</h4>
+
                   <button onClick={toggleFavorite} className="favorite-heart-button">
                     {isFavorite ? (
                       <div className="heart-wrapper">
@@ -223,7 +224,7 @@ const ListingDetailView = () => {
                 </p>
                 <p className="listing-detail-title">Location: </p>
               </section>
-              <SimpleMap position={{ lng: listing.longitude, lat: listing.latitude }} radius={0.5} />
+              <SimpleMap position={{ lng: listing.longitude, lat: listing.latitude }} radius={1} />
             </section>
           ) : (
             <></>
