@@ -5,6 +5,7 @@ import InputField from './InputField';
 import Button from 'react-bootstrap/Button';
 import Map from './SetProfileMap';
 import Slider from '@mui/material/Slider';
+import {ApiResponse} from '../interfaces/LocationApiResponse';
 
 export default function LocationRadius({
   locationIsVisible,
@@ -21,7 +22,7 @@ export default function LocationRadius({
   const [locationResult, setLocationResult] = useState<{ location: string | undefined, lat: string | undefined, lng: string | undefined }>({location: undefined, lat: undefined, lng: undefined}); // location: undefined, lat: undefined, lng: undefined 
   const [clickPosition, setClickPosition] = useState<{ lat: number | undefined, lng: number | undefined }>({lat: undefined, lng: undefined}); //lat: undefined, lng: undefined
   const [address, setAddress] = useState<string>(locationGroupField.address);
-
+console.log('locationGroupField.address', locationGroupField.address)
   useEffect(() => {
     if (clickPosition && clickPosition?.lat) {
       const response = () => {
@@ -52,7 +53,8 @@ export default function LocationRadius({
   }, [locationResult]);
 
   useEffect(() => {
-    setPosition({ lat: locationGroupField.latitude, lng: locationGroupField.longitude })
+    setPosition({ lat: locationGroupField.latitude, lng: locationGroupField.longitude });
+    setAddress(locationGroupField.address)
     if (booleanCheckApplyFilters) {
       applyFilters()
     }
@@ -143,20 +145,18 @@ export default function LocationRadius({
       </Modal.Footer>
     </Modal>
   )
-
-
 }
-interface ApiResponse {
-  "place_id": number,
-  "licence": string,
-  "osm_type": string,
-  "osm_id": number,
-  "boundingbox": string[],
-  "lat": string,
-  "lon": string,
-  "display_name": string,
-  "class": string,
-  "type": string,
-  "importance": number,
-  "icon": string
-}
+// interface ApiResponse {
+//   "place_id": number,
+//   "licence": string,
+//   "osm_type": string,
+//   "osm_id": number,
+//   "boundingbox": string[],
+//   "lat": string,
+//   "lon": string,
+//   "display_name": string,
+//   "class": string,
+//   "type": string,
+//   "importance": number,
+//   "icon": string
+// }
