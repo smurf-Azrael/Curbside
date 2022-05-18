@@ -46,7 +46,7 @@ function ProfileView() {
       if (currentUser && currentUser!.id) {
 
         console.log(currentUser!.id)
-        const res = await api.get(`/favorites/${currentUser!.id}`);
+        const res = await api.get(`/favorites`);
         if (res.ok && res.body.data.favorites) {
           setFavoriteList(res.body.data.favorites)
         }

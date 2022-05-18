@@ -2,11 +2,12 @@ import React from 'react';
 import { Container } from 'react-bootstrap';
 import Login from '../components/Login';
 import '../styling/Authentication.scss';
-import AppBody from '../components/AppBody';
+import Header from '../components/Header';
 
 export default function LoginView() {
   return (
-    <AppBody>
+    <>
+      <Header buttonFree />
       <div className='form-container' >
         <Container
           className="d-flex align-items-center justify-content-center"
@@ -17,6 +18,6 @@ export default function LoginView() {
           </div>
         </Container>
       </div>
-    </AppBody>
+    </>
   )
 }
