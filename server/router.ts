@@ -49,7 +49,3 @@ router.get('/login', fullUserRequired, (req: Request, res: Response) => {
     }
   });
 });
-
-// router.get('*', (req: Request, res: Response) => {
-//   res.status(404).send({ error: PAGE_NOT_FOUND });
-// });
