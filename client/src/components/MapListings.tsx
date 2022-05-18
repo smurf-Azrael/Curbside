@@ -71,7 +71,14 @@ export default function MapListings({
   return (
     <div className="map-set-height">
       <div style={{ flexGrow: '1', zIndex: '0', position: 'relative' }} id="mapId"></div>
-      {activeListing ? <MapListingPreview activeListing={activeListing} setActiveListing={setActiveListing} /> : null}
+      {activeListing ?
+        <MapListingPreview
+          activeListing={activeListing}
+          setActiveListing={setActiveListing}
+        />
+        :
+        null
+      }
     </div>
   );
 }

@@ -5,6 +5,8 @@
   border-radius: 10px;
   flex-grow: 1;
   margin: 5px;
+  height: calc(100% - 10px);
+
 
   .card-product-image-holder {
     height: 200px;
