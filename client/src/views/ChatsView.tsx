@@ -28,9 +28,9 @@ const ChatsView = () => {
     };
     loadUserData();
   }, [api, currentUser]);
-  return isLoading ? <FullScreenLoadingIndicator /> :
-    (
-      <AppBody>
+  return (
+    <AppBody>
+      {isLoading ? <FullScreenLoadingIndicator /> :
         <div className='ChatsView'>
           {chats.length === 0 && <EmptyState text="No chats yet" />}
           {chats.map((chat) => (
@@ -70,8 +70,9 @@ const ChatsView = () => {
             </div>
           ))}
         </div>
-      </AppBody>
-    )
+      }
+    </AppBody>
+  )
 }
 
 
