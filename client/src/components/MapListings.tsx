@@ -9,7 +9,7 @@ import 'leaflet.markercluster/dist/leaflet.markercluster.js';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 
-export default function MapListings ({ listings }: { listings: Listing[] }) {
+export default function MapListings ({ listings, position }: { listings: Listing[], position: {latitude: number, longitude:number} }) {
   const [activeListing, setActiveListing] = useState<Listing | null | undefined>(null);
   const map = useRef<L.Map>();
   const clusterLayer = useRef<L.MarkerClusterGroup>();
@@ -52,7 +52,7 @@ export default function MapListings ({ listings }: { listings: Listing[] }) {
       return;
     }
 
-    map.current = L.map(mapNode).setZoom(9).setView(L.latLng(52.52, 13.405));
+    map.current = L.map(mapNode).setZoom(9).setView(L.latLng(position.latitude, position.longitude));
 
     L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { maxZoom: 17 }).addTo(
       map.current
