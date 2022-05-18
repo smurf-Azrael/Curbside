@@ -10,18 +10,18 @@ import {ApiResponse} from '../interfaces/LocationApiResponse';
 export default function LocationRadius({
   locationIsVisible,
   closeLocationModal,
-  applyFilters,
+  applyLocation,
   locationGroupField,
   setLocationGroupField
 }: { [key: string]: any }) {
 
   const urlSearch = 'https://nominatim.openstreetmap.org/search?format=json&q=';
-  const booleanCheckApplyFilters = useRef(false);
   const [radius, setRadius] = useState<number >(locationGroupField.radius);
   const [position, setPosition] = useState<{ lat: number , lng: number }>({ lat: locationGroupField.latitude, lng: locationGroupField.longitude });
   const [locationResult, setLocationResult] = useState<{ location: string | undefined, lat: string | undefined, lng: string | undefined }>({location: undefined, lat: undefined, lng: undefined}); // location: undefined, lat: undefined, lng: undefined 
   const [clickPosition, setClickPosition] = useState<{ lat: number | undefined, lng: number | undefined }>({lat: undefined, lng: undefined}); //lat: undefined, lng: undefined
   const [address, setAddress] = useState<string>(locationGroupField.address);
+  
   useEffect(() => {
     if (clickPosition && clickPosition?.lat) {
       const response = () => {
@@ -54,10 +54,10 @@ export default function LocationRadius({
   useEffect(() => {
     setPosition({ lat: locationGroupField.latitude, lng: locationGroupField.longitude });
     setAddress(locationGroupField.address)
-    if (booleanCheckApplyFilters) {
-      applyFilters()
-    }
-    booleanCheckApplyFilters.current = false;
+    // if (booleanCheckApplyFilters) {
+    //   applyFilters()
+    // }
+    // booleanCheckApplyFilters.current = false;
   }, [locationGroupField])
 
   function pressEnter(event: React.KeyboardEvent<HTMLInputElement>) {
@@ -88,13 +88,13 @@ export default function LocationRadius({
   }
 
   function saveAndClose() {
-    setLocationGroupField({
+    applyLocation({
       latitude: position.lat,
       longitude: position.lng,
       radius: radius,
       address: address,
-    });
-    booleanCheckApplyFilters.current = true;
+    })
+    // booleanCheckApplyFilters.current = true;
   }
 
   return (
