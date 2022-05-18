@@ -59,7 +59,6 @@ export default function HomeView() {
     address: 'Berlin',
   });
 
-  // const tagsField = useRef<{ [key: string]: string }>({}) // categories need to be decided {catName: false, }
   const sortByField = useRef<HTMLSelectElement>(null);
   const maxPriceField = useRef<HTMLInputElement>(null);
   const minPriceField = useRef<HTMLInputElement>(null);
@@ -148,7 +147,6 @@ export default function HomeView() {
     if (currentUser) {
       (async () => {
         loadUserLocation();
-        // locationGroupField.current = await loadUserLocation();
       })();
     }
   }, [api, getListings, currentUser]);
@@ -206,7 +204,7 @@ export default function HomeView() {
         {toggleComponent ?
           <CardListings listings={listings} isLoading={isLoading} loadingError={loadingError} />
           :
-          <MapListings listings={listings} />
+          <MapListings listings={listings} position={{latitude : locationGroupField.latitude, longitude: locationGroupField.longitude}} />
         }
 
       </div>
