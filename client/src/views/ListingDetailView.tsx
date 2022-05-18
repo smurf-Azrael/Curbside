@@ -23,6 +23,7 @@ const ListingDetailView = () => {
   const navigate = useNavigate();
   const { currentUser } = useAuth();
   const [loading, setLoading] = useState<boolean>(true);
+  const [errorNotLoggedIn, setErrorNotLoggedIn] = useState<boolean>(false)
   const [isFavorite, setIsFavorite] = useState<boolean>(false)
   const [candidates, setCandidates] = useState<{ buyerName: string; buyerId: string; buyerPhotoUrl?: string }[]>([]);
   const [showMarkAsSoldOptionWithoutCandidates, setShowMarkAsSoldOptionWithoutCandidates] = useState<boolean>();
@@ -42,8 +43,6 @@ const ListingDetailView = () => {
     };
     const loadIsFavorite = async () => {
       if (currentUser && currentUser!.id) {
-
-        console.log(currentUser!.id)
         const res = await api.get(`/favorites/${currentUser!.id}`);
         if (res.ok && res.body.data.favorites && res.body.data.favorites.findIndex((element: any) => element.id === id) >= 0) {
           setIsFavorite(true)
@@ -96,20 +95,25 @@ const ListingDetailView = () => {
   };
 
   const toggleFavorite = async () => {
-    if (isFavorite) {
-      const response = await api.delete(`/favorites/${currentUser!.id}`, { favoriteId: id })
-      console.log('DELETED', response.body.data)
-      if (!response.ok) {
-        return;
+    if (currentUser) {
+      if (isFavorite) {
+        const response = await api.delete(`/favorites/${currentUser!.id}`, { favoriteId: id })
+        console.log('DELETED', response.body.data)
+        if (!response.ok) {
+          return;
+        }
+      } else {
+        const response = await api.patch(`/favorites/${currentUser!.id}`, { favoriteId: id })
+        console.log('ADDED', response.body.data)
+        if (!response.ok) {
+          return;
+        }
       }
+      setIsFavorite(prev => !prev);
     } else {
-      const response = await api.patch(`/favorites/${currentUser!.id}`, { favoriteId: id })
-      console.log('ADDED', response.body.data)
-      if (!response.ok) {
-        return;
-      }
+      setErrorNotLoggedIn(true);
+      setTimeout(()=>setErrorNotLoggedIn(false),2000)
     }
-    setIsFavorite(prev => !prev);
   }
 
   return (
@@ -187,10 +191,10 @@ const ListingDetailView = () => {
                     currency: 'EUR',
                   })}`}</h4>
 
-                  <button onClick={toggleFavorite} className="favorite-heart-button" >
+                  <button style={{position:'relative'}} onClick={toggleFavorite} className="favorite-heart-button" >
                     {isFavorite ? <i className="bi bi-heart-fill"></i> : <i className="bi bi-heart"></i>}
+                    {errorNotLoggedIn && <p style={{position:'absolute'}}>Log in to save recipes</p>}
                   </button>
-
                 </div>
                 <h4>{listing.title}</h4>
                 <p>

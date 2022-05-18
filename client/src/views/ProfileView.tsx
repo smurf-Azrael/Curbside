@@ -14,9 +14,10 @@ import { User } from '../interfaces/User';
 
 function ProfileView() {
   const [userListings, setUserListings] = useState([]);
+  const [savedListings, setSavedListings] = useState([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [loadingError, setLoadingError] = useState<boolean>(false);
-  const [activeListingSelection, setActiveListingSelection] = useState<ActiveListingSelection>({myListings: true, myFavorites: false});
+  const [activeListingSelection, setActiveListingSelection] = useState<ActiveListingSelection>({ myListings: true, myFavorites: false });
   const [user, setUser] = useState<User>();
   const api = useApi();
   const navigate = useNavigate()
@@ -38,8 +39,20 @@ function ProfileView() {
       }
       setIsLoading(false);
     };
+
+    const loadIsFavorite = async () => {
+      if (currentUser && currentUser!.id) {
+
+        console.log(currentUser!.id)
+        const res = await api.get(`/favorites/${currentUser!.id}`);
+        if (res.ok && res.body.data.favorites) {
+          setSavedListings(res.body.data.favorites)
+        }
+      }
+    }
+    loadIsFavorite();
     loadUserData();
-  }, [api, navigate, id]);
+  }, [api, navigate, id, currentUser]);
 
   const handleActivateMyListings = () => {
     setActiveListingSelection({
@@ -59,31 +72,31 @@ function ProfileView() {
     <AppBody>
       {isLoading ? <FullScreenLoadingIndicator /> : <></>}
       {user ? (<section className="ProfileView">
-          <div className="profile-about-info-wrapper">
-            <ProfileImage user={user} />
-            <div className="profile-basic-info-edit-wrapper">
-              <p>
-                {user.firstName} {user.lastName[0]}.
-              </p>
-              <Link to={`/set-profile/${user.id}`}>
-                {currentUser && user.id === currentUser.id && <ButtonSmall content={"Edit"} fill={true} />}
-              </Link>
-            </div>
+        <div className="profile-about-info-wrapper">
+          <ProfileImage user={user} />
+          <div className="profile-basic-info-edit-wrapper">
+            <p>
+              {user.firstName} {user.lastName[0]}.
+            </p>
+            <Link to={`/set-profile/${user.id}`}>
+              {currentUser && user.id === currentUser.id && <ButtonSmall content={"Edit"} fill={true} />}
+            </Link>
           </div>
-          {currentUser && user.id === currentUser.id ? <nav className="profile-listings-shown-options-wrapper">
-              <button onClick={handleActivateMyListings} className={`option-name ${activeListingSelection.myListings === true ? 'active' : ''}`} >My Listings</button>
-              <button onClick={handleActivateMyFavorites} className={`option-name ${activeListingSelection.myFavorites === true ? 'active' : ''}`} >My Favorites</button>
-          </nav> : <p className="option-name">Listings</p>}
-          {activeListingSelection.myListings === true &&
-            <CardListings listings={userListings} isLoading={isLoading} loadingError={loadingError}/>
-          }
-          {activeListingSelection.myFavorites === true &&
-            <div>My favorites not yet implemented</div>
-          }
-        </section>) : (<></>)}
-      </AppBody>
+        </div>
+        {currentUser && user.id === currentUser.id ? <nav className="profile-listings-shown-options-wrapper">
+          <button onClick={handleActivateMyListings} className={`option-name ${activeListingSelection.myListings === true ? 'active' : ''}`} >My Listings</button>
+          <button onClick={handleActivateMyFavorites} className={`option-name ${activeListingSelection.myFavorites === true ? 'active' : ''}`} >My Favorites</button>
+        </nav> : <p className="option-name">Listings</p>}
+        {activeListingSelection.myListings === true &&
+          <CardListings listings={userListings} isLoading={isLoading} loadingError={loadingError} />
+        }
+        {activeListingSelection.myFavorites === true &&
+          // <div>My favorites not yet implemented</div>
+          <CardListings listings={savedListings} isLoading={isLoading} loadingError={loadingError} />
+        }
+      </section>) : (<></>)}
+    </AppBody>
   )
-
 }
 
 interface ActiveListingSelection {
