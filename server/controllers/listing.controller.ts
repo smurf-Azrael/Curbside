@@ -38,7 +38,10 @@ export const patchListingByListingId = async (req: Request, res: Response, next:
   try {
     const listingDetails: FinalizeListingDTO = req.body;
     const listingId:string = req.params.id;
+    console.log('----------controller listingDetails', listingDetails);
+    console.log('----------controller listingId', listingId);
     const listing = await listingsModel.updateListing(listingId, listingDetails);
+    console.log('----------controller listing', listing);
     res.status(200).send({ data: { listing } });
   } catch (error) {
     next(error);
