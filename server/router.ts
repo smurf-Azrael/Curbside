@@ -1,28 +1,37 @@
 import { Request, Response, Router } from 'express';
-import usersController from './controllers/user.controller';
-import listingsController from './controllers/listing.controller';
+import userController from './controllers/user.controller';
+import listingController from './controllers/listing.controller';
 import { fullUserRequired, loginRequired } from './middlewares/login-required.middleware';
-import chatsController from './controllers/chat.controller';
-import ratingsController from './controllers/rating.controller';
+import chatController from './controllers/chat.controller';
+import ratingController from './controllers/rating.controller';
+import favoriteController from './controllers/favorites.controller';
 import transactionController from './controllers/transaction.controller';
 
 export const router = Router();
 
-router.post('/users', loginRequired, usersController.addInitialUser);
+router.post('/users', loginRequired, userController.addInitialUser);
 
-router.get('/users/:id', usersController.getUserProfile);
-router.patch('/users/:id', loginRequired, usersController.finalizeUser);
+router.get('/users/:id', userController.getUserProfile);
+router.patch('/users/:id', loginRequired, userController.finalizeUser);
 
-router.get('/listings', listingsController.getListings);
-router.post('/listings', fullUserRequired, listingsController.addListing);
+router.get('/listings', listingController.getListings);
+router.post('/listings', fullUserRequired, listingController.addListing);
 
-router.get('/listings/:id', listingsController.getListingByListingId);
-router.patch('/listings/:id', fullUserRequired, listingsController.patchListingByListingId);
+router.get('/listings/:id', listingController.getListingByListingId);
+router.patch('/listings/:id', fullUserRequired, listingController.patchListingByListingId);
 
-router.get('/chats', fullUserRequired, chatsController.getChatsByUserId);
-router.get('/chats/:listingId', fullUserRequired, chatsController.getUsersByListingIdAndSellerId);
+router.get('/chats', fullUserRequired, chatController.getChatsByUserId);
 
-router.post('/ratings', fullUserRequired, ratingsController.addRatings);
+router.post('/ratings', loginRequired, ratingController.addRatings);
+
+router.patch('/favorites/:id', favoriteController.addFavorite);
+router.get('/favorites/:id', favoriteController.getFavorites);
+router.delete('/favorites/:id', favoriteController.deleteFavorite);
+
+router.get('/chats', fullUserRequired, chatController.getChatsByUserId);
+router.get('/chats/:listingId', fullUserRequired, chatController.getUsersByListingIdAndSellerId);
+
+router.post('/ratings', fullUserRequired, ratingController.addRatings);
 
 router.delete('/transactions/:listingId', fullUserRequired, transactionController.deleteTransaction);
 router.get('/transactions', fullUserRequired, transactionController.getTransactionByBuyerAndSellerId);
