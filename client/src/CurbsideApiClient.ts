@@ -79,8 +79,8 @@ export default class CurbsideApiClient {
     return this.request({method:'PATCH', url, body, ...options})
   }
 
-  async delete(url: string,  options?:options){
-    return this.request({method: 'DELETE', url, ...options});
+  async delete(url: string, body:any, options?:options){
+    return this.request({method: 'DELETE', url, body,...options});
   }
 
   async getSocket() {
