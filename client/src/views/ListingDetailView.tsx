@@ -12,15 +12,20 @@ import { Listing } from '../interfaces/Listing';
 import FullScreenLoadingIndicator from '../components/FullScreenLoadingIndicator';
 import ProfileImage from '../components/ProfileImage';
 import Modal from 'react-bootstrap/esm/Modal';
+
 const stockimgLink = 'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png';
+
 const ListingDetailView = () => {
-  // Need to add heart button functionality
   const [listing, setListing] = useState<Listing>();
   const api = useApi();
-  const { currentUser } = useAuth();
-  const [loading, setLoading] = useState(true);
   const { id } = useParams();
   const navigate = useNavigate();
+  const { currentUser } = useAuth();
+  const [loading, setLoading] = useState<boolean>(true);
+  const [errorNotLoggedIn, setErrorNotLoggedIn] = useState<boolean>(false)
+  const [isFavorite, setIsFavorite] = useState<boolean>(false)
+  const [candidates, setCandidates] = useState<{ buyerName: string; buyerId: string; buyerPhotoUrl?: string }[]>([]);
+  const [showMarkAsSoldOptionWithoutCandidates, setShowMarkAsSoldOptionWithoutCandidates] = useState<boolean>();
 
   useEffect(() => {
     const loadListingData = async () => {
@@ -34,11 +39,20 @@ const ListingDetailView = () => {
         // handleErrors
       }
     };
+    const loadIsFavorite = async () => {
+      if (currentUser && currentUser!.id) {
+        const res = await api.get(`/favorites/${currentUser!.id}`);
+        if (res.ok && res.body.data.favorites && res.body.data.favorites.findIndex((element: any) => element.id === id) >= 0) {
+          setIsFavorite(true)
+        }
+      } else {
+        setIsFavorite(false)
+      }
+    }
     loadListingData();
-  }, [api, id]);
+    loadIsFavorite();
+  }, [api, id, currentUser]);
 
-  const [candidates, setCandidates] = useState<{ buyerName: string; buyerId: string; buyerPhotoUrl?: string }[]>([]);
-  const [showMarkAsSoldOptionWithoutCandidates, setShowMarkAsSoldOptionWithoutCandidates] = useState<boolean>();
   const openCandidates = async () => {
     try {
       const res = await api.get(`/chats/${listing!.id}`);
@@ -69,7 +83,7 @@ const ListingDetailView = () => {
   const handleMarkAsAvailable = async () => {
     try {
       setLoading(true);
-      const response = await api.delete(`/transactions/${listing!.id}`);
+      const response = await api.delete(`/transactions/${listing!.id}`, null);
       if (response.ok) {
         setListing((prevListing: any) => ({ ...prevListing, status: 'available' }));
       }
@@ -79,7 +93,29 @@ const ListingDetailView = () => {
       console.log(e);
     }
   };
-  console.log('LISTING', listing);
+
+  const toggleFavorite = async () => {
+    if (currentUser) {
+      if (isFavorite) {
+        const response = await api.delete(`/favorites/${currentUser!.id}`, { favoriteId: id })
+        console.log('DELETED', response.body.data)
+        if (!response.ok) {
+          return;
+        }
+      } else {
+        const response = await api.patch(`/favorites/${currentUser!.id}`, { favoriteId: id })
+        console.log('ADDED', response.body.data)
+        if (!response.ok) {
+          return;
+        }
+      }
+      setIsFavorite(prev => !prev);
+    } else {
+      setErrorNotLoggedIn(true);
+      setTimeout(()=>setErrorNotLoggedIn(false),2000)
+    }
+  }
+
   return (
     <div className={`${candidates.length ? 'noscroll' : 'scrollable'}`}>
       {candidates.length && (
@@ -111,7 +147,7 @@ const ListingDetailView = () => {
       )}
       <AppBody>
         {loading ? <FullScreenLoadingIndicator /> : <></>}
-        <div style={{maxWidth:'500px', margin:'0 auto'}}>
+        <div style={{ maxWidth: '500px', margin: '0 auto' }}>
 
           {listing !== undefined ? (
             <section className="ListingDetailView">
@@ -154,7 +190,11 @@ const ListingDetailView = () => {
                     style: 'currency',
                     currency: 'EUR',
                   })}`}</h4>
-                  <i className="bi bi-heart-fill"></i>
+
+                  <button onClick={toggleFavorite} className="favorite-heart-button" >
+                    {isFavorite ? <i className="bi bi-heart-fill"></i> : <i className="bi bi-heart"></i>}
+                    {<p className={`${errorNotLoggedIn && 'display-log-in-message'}`}>Log in to save listings</p>}
+                  </button>
                 </div>
                 <h4>{listing.title}</h4>
                 <p>
