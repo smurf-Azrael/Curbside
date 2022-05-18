@@ -142,7 +142,7 @@ export default function SetProfileView() {
             <Card>
               <Card.Body>
                 <h2 className="text-center mb-2">Profile Details</h2>
-                <Form onSubmit={handleSubmit}>
+                <Form >
                   <InputField
                     name="name"
                     label='Name'
@@ -175,7 +175,7 @@ export default function SetProfileView() {
                   <p className='comment'>
                     This location will be used for the items you sell
                   </p>
-                  <Button type="submit" className="w-100 mb-1 mt-3" >Save</Button>
+                  <Button onClick={handleSubmit} className="w-100 mb-1 mt-3" >Save</Button>
                 </Form>
               </Card.Body>
             </Card>
