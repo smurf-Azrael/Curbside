@@ -23,25 +23,28 @@ interface cardArguments {
 }
 
 function CardListings({ listings, isLoading, loadingError, favoriteList, setFavoriteList }: cardArguments) {
+  const [displayError, setDisplayError] = useState(false)
   const { currentUser } = useAuth();
   const api = useApi();
   async function heartToggle(listingId: string) {
     if (currentUser) {
       if (favoriteList.filter(element => element.id === listingId).length === 1) {
-        const response = await api.delete(`/favorites/${currentUser!.id}`, { favoriteId: listingId })
+        const response = await api.delete(`/favorites`, { favoriteId: listingId })
         if (!response.ok) {
           return;
         }
         setFavoriteList((prev) => prev.filter(listing => listing.id !== listingId));
       } else {
-        const response = await api.patch(`/favorites/${currentUser!.id}`, { favoriteId: listingId })
+        const response = await api.patch(`/favorites`, { favoriteId: listingId })
         if (!response.ok) {
           return;
         }
         setFavoriteList(prev => [...prev, listings.filter(listing => listing.id === listingId)[0]] );
       }
     } else {
-      // 
+      setDisplayError(true)
+      setTimeout(() => setDisplayError(false),4000)
+      // handle user not logged in
     }
   }
 
@@ -62,10 +65,13 @@ function CardListings({ listings, isLoading, loadingError, favoriteList, setFavo
     )
   })
 
-
-
   return (
     <div className="CardListings">
+      {
+      <div className={`message-not-logged-in ${displayError && 'display-error'}`}>
+        <p >Log in to save listings</p>
+      </div>
+      }
       {listings4Display}
       {!isLoading && listings.length === 0 && <p>No listing matched your request...</p>}
       {loadingError && <p>Couldn't load listings :/</p>}

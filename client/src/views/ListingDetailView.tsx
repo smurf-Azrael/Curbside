@@ -16,7 +16,6 @@ import Modal from 'react-bootstrap/esm/Modal';
 const stockimgLink = 'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png';
 
 const ListingDetailView = () => {
-  // Need to add heart button functionality
   const [listing, setListing] = useState<Listing>();
   const api = useApi();
   const { id } = useParams();
@@ -31,7 +30,6 @@ const ListingDetailView = () => {
   useEffect(() => {
     const loadListingData = async () => {
       const res = await api.get(`/listings/${id}`);
-      // console.log(res.body.data)
       if (res.ok) {
         setLoading(false);
         setListing(res.body.data.listing);
@@ -193,9 +191,9 @@ const ListingDetailView = () => {
                     currency: 'EUR',
                   })}`}</h4>
 
-                  <button style={{position:'relative'}} onClick={toggleFavorite} className="favorite-heart-button" >
+                  <button onClick={toggleFavorite} className="favorite-heart-button" >
                     {isFavorite ? <i className="bi bi-heart-fill"></i> : <i className="bi bi-heart"></i>}
-                    {errorNotLoggedIn && <p style={{position:'absolute'}}>Log in to save recipes</p>}
+                    {<p className={`${errorNotLoggedIn && 'display-log-in-message'}`}>Log in to save listings</p>}
                   </button>
                 </div>
                 <h4>{listing.title}</h4>
