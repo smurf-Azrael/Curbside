@@ -26,17 +26,11 @@
     "start": "^5.1.0",
     "web-vitals": "^2.1.4"
   },
-  "jest": {
-    "moduleNameMapper": {
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/styleMock.js",
-      "\\.(css|less|scss)$": "identity-obj-proxy"
-    }
-  },
   "scripts": {
     "tsc": "tsc",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "jest",
+    "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

@@ -22,7 +22,6 @@ export default function LocationRadius({
   const [locationResult, setLocationResult] = useState<{ location: string | undefined, lat: string | undefined, lng: string | undefined }>({location: undefined, lat: undefined, lng: undefined}); // location: undefined, lat: undefined, lng: undefined
   const [clickPosition, setClickPosition] = useState<{ lat: number | undefined, lng: number | undefined }>({lat: undefined, lng: undefined}); //lat: undefined, lng: undefined
   const [address, setAddress] = useState<string>(locationGroupField.address);
-
   useEffect(() => {
     if (clickPosition && clickPosition?.lat) {
       const response = () => {
