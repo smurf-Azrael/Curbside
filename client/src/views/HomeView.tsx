@@ -21,13 +21,14 @@ export default function HomeView() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [loadingError, setLoadingError] = useState<boolean>(false);
   const tagStack = useRef<string[]>([]);
+  const [toggleComponent, setToggleComponent] = useState<boolean>(true);
+  const [activeListing, setActiveListing] = useState<Listing | null | undefined>(null);
 
   const { currentUser } = useAuth();
 
   const loadUserLocation = useCallback(async () => {
     const res = await api.get(`/users/${currentUser?.id}`);
     let userLocation;
-    console.log('res.body.data.user', res.body.data.user);
     if (res.ok) {
       userLocation = {
         latitude: res.body.data.user.latitude,
@@ -45,7 +46,9 @@ export default function HomeView() {
       };
     }
     setLocationGroupField(userLocation);
+    // return userLocation
   }, [api, currentUser?.id]);
+
 
   const [locationGroupField, setLocationGroupField] = useState<{
     latitude: number;
@@ -157,8 +160,23 @@ export default function HomeView() {
     }
   }
 
-  const [toggleComponent, setToggleComponent] = useState<boolean>(true);
-  const [activeListing, setActiveListing] = useState<Listing | null | undefined>(null);
+
+  const [favoriteList, setFavoriteList] = useState<any[]>([])
+  useEffect(() => {
+    const loadIsFavorite = async () => {
+      if (currentUser && currentUser!.id) {
+        const res = await api.get(`/favorites`);
+        console.log(res.body.data)
+        if (res.ok && res.body.data.favorites) {
+          setFavoriteList(res.body.data.favorites)
+        }
+      } else {
+        setFavoriteList([])
+      }
+    }
+    loadIsFavorite();
+  }, [currentUser]);
+
 
   return (
     <AppBody>
@@ -198,7 +216,7 @@ export default function HomeView() {
         />
 
         {toggleComponent ? (
-          <CardListings listings={listings} isLoading={isLoading} loadingError={loadingError} />
+          <CardListings favoriteList={favoriteList} setFavoriteList={setFavoriteList} listings={listings} isLoading={isLoading} loadingError={loadingError} />
         ) : (
           <MapListings
             listings={listings}
@@ -211,9 +229,8 @@ export default function HomeView() {
 
       <div>
         <div
-          className={`map-btn-float ${currentUser && 'with-user'} ${activeListing && 'with-listing'} ${
-            currentUser && activeListing && 'with-user-and-listing'
-          }`}
+          className={`map-btn-float ${currentUser && 'with-user'} ${activeListing && 'with-listing'} ${currentUser && activeListing && 'with-user-and-listing'
+            }`}
         >
           <RoundedButton
             onClick={() => {

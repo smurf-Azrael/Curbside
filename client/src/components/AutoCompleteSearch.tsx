@@ -164,7 +164,7 @@ export default function AutoCompleteSearch({ tagStack }: { tagStack: any }) {
     focused,
     setAnchorEl,
   } = useAutocomplete({
-    id: 'customized-hook-demo',
+    id: 'categories',
     multiple: true,
     options: tags.slice(1),
     getOptionLabel: (option) => option.title,
