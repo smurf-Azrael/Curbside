@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import 'leaflet/dist/leaflet.css';
 import { Listing } from '../interfaces/Listing';
 import * as L from 'leaflet';
@@ -9,8 +9,17 @@ import 'leaflet.markercluster/dist/leaflet.markercluster.js';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 
-export default function MapListings ({ listings, position }: { listings: Listing[], position: {latitude: number, longitude:number} }) {
-  const [activeListing, setActiveListing] = useState<Listing | null | undefined>(null);
+export default function MapListings({
+  listings,
+  position,
+  activeListing,
+  setActiveListing,
+}: {
+  listings: Listing[];
+  position: { latitude: number; longitude: number };
+  activeListing: Listing | null | undefined;
+  setActiveListing: React.Dispatch<React.SetStateAction<Listing | null | undefined>>;
+}) {
   const map = useRef<L.Map>();
   const clusterLayer = useRef<L.MarkerClusterGroup>();
 
@@ -29,7 +38,7 @@ export default function MapListings ({ listings, position }: { listings: Listing
     clusterLayer.current = L.markerClusterGroup();
 
     listings.forEach((listing) => {
-      let oneMarker = L.circleMarker(L.latLng(listing.latitude, listing.longitude), { radius: 5 });
+      let oneMarker = L.circleMarker(L.latLng(listing.latitude, listing.longitude), { radius: 10, color: 'green' });
       //@ts-ignore
       oneMarker.options['id'] = listing.id;
       oneMarker.addTo(clusterLayer.current!);
@@ -43,7 +52,7 @@ export default function MapListings ({ listings, position }: { listings: Listing
     });
 
     map.current.addLayer(clusterLayer.current);
-  }, [listings]);
+  }, [listings, setActiveListing]);
 
   useEffect(() => {
     const mapNode = ReactDOM.findDOMNode(document.getElementById('mapId')) as HTMLDivElement;
@@ -57,12 +66,12 @@ export default function MapListings ({ listings, position }: { listings: Listing
     L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { maxZoom: 17 }).addTo(
       map.current
     );
-  }, []);
+  }, [position.latitude, position.longitude]);
 
   return (
-    <div className='map-set-height'>
-      <div style={{ flexGrow:'1', zIndex: '0', position:'relative'}} id="mapId"></div>
-      {activeListing ? <MapListingPreview activeListing={activeListing} /> : null}
+    <div className="map-set-height">
+      <div style={{ flexGrow: '1', zIndex: '0', position: 'relative' }} id="mapId"></div>
+      {activeListing ? <MapListingPreview activeListing={activeListing} setActiveListing={setActiveListing} /> : null}
     </div>
-  )
+  );
 }
