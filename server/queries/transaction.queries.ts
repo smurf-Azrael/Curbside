@@ -7,7 +7,7 @@ import { prisma } from '../prisma/client';
 const convertDbTransactionToTransaction = (dbTransaction: Transaction): ITransaction => ({
   id: dbTransaction.id,
   sellerId: dbTransaction.sellerId,
-  buyerId: dbTransaction.buyerId,
+  buyerId: dbTransaction.buyerId ?? undefined,
   createdAt: dbTransaction.createdAt,
   listingId: dbTransaction.listingId
 });
