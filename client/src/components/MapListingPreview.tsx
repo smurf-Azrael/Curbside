@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import '../styling/MapListingPreview.scss';
 import xBtn from '../assets/x-symbol.svg';
 import { useAuth } from '../contexts/AuthContext';
+import emptyLeaf from '../assets/empty-leaf.png'
 
 function MapListingPreview({
   activeListing,
@@ -27,7 +28,14 @@ function MapListingPreview({
       </div>
       <Link className="link-element" to={`/listing/${activeListing.id}`}>
         <div className="Preview-Image-Container">
-          <img className="Preview-Img" alt={'item for sale'} src={activeListing.photoUrls[0]} />
+          <img 
+            className="Preview-Img" 
+            alt={'item for sale'} 
+            onError={({ currentTarget }) => {
+              currentTarget.onerror = null; // prevents looping
+              currentTarget.src = emptyLeaf;
+            }}
+            src={activeListing.photoUrls[0]} />
         </div>
         <div className="Preview-Text-Content">
           <h6>{activeListing.title}</h6>
