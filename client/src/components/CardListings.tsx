@@ -1,4 +1,4 @@
-import React, { useEffect, useState, SetStateAction } from 'react';
+import React, { useState, SetStateAction } from 'react';
 import { Link } from 'react-router-dom';
 import { Listing } from '../interfaces/Listing';
 import ListingPreview from './ListingPreview';
@@ -6,6 +6,8 @@ import '../styling/CardListings.scss';
 import { useAuth } from '../contexts/AuthContext';
 import { useApi } from '../contexts/ApiProvider';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import EmptyState from './EmptyState';
 // @ts-ignore
 import('leaflet.markercluster/dist/leaflet.markercluster.js');
 // @ts-ignore
@@ -50,15 +52,17 @@ function CardListings({ listings, isLoading, loadingError, favoriteList, setFavo
   const listings4Display = listings.map((listing) => {
     return (
       <div className="listing-preview" key={listing.id}>
-        {favoriteList && favoriteList.filter((element) => element.id === listing.id).length === 1 ? (
-          <div className="heart-wrapper" onClick={() => heartToggle(listing.id)}>
-            <FavoriteIcon fontSize="medium" htmlColor="rgba(255, 66, 66, 1)"></FavoriteIcon>
-          </div>
-        ) : (
-          <div className="heart-wrapper" onClick={() => heartToggle(listing.id)}>
-            <FavoriteIcon fontSize="medium" htmlColor="rgba(255,255,255,1)"></FavoriteIcon>
-          </div>
-        )}
+        {favoriteList && favoriteList.filter((element) => element.id === listing.id).length === 1
+          ? currentUser && (
+              <div className="heart-wrapper" onClick={() => heartToggle(listing.id)}>
+                <FavoriteIcon fontSize="medium" htmlColor="rgba(255, 66, 66, 1)"></FavoriteIcon>
+              </div>
+            )
+          : currentUser && (
+              <div className="heart-wrapper" onClick={() => heartToggle(listing.id)}>
+                <FavoriteBorderIcon fontSize="medium" htmlColor="rgba(255,255,255,1)"></FavoriteBorderIcon>
+              </div>
+            )}
         <Link key={listing.id} to={`/listing/${listing.id}`} style={{ textDecoration: 'none', color: 'black' }}>
           <ListingPreview listing={listing} />
         </Link>
@@ -74,8 +78,8 @@ function CardListings({ listings, isLoading, loadingError, favoriteList, setFavo
         </div>
       }
       {listings4Display}
-      {!isLoading && listings.length === 0 && <p>No listing matched your request...</p>}
-      {loadingError && <p>Couldn't load listings :/</p>}
+      {!isLoading && listings.length === 0 && <EmptyState text="No listings"/>}
+      {loadingError && <EmptyState text="Couldn't load listings"/> }
     </div>
   );
 }
