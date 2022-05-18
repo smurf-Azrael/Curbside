@@ -111,65 +111,69 @@ const ListingDetailView = () => {
       )}
       <AppBody>
         {loading ? <FullScreenLoadingIndicator /> : <></>}
-        {listing !== undefined ? (
-          <section className="ListingDetailView">
-            <section className="listing-owner-info-wrapper">
-              <ProfileImage
-                user={{ id: listing.userId, photoUrl: listing.userPhotoUrl, firstName: listing.userFirstName }}
-              />
+        <div style={{maxWidth:'500px', margin:'0 auto'}}>
 
-              <section className="listing-owner-name-buttons-wrapper">
-                <p className="listing-owner-name">{`${listing.userFirstName} ${listing.userLastName.slice(0, 1)}.`}</p>
-              </section>
-            </section>
-            {currentUser && listing.userId !== currentUser.id ? (
-              <section className="listing-button-wrapper">
-                <ButtonWide
-                  clickFunction={() => navigate(`/chats/${listing.id}`, { state: listing })}
-                  content={'Contact seller'}
-                  fill={true}
+          {listing !== undefined ? (
+            <section className="ListingDetailView">
+              <section className="listing-owner-info-wrapper">
+                <ProfileImage
+                  user={{ id: listing.userId, photoUrl: listing.userPhotoUrl, firstName: listing.userFirstName }}
                 />
+
+                <section className="listing-owner-name-buttons-wrapper">
+                  <p className="listing-owner-name">{`${listing.userFirstName} ${listing.userLastName.slice(0, 1)}.`}</p>
+                </section>
               </section>
-            ) : !currentUser ? (
-              <ButtonWide
-                fill={true}
-                content="Sign up to contact"
-                clickFunction={() => {
-                  navigate('/signup');
-                }}
-              ></ButtonWide>
-            ) : listing!.status === 'available' ? (
-              <ButtonWide fill={true} content="Mark as sold" clickFunction={openCandidates}></ButtonWide>
-            ) : (
-              <ButtonWide fill={false} content="Mark as available" clickFunction={handleMarkAsAvailable}></ButtonWide>
-            )}
-            <section className="listing-details-gallery-wrapper">
-              <ImageCarousel carouselItems={listing.photoUrls} />
+              {currentUser && listing.userId !== currentUser.id ? (
+                <section className="listing-button-wrapper">
+                  <ButtonWide
+                    clickFunction={() => navigate(`/chats/${listing.id}`, { state: listing })}
+                    content={'Contact seller'}
+                    fill={true}
+                  />
+                </section>
+              ) : !currentUser ? (
+                <ButtonWide
+                  fill={true}
+                  content="Sign up to contact"
+                  clickFunction={() => {
+                    navigate('/signup');
+                  }}
+                ></ButtonWide>
+              ) : listing!.status === 'available' ? (
+                <ButtonWide fill={true} content="Mark as sold" clickFunction={openCandidates}></ButtonWide>
+              ) : (
+                <ButtonWide fill={false} content="Mark as available" clickFunction={handleMarkAsAvailable}></ButtonWide>
+              )}
+              <section className="listing-details-gallery-wrapper">
+                <ImageCarousel carouselItems={listing.photoUrls} />
+              </section>
+              <section className="listing-details-data-wrapper">
+                <div className="price-favorite-button-wrapper">
+                  <h4>{`${(listing.priceInCents / 100).toLocaleString('en-US', {
+                    style: 'currency',
+                    currency: 'EUR',
+                  })}`}</h4>
+                  <i className="bi bi-heart-fill"></i>
+                </div>
+                <h4>{listing.title}</h4>
+                <p>
+                  <span className="listing-detail-title">Condition:</span>
+                  {listing.condition === 'gentlyUsed' ? 'gently used' : listing.condition}
+                </p>
+                <p>
+                  <span className="listing-detail-title">Description: </span>
+                  {listing.description}
+                </p>
+                <p className="listing-detail-title">Location: </p>
+              </section>
+              <SimpleMap position={{ lng: listing.longitude, lat: listing.latitude }} radius={1} />
             </section>
-            <section className="listing-details-data-wrapper">
-              <div className="price-favorite-button-wrapper">
-                <h4>{`${(listing.priceInCents / 100).toLocaleString('en-US', {
-                  style: 'currency',
-                  currency: 'EUR',
-                })}`}</h4>
-                <i className="bi bi-heart-fill"></i>
-              </div>
-              <h4>{listing.title}</h4>
-              <p>
-                <span className="listing-detail-title">Condition:</span>
-                {listing.condition === 'gentlyUsed' ? 'gently used' : listing.condition}
-              </p>
-              <p>
-                <span className="listing-detail-title">Description: </span>
-                {listing.description}
-              </p>
-              <p className="listing-detail-title">Location: </p>
-            </section>
-            <SimpleMap position={{ lng: listing.longitude, lat: listing.latitude }} radius={1} />
-          </section>
-        ) : (
-          <></>
-        )}
+          ) : (
+            <></>
+          )}
+        </div>
+
       </AppBody>
       <Modal
         size="sm"
