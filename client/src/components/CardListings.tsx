@@ -5,7 +5,7 @@ import ListingPreview from './ListingPreview';
 import '../styling/CardListings.scss';
 import { useAuth } from '../contexts/AuthContext';
 import { useApi } from '../contexts/ApiProvider';
-
+import EmptyState from '../components/EmptyState'
 
 // @ts-ignore
 import('leaflet.markercluster/dist/leaflet.markercluster.js')
@@ -73,8 +73,8 @@ function CardListings({ listings, isLoading, loadingError, favoriteList, setFavo
       </div>
       }
       {listings4Display}
-      {!isLoading && listings.length === 0 && <p>No listing matched your request...</p>}
-      {loadingError && <p>Couldn't load listings :/</p>}
+      {!isLoading && listings.length === 0 && <EmptyState text="No listings"/>}
+      {loadingError && <EmptyState text="Couldn't load listings"/> }
     </div>
   );
 }
