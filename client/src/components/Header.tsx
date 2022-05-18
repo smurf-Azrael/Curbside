@@ -6,7 +6,7 @@ import tree from "../assets/tree.gif"
 import ButtonSmall from './ButtonSmall';
 import { useAuth } from '../contexts/AuthContext';
 
-export default function Header({ prevRoute, }: HeaderProps) {
+export default function Header({ prevRoute, buttonFree }: HeaderProps) {
   const navigate = useNavigate();
   const { currentUser } = useAuth();
   const baseDate = new Date(2022, 4, 17, 10, 21, 32); // May 17, 2022
@@ -32,10 +32,10 @@ export default function Header({ prevRoute, }: HeaderProps) {
         <img src={curbside} alt='Curbside' />
       </button>
       {currentUser ?
-        (<p className='treesPlanted'><img src={tree} alt="trees" />{treesPlanted}!</p>) :
+        (<p className='treesPlanted'><img src={tree} alt="trees" />{treesPlanted}!</p>) : !buttonFree ?
         (<div className='header-login' onClick={() => navigate('/login')} >
           <ButtonSmall content={'Log in'} fill={true} />
-        </div>)
+        </div> ) : <></>
       }    
     </div>
   )
@@ -43,4 +43,5 @@ export default function Header({ prevRoute, }: HeaderProps) {
 
 interface HeaderProps {
   prevRoute?: boolean;
+  buttonFree?: boolean
 }
