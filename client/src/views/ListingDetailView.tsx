@@ -47,6 +47,8 @@ const ListingDetailView = () => {
         if (res.ok && res.body.data.favorites && res.body.data.favorites.findIndex((element: any) => element.id === id) >= 0) {
           setIsFavorite(true)
         }
+      } else {
+        setIsFavorite(false)
       }
     }
     loadListingData();
