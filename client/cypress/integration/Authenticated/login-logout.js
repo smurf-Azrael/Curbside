@@ -24,7 +24,7 @@ describe ('End to end testing with Cypress', () => {
     cy.get('.form-select').select('Used');
     cy.findByLabelText('Description', {selector: 'textarea'}).type('Test item description');
     cy.findByLabelText('Photos').selectFile('cypress/fixtures/testPicture.png');
-    cy.findByLabelText('Categories', {selector: 'input'}).type('moto');
+    cy.findByLabelText('Categories', {selector: 'input'}).type('moto').findByRole('option', {  name: /cars/i}).click();
   })
 
   // it('logs out', () => {
