@@ -149,7 +149,7 @@ export default function HomeView() {
         loadUserLocation();
       })();
     }
-  }, [api, getListings, currentUser, locationGroupField, loadUserLocation]);
+  }, [api, getListings, currentUser]);
 
   function pressEnter(event: KeyboardEvent<HTMLInputElement>): any {
     if (event.key === 'Enter') {
