@@ -37,9 +37,7 @@ export const addInitialUserInputValidation = async (userDetails: InitialUserDTO)
 
 export const finalizeUserInputValidation = async (userId: string, userDetails: FinalizeUserDTO): Promise<void> => {
   const errorMessages: CustomErrorMessageObject = {};
-  // if (userDetails.emailVerified === undefined) {
-  //   errorMessages.emailVerified = usersModelErrorMessages.noEmailVerified;
-  // }
+
   if (!_nameVerification(userDetails.firstName)) {
     errorMessages.firstName = usersModelErrorMessages.invalidFirstName;
   }

@@ -51,7 +51,7 @@ export default function Login() {
         })
       } else {
         setFormErrors({ globalError: "Failed to log in" })
-  
+
       }
     }
 
@@ -83,6 +83,7 @@ export default function Login() {
               disabled={loading}
               type="submit"
               className="w-100"
+              name="submitLogIn"
               style={{ marginTop: "10px" }}
             >
               Log in
