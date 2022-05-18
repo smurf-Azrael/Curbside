@@ -6,17 +6,28 @@ import RoundedButton from '../components/RoundedButton';
 import '../styling/HomeView.scss';
 import AppBody from '../components/AppBody';
 import { useAuth } from '../contexts/AuthContext';
-import { LocationGroupInterface } from "../interfaces/LocationGroup";
-import CardListings from "../components/CardListings";
-import MapListings from "../components/MapListings";
+import { LocationGroupInterface } from '../interfaces/LocationGroup';
+import CardListings from '../components/CardListings';
+import MapListings from '../components/MapListings';
 import FullScreenLoadingIndicator from '../components/FullScreenLoadingIndicator';
+import { Listing } from '../interfaces/Listing';
 
 export default function HomeView() {
   const api = useApi();
-  const loadUserLocation = async () => {
+
+  const [listings, setListings] = useState<any[]>([]);
+  const [FiltersAreVisible, setFiltersAreVisible] = useState(false);
+  const [locationIsVisible, setLocationIsVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [loadingError, setLoadingError] = useState<boolean>(false);
+  const tagStack = useRef<string[]>([]);
+
+  const { currentUser } = useAuth();
+
+  const loadUserLocation = useCallback(async () => {
     const res = await api.get(`/users/${currentUser?.id}`);
     let userLocation;
-    console.log('res.body.data.user', res.body.data.user)
+    console.log('res.body.data.user', res.body.data.user);
     if (res.ok) {
       userLocation = {
         latitude: res.body.data.user.latitude,
@@ -34,17 +45,7 @@ export default function HomeView() {
       };
     }
     setLocationGroupField(userLocation);
-    // return userLocation
-  };
-
-  const [listings, setListings] = useState<any[]>([]);
-  const [FiltersAreVisible, setFiltersAreVisible] = useState(false);
-  const [locationIsVisible, setLocationIsVisible] = useState(false);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [loadingError, setLoadingError] = useState<boolean>(false);
-  const tagStack = useRef<string[]>([]);
-
-  const { currentUser } = useAuth();
+  }, [api, currentUser?.id]);
 
   const [locationGroupField, setLocationGroupField] = useState<{
     latitude: number;
@@ -157,36 +158,27 @@ export default function HomeView() {
   }
 
   const [toggleComponent, setToggleComponent] = useState<boolean>(true);
+  const [activeListing, setActiveListing] = useState<Listing | null | undefined>(null);
 
   return (
     <AppBody>
       {isLoading ? <FullScreenLoadingIndicator></FullScreenLoadingIndicator> : <></>}
-      <div className="HomeView">
+      <div className={`HomeView ${!currentUser ? 'without-user' : ''}`}>
         <div className="global-search-area">
-          <div className='search-bar-container'>
-            <button onClick={() => handleSearch()}><i className="bi bi-search"></i></button>
-            <input ref={searchField} className="main-input" placeholder="Search.." onKeyPress={(e) => pressEnter(e)} />
-          </div>
-          <div className='search-buttons-group' >
-            <button className="search-location-button search-btn" onClick={openLocationModal}>
-              <span>
-                <i className="bi bi-geo-alt"></i>
-                {
-                  locationGroupField.address ?
-                    (locationGroupField.address.length > 15 ?
-                      (locationGroupField.address.slice(0, 15) + '...')
-                      :
-                      locationGroupField.address)
-                    :
-                    "Location"
-                }
-              </span>
+          <div className="search-bar-container">
+            <input ref={searchField} className="main-input" placeholder="Search..." onKeyPress={(e) => pressEnter(e)} />
+            <button onClick={handleSearch}>
+              <i className="bi bi-search"></i>
             </button>
-            <button className="search-filter-button search-btn" onClick={openFiltersModal}>
-              <span>
-                <i className="bi bi-sliders"></i>
-                Filter
-              </span>
+          </div>
+          <div className="search-buttons-group">
+            <button className="search-btn" onClick={openLocationModal}>
+              <i className="bi bi-geo-alt"></i>
+              <span>{locationGroupField.address ? locationGroupField.address : 'Location'}</span>
+            </button>
+            <button className="search-btn" onClick={openFiltersModal}>
+              <span>Filter</span>
+              <i className="bi bi-sliders"></i>
             </button>
           </div>
         </div>
@@ -205,23 +197,39 @@ export default function HomeView() {
           setLocationGroupField={setLocationGroupField}
         />
 
-
-        {toggleComponent ?
+        {toggleComponent ? (
           <CardListings listings={listings} isLoading={isLoading} loadingError={loadingError} />
-          :
-          <MapListings listings={listings} position={{ latitude: locationGroupField.latitude, longitude: locationGroupField.longitude }} />
-        }
-
+        ) : (
+          <MapListings
+            listings={listings}
+            position={{ latitude: locationGroupField.latitude, longitude: locationGroupField.longitude }}
+            activeListing={activeListing}
+            setActiveListing={setActiveListing}
+          />
+        )}
       </div>
 
       <div>
-        <div className="map-btn-float" >
+        <div
+          className={`map-btn-float ${currentUser && 'with-user'} ${activeListing && 'with-listing'} ${
+            currentUser && activeListing && 'with-user-and-listing'
+          }`}
+        >
           <RoundedButton
-            onClick={() => setToggleComponent(prev => !prev)}
-            content={toggleComponent ? (<i className="bi bi-map"></i>) : (<i style={{ fontSize: '24px' }} className="bi bi-grid"></i>)} />
+            onClick={() => {
+              setToggleComponent((prev) => !prev);
+              setActiveListing(null);
+            }}
+            content={
+              toggleComponent ? (
+                <i style={{ fontSize: '20px', color: 'white' }} className="bi bi-map"></i>
+              ) : (
+                <i style={{ fontSize: '24px', color: 'white' }} className="bi bi-grid"></i>
+              )
+            }
+          />
         </div>
       </div>
     </AppBody>
-  )
+  );
 }
-
