@@ -41,7 +41,7 @@ const ListingDetailView = () => {
     };
     const loadIsFavorite = async () => {
       if (currentUser && currentUser!.id) {
-        const res = await api.get(`/favorites/${currentUser!.id}`);
+        const res = await api.get(`/favorites`);
         if (res.ok && res.body.data.favorites && res.body.data.favorites.findIndex((element: any) => element.id === id) >= 0) {
           setIsFavorite(true)
         }
