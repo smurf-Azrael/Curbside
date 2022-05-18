@@ -4,7 +4,6 @@ import FiltersComponent from '../components/FiltersComponent';
 import LocationRadius from '../components/LocationRadius';
 import RoundedButton from '../components/RoundedButton';
 import '../styling/HomeView.scss';
-import LocationPreviewComponent from '../components/LocationPreviewComponent';
 import AppBody from '../components/AppBody';
 import { useAuth } from '../contexts/AuthContext';
 import { LocationGroupInterface } from "../interfaces/LocationGroup";
@@ -163,8 +162,6 @@ export default function HomeView() {
     <AppBody>
       {isLoading ? <FullScreenLoadingIndicator></FullScreenLoadingIndicator> : <></>}
       <div className="HomeView">
-        <LocationPreviewComponent />{/*Empty for now, but will possibly show preview of your location  */}
-
         <div className="global-search-area">
           <div className='search-bar-container'>
             <button onClick={() => handleSearch()}><i className="bi bi-search"></i></button>
@@ -174,7 +171,15 @@ export default function HomeView() {
             <button className="search-location-button search-btn" onClick={openLocationModal}>
               <span>
                 <i className="bi bi-geo-alt"></i>
-                {locationGroupField.address ? locationGroupField.address : "Location"}
+                {
+                  locationGroupField.address ?
+                    (locationGroupField.address.length > 15 ?
+                      (locationGroupField.address.slice(0, 15) + '...')
+                      :
+                      locationGroupField.address)
+                    :
+                    "Location"
+                }
               </span>
             </button>
             <button className="search-filter-button search-btn" onClick={openFiltersModal}>
@@ -204,7 +209,7 @@ export default function HomeView() {
         {toggleComponent ?
           <CardListings listings={listings} isLoading={isLoading} loadingError={loadingError} />
           :
-          <MapListings listings={listings} position={{latitude : locationGroupField.latitude, longitude: locationGroupField.longitude}} />
+          <MapListings listings={listings} position={{ latitude: locationGroupField.latitude, longitude: locationGroupField.longitude }} />
         }
 
       </div>
