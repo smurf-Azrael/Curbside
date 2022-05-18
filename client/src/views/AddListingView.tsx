@@ -146,16 +146,16 @@ export default function AddListingView() {
             error={formErrors.price}
             fieldref={priceField}
           />
-          <p style={{ marginRight: 'auto', marginBottom: '5px', marginLeft: '3px' }}>Condition</p>
-          <Form.Group>
+          <Form.Group controlId={'condition'} style={{textAlign: "left"}}>
+            <Form.Label>Condition</Form.Label>
             <FormSelect ref={conditionField}>
               <option value="new">New</option>
               <option value="gentlyUsed">Gently Used</option>
               <option value="used">Used</option>
             </FormSelect>
+            <p>{formErrors.condition}</p> 
           </Form.Group>
 
-          <p>{formErrors.condition}</p>
           <InputField
             name="description"
             placeholder="Description"
@@ -177,7 +177,7 @@ export default function AddListingView() {
             onChange={(e) => handleFileSelect(e)}
           />
 
-          <p style={{ marginRight: 'auto', marginBottom: '5px', marginLeft: '3px' }}>Categories</p>
+          <Form.Label htmlFor="categories" style={{ marginRight: 'auto', marginBottom: '5px', marginLeft: '3px' }}>Categories</Form.Label>
           <AutoCompleteSearch tagStack={tags} />
           {formErrors.tags && <p className="custom-manual-error">Please add at least one category</p>}
 
