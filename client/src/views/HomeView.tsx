@@ -216,7 +216,9 @@ export default function HomeView() {
 
       <div>
         <div className="map-btn-float" >
-          <RoundedButton onClick={() => setToggleComponent(prev => !prev)} content={<i className="bi bi-map"></i>} />
+          <RoundedButton
+            onClick={() => setToggleComponent(prev => !prev)}
+            content={toggleComponent ? (<i className="bi bi-map"></i>) : (<i style={{ fontSize: '24px' }} className="bi bi-grid"></i>)} />
         </div>
       </div>
     </AppBody>
