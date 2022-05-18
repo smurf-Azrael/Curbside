@@ -81,6 +81,7 @@ export const getListingByListingIdModel = async (id:string) : Promise<IListingPa
     const userInfo: IUserInfoSelect | null = await userQueries.getSelectUserInfo(listing.userId);
     const rating: number | null = await ratingQueries.getUserRating(listing.userId);
     const listingPackage: IListingPackage = { ...listing, ...userInfo, rating };
+    console.log('listingPackage', listingPackage);
     return listingPackage;
   } catch (error) {
     console.log('/models/listingsById.model getListingByIdModel ERROR', error);

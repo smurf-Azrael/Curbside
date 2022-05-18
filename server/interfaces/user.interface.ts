@@ -9,6 +9,7 @@ export interface IUser {
   city?: string,
   longitude?: number,
   latitude?: number,
+  favorites?:string[]
 }
 
 export interface IStrippedUser {

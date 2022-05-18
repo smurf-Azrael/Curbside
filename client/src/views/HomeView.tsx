@@ -4,7 +4,6 @@ import FiltersComponent from '../components/FiltersComponent';
 import LocationRadius from '../components/LocationRadius';
 import RoundedButton from '../components/RoundedButton';
 import '../styling/HomeView.scss';
-import LocationPreviewComponent from '../components/LocationPreviewComponent';
 import AppBody from '../components/AppBody';
 import { useAuth } from '../contexts/AuthContext';
 import { LocationGroupInterface } from "../interfaces/LocationGroup";
@@ -17,6 +16,7 @@ export default function HomeView() {
   const loadUserLocation = async () => {
     const res = await api.get(`/users/${currentUser?.id}`);
     let userLocation;
+    console.log('res.body.data.user', res.body.data.user)
     if (res.ok) {
       userLocation = {
         latitude: res.body.data.user.latitude,
@@ -58,7 +58,6 @@ export default function HomeView() {
     address: 'Berlin',
   });
 
-  // const tagsField = useRef<{ [key: string]: string }>({}) // categories need to be decided {catName: false, }
   const sortByField = useRef<HTMLSelectElement>(null);
   const maxPriceField = useRef<HTMLInputElement>(null);
   const minPriceField = useRef<HTMLInputElement>(null);
@@ -147,7 +146,6 @@ export default function HomeView() {
     if (currentUser) {
       (async () => {
         loadUserLocation();
-        // locationGroupField.current = await loadUserLocation();
       })();
     }
   }, [api, getListings, currentUser]);
@@ -164,8 +162,6 @@ export default function HomeView() {
     <AppBody>
       {isLoading ? <FullScreenLoadingIndicator></FullScreenLoadingIndicator> : <></>}
       <div className="HomeView">
-        <LocationPreviewComponent />{/*Empty for now, but will possibly show preview of your location  */}
-
         <div className="global-search-area">
           <div className='search-bar-container'>
             <button onClick={() => handleSearch()}><i className="bi bi-search"></i></button>
@@ -175,7 +171,15 @@ export default function HomeView() {
             <button className="search-location-button search-btn" onClick={openLocationModal}>
               <span>
                 <i className="bi bi-geo-alt"></i>
-                {locationGroupField.address ? locationGroupField.address : "Location"}
+                {
+                  locationGroupField.address ?
+                    (locationGroupField.address.length > 15 ?
+                      (locationGroupField.address.slice(0, 15) + '...')
+                      :
+                      locationGroupField.address)
+                    :
+                    "Location"
+                }
               </span>
             </button>
             <button className="search-filter-button search-btn" onClick={openFiltersModal}>
@@ -205,14 +209,16 @@ export default function HomeView() {
         {toggleComponent ?
           <CardListings listings={listings} isLoading={isLoading} loadingError={loadingError} />
           :
-          <MapListings listings={listings} />
+          <MapListings listings={listings} position={{ latitude: locationGroupField.latitude, longitude: locationGroupField.longitude }} />
         }
 
       </div>
 
       <div>
         <div className="map-btn-float" >
-          <RoundedButton onClick={() => setToggleComponent(prev => !prev)} content={<i className="bi bi-map"></i>} />
+          <RoundedButton
+            onClick={() => setToggleComponent(prev => !prev)}
+            content={toggleComponent ? (<i className="bi bi-map"></i>) : (<i style={{ fontSize: '24px' }} className="bi bi-grid"></i>)} />
         </div>
       </div>
     </AppBody>
