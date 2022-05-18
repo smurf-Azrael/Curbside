@@ -50,7 +50,7 @@ export const favoritesPatchTests = (): void => {
       const initialFavorites = await favoriteQueries.getFavorites(dbUser.id);
       expect(initialFavorites.favorites.length).toBe(0);
       const { body } = await request(server)
-        .patch(`/favorites/${dbUser.id}`)
+        .patch('/favorites')
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/)
         .send({ favoriteId: dbListing.id })
