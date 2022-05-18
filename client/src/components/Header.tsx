@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import '../styling/Header.scss';
 import curbside from './../assets/CurbsideSmall.png';
 import { useNavigate } from 'react-router-dom';
-import tree from "../assets/tree.gif"
+import tree from "../assets/woodland.png";
+
 import ButtonSmall from './ButtonSmall';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -32,7 +33,7 @@ export default function Header({ prevRoute, buttonFree }: HeaderProps) {
         <img src={curbside} alt='Curbside' />
       </button>
       {currentUser ?
-        (<p className='treesPlanted'><img src={tree} alt="trees" />{treesPlanted}!</p>)
+        (<p className='treesPlanted'><img src={tree} alt="trees" />{treesPlanted}</p>)
         :
         (!buttonFree
           &&
