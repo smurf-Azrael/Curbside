@@ -14,6 +14,7 @@ function MapListingPreview({
 }) {
   const price = (activeListing.priceInCents / 100).toLocaleString('en-US', { style: 'currency', currency: 'EUR' });
   const { currentUser } = useAuth();
+  console.log('Rating:::', activeListing);
   return (
     <div className={`Card-Listing-Preview ${currentUser && 'with-user'}`}>
       <div
