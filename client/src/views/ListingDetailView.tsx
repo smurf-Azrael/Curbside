@@ -96,14 +96,15 @@ const ListingDetailView = () => {
 
   const toggleFavorite = async () => {
     if (currentUser) {
+      console.log('logging')
       if (isFavorite) {
-        const response = await api.delete(`/favorites/${currentUser!.id}`, { favoriteId: id })
+        const response = await api.delete(`/favorites`, { favoriteId: id })
         console.log('DELETED', response.body.data)
         if (!response.ok) {
           return;
         }
       } else {
-        const response = await api.patch(`/favorites/${currentUser!.id}`, { favoriteId: id })
+        const response = await api.patch(`/favorites`, { favoriteId: id })
         console.log('ADDED', response.body.data)
         if (!response.ok) {
           return;
