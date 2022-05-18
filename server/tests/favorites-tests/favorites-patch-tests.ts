@@ -9,7 +9,7 @@ import { AddListingDTO } from '../../interfaces/listing.interface.dto';
 import favoriteQueries from '../../queries/favorite.queries';
 
 export const favoritesPatchTests = (): void => {
-  describe('PATCH /favorites/:id', () => {
+  describe.only('PATCH /favorites/:id', () => {
     const mockInitialUserInput: InitialUserDTO = {
       id: process.env.SECRET_UID!,
       email: mocks.Users[0].email,
