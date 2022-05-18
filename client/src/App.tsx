@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import "bootstrap-icons/font/bootstrap-icons.css";
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import './App.scss';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import ApiProvider from './contexts/ApiProvider';
 import SignupView from './views/SignupView';
 import SetProfileView from './views/SetProfileView';
@@ -35,6 +35,7 @@ function App() {
               <Route path="/chats" element={<ChatsView />} />
               <Route path="/chats/:listingId" element={<ChatView />} />
               <Route path="/add-listing" element={<AddListingView />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </AuthProvider>
         </ApiProvider>
