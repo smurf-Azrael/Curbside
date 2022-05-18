@@ -148,7 +148,7 @@ export default function AddListingView() {
           />
           <Form.Group controlId={'condition'} style={{textAlign: "left"}}>
             <Form.Label>Condition</Form.Label>
-            <FormSelect ref={conditionField}>
+            <FormSelect ref={conditionField} className='form-select'>
               <option value="new">New</option>
               <option value="gentlyUsed">Gently Used</option>
               <option value="used">Used</option>
