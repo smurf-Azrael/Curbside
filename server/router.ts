@@ -24,9 +24,9 @@ router.get('/chats', fullUserRequired, chatController.getChatsByUserId);
 
 router.post('/ratings', loginRequired, ratingController.addRatings);
 
-router.patch('/favorites/:id', favoriteController.addFavorite);
-router.get('/favorites/:id', favoriteController.getFavorites);
-router.delete('/favorites/:id', favoriteController.deleteFavorite);
+router.patch('/favorites', fullUserRequired, favoriteController.addFavorite);
+router.get('/favorites', fullUserRequired, favoriteController.getFavorites);
+router.delete('/favorites', fullUserRequired, favoriteController.deleteFavorite);
 
 router.get('/chats', fullUserRequired, chatController.getChatsByUserId);
 router.get('/chats/:listingId', fullUserRequired, chatController.getUsersByListingIdAndSellerId);
@@ -49,7 +49,3 @@ router.get('/login', fullUserRequired, (req: Request, res: Response) => {
     }
   });
 });
-
-// router.get('*', (req: Request, res: Response) => {
-//   res.status(404).send({ error: PAGE_NOT_FOUND });
-// });
