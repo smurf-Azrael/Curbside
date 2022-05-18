@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState, SetStateAction  } from 'react';
 import { Link } from 'react-router-dom';
 import { Listing } from '../interfaces/Listing';
 import ListingPreview from './ListingPreview';
 import '../styling/CardListings.scss';
+import { useAuth } from '../contexts/AuthContext';
+import { useApi } from '../contexts/ApiProvider';
+
 
 // @ts-ignore
 import('leaflet.markercluster/dist/leaflet.markercluster.js')
@@ -11,13 +14,55 @@ import('leaflet.markercluster/dist/MarkerCluster.css')
 // @ts-ignore
 import('leaflet.markercluster/dist/MarkerCluster.Default.css')
 
+interface cardArguments {
+  listings: Listing[],
+  isLoading: boolean,
+  loadingError: boolean,
+  favoriteList: Listing[],
+  setFavoriteList: React.Dispatch<SetStateAction<Listing[]>>
+}
 
-function CardListings({listings , isLoading,loadingError}:{listings:Listing[] , isLoading:boolean,loadingError:boolean}) {
-  const listings4Display= listings.map(listing => {
-    return (<Link key={listing.id} to={`/listing/${listing.id}`} style={{ textDecoration: "none", color: "black" }}>
-      <ListingPreview  listing={listing} />
-    </Link>)
+function CardListings({ listings, isLoading, loadingError, favoriteList, setFavoriteList }: cardArguments) {
+  const { currentUser } = useAuth();
+  const api = useApi();
+  async function heartToggle(listingId: string) {
+    if (currentUser) {
+      if (favoriteList.filter(element => element.id === listingId).length === 1) {
+        const response = await api.delete(`/favorites/${currentUser!.id}`, { favoriteId: listingId })
+        if (!response.ok) {
+          return;
+        }
+        setFavoriteList((prev) => prev.filter(listing => listing.id !== listingId));
+      } else {
+        const response = await api.patch(`/favorites/${currentUser!.id}`, { favoriteId: listingId })
+        if (!response.ok) {
+          return;
+        }
+        setFavoriteList(prev => [...prev, listings.filter(listing => listing.id === listingId)[0]] );
+      }
+    } else {
+      // 
+    }
+  }
+
+  const listings4Display = listings.map(listing => {
+
+    return (
+      <div className='listing-preview' key={listing.id}>
+        <button onClick={()=>heartToggle(listing.id)} >
+          {favoriteList && favoriteList.filter(element => element.id === listing.id).length === 1 ?
+            (<i className="bi bi-heart-fill"></i>)
+            :
+            (<i className="bi bi-heart"></i>)}
+        </button>
+        <Link key={listing.id} to={`/listing/${listing.id}`} style={{ textDecoration: "none", color: "black" }}>
+          <ListingPreview listing={listing} />
+        </Link>
+      </div>
+    )
   })
+
+
 
   return (
     <div className="CardListings">

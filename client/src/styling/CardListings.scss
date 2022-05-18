@@ -6,8 +6,20 @@
   justify-content: flex-start;
   margin: 0 auto;
 
-  a {
-    display: inline-flex;
+    a{
+      width: 100%;
+    }
+  .listing-preview{
     width: 50%;
+    display: inline-flex;
+    position: relative;
+
+    button {
+      position: absolute;
+      top:14px;
+      left:84%;
+      border:none;
+      background-color: transparent;
+    }
   }
 }

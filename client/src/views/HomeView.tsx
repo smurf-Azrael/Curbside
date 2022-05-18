@@ -16,7 +16,7 @@ export default function HomeView() {
   const loadUserLocation = async () => {
     const res = await api.get(`/users/${currentUser?.id}`);
     let userLocation;
-    console.log('res.body.data.user', res.body.data.user)
+    // console.log('res.body.data.user', res.body.data.user)
     if (res.ok) {
       userLocation = {
         latitude: res.body.data.user.latitude,
@@ -36,6 +36,7 @@ export default function HomeView() {
     setLocationGroupField(userLocation);
     // return userLocation
   };
+  const [toggleComponent, setToggleComponent] = useState<boolean>(true);
 
   const [listings, setListings] = useState<any[]>([]);
   const [FiltersAreVisible, setFiltersAreVisible] = useState(false);
@@ -156,7 +157,21 @@ export default function HomeView() {
     }
   }
 
-  const [toggleComponent, setToggleComponent] = useState<boolean>(true);
+  
+  const [favoriteList, setFavoriteList] = useState<any[]>([])
+  useEffect(()=>{
+    const loadIsFavorite = async () => {
+      if (currentUser && currentUser!.id) {
+        const res = await api.get(`/favorites/${currentUser!.id}`);
+        if (res.ok && res.body.data.favorites) {
+          setFavoriteList(res.body.data.favorites)
+        }
+      } else {
+        setFavoriteList([])
+      }
+    }
+    loadIsFavorite();
+  }, [currentUser])
 
   return (
     <AppBody>
@@ -207,7 +222,7 @@ export default function HomeView() {
 
 
         {toggleComponent ?
-          <CardListings listings={listings} isLoading={isLoading} loadingError={loadingError} />
+          <CardListings favoriteList={favoriteList} setFavoriteList={setFavoriteList} listings={listings} isLoading={isLoading} loadingError={loadingError} />
           :
           <MapListings listings={listings} position={{ latitude: locationGroupField.latitude, longitude: locationGroupField.longitude }} />
         }
