@@ -11,10 +11,12 @@ import CardListings from "../components/CardListings";
 import ProfileImage from "../components/ProfileImage";
 import FullScreenLoadingIndicator from "../components/FullScreenLoadingIndicator";
 import { User } from '../interfaces/User';
+import { Listing } from '../interfaces/Listing';
+
 
 function ProfileView() {
   const [userListings, setUserListings] = useState([]);
-  const [savedListings, setSavedListings] = useState([]);
+  const [favoriteList, setFavoriteList] = useState<Listing[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [loadingError, setLoadingError] = useState<boolean>(false);
   const [activeListingSelection, setActiveListingSelection] = useState<ActiveListingSelection>({ myListings: true, myFavorites: false });
@@ -46,7 +48,7 @@ function ProfileView() {
         console.log(currentUser!.id)
         const res = await api.get(`/favorites/${currentUser!.id}`);
         if (res.ok && res.body.data.favorites) {
-          setSavedListings(res.body.data.favorites)
+          setFavoriteList(res.body.data.favorites)
         }
       }
     }
@@ -88,11 +90,10 @@ function ProfileView() {
           <button onClick={handleActivateMyFavorites} className={`option-name ${activeListingSelection.myFavorites === true ? 'active' : ''}`} >My Favorites</button>
         </nav> : <p className="option-name">Listings</p>}
         {activeListingSelection.myListings === true &&
-          <CardListings listings={userListings} isLoading={isLoading} loadingError={loadingError} />
+          <CardListings favoriteList={favoriteList} setFavoriteList={setFavoriteList} listings={userListings} isLoading={isLoading} loadingError={loadingError} />
         }
         {activeListingSelection.myFavorites === true &&
-          // <div>My favorites not yet implemented</div>
-          <CardListings listings={savedListings} isLoading={isLoading} loadingError={loadingError} />
+          <CardListings favoriteList={favoriteList} setFavoriteList={setFavoriteList} listings={favoriteList} isLoading={isLoading} loadingError={loadingError} />
         }
       </section>) : (<></>)}
     </AppBody>
