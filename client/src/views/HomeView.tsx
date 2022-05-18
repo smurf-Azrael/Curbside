@@ -14,7 +14,6 @@ import { Listing } from '../interfaces/Listing';
 
 export default function HomeView() {
   const api = useApi();
-
   const [listings, setListings] = useState<any[]>([]);
   const [FiltersAreVisible, setFiltersAreVisible] = useState(false);
   const [locationIsVisible, setLocationIsVisible] = useState(false);
@@ -25,30 +24,6 @@ export default function HomeView() {
   const [activeListing, setActiveListing] = useState<Listing | null | undefined>(null);
 
   const { currentUser } = useAuth();
-
-  const loadUserLocation = useCallback(async () => {
-    const res = await api.get(`/users/${currentUser?.id}`);
-    let userLocation;
-    if (res.ok) {
-      userLocation = {
-        latitude: res.body.data.user.latitude,
-        longitude: res.body.data.user.longitude,
-        radius: 25,
-        address: res.body.data.user.city,
-      };
-    } else {
-      console.log('failing to load user listing data or user not logged in');
-      userLocation = {
-        latitude: 51.4,
-        longitude: 14.3,
-        radius: 25,
-        address: 'Berlin',
-      };
-    }
-    setLocationGroupField(userLocation);
-    // return userLocation
-  }, [api, currentUser?.id]);
-
 
   const [locationGroupField, setLocationGroupField] = useState<{
     latitude: number;
@@ -91,15 +66,7 @@ export default function HomeView() {
     [api]
   );
 
-  // async function handleScroll() {
-  //   const res = await getListings(offset.current);
-  //   if (res.ok) {
-  //     offset.current = res.body.data.offset;
-  //     setListings(res.body.data.listings);
-  //   } else {
-  //     //handleError
-  //   }
-  // }
+
   const openFiltersModal = () => setFiltersAreVisible(true);
   const closeFiltersModal = () => setFiltersAreVisible(false);
   const openLocationModal = () => setLocationIsVisible(true);
@@ -118,7 +85,21 @@ export default function HomeView() {
     }
   }
 
+  async function applyLocation(location : LocationGroupInterface){
+    closeFiltersModal();
+    closeLocationModal();
+    setLocationGroupField(location)
+    const res = await getListings(0, location);
+    if (res.ok) {
+      offset.current = res.body.data.offset;
+      setListings(res.body.data.listings);
+    } else {
+      //handleError
+    }
+  }
+
   async function handleSearch() {
+    console.log('search')
     const res = await getListings(0, locationGroupField);
     if (res.ok) {
       offset.current = res.body.data.offset;
@@ -127,30 +108,60 @@ export default function HomeView() {
       searchField.current!.value = '';
     } else {
       // handleErrors
-      // setListings(mocks.listings);
       setLoadingError(false);
     }
     setIsLoading(false);
   }
 
   useEffect(() => {
-    const loadData = async () => {
-      const res = await getListings(0, locationGroupField);
+    const loadData = async (userLocation :LocationGroupInterface) => {
+      console.log('running')
+      console.log(userLocation)
+      const res = await getListings(0, userLocation);
       if (res.ok) {
         offset.current = res.body.data.offset;
         setListings(res.body.data.listings);
         setLoadingError(false);
-        searchField.current!.value = '';
       } else {
         setLoadingError(false);
       }
       setIsLoading(false);
     };
-    loadData();
+
     if (currentUser) {
-      (async () => {
-        loadUserLocation();
-      })();
+      const loadLocation = async () => {
+        let userLocation;
+        const res = await api.get(`/users/${currentUser?.id}`);
+        if (res.ok) {
+          userLocation = {
+            latitude: res.body.data.user.latitude,
+            longitude: res.body.data.user.longitude,
+            radius: 25,
+            address: res.body.data.user.city,
+          };
+          setLocationGroupField(userLocation);
+        }
+        if (!userLocation) {
+          userLocation = {
+            latitude: 52.52,
+            longitude: 13.04,
+            radius: 25,
+            address: 'Berlin',
+          };
+        }
+        if (userLocation) {
+          loadData(userLocation);
+        }
+      } 
+      loadLocation()
+    } else {
+      const userLocation = {
+        latitude: 52.52,
+        longitude: 13.04,
+        radius: 25,
+        address: 'Berlin'
+      }
+      loadData(userLocation);
     }
   }, [api, getListings, currentUser]);
 
@@ -162,6 +173,7 @@ export default function HomeView() {
 
 
   const [favoriteList, setFavoriteList] = useState<any[]>([])
+  
   useEffect(() => {
     const loadIsFavorite = async () => {
       if (currentUser && currentUser!.id) {
@@ -177,76 +189,77 @@ export default function HomeView() {
     loadIsFavorite();
   }, [currentUser]);
 
-
-  return (
-    <AppBody>
-      {isLoading ? <FullScreenLoadingIndicator></FullScreenLoadingIndicator> : <></>}
-      <div className={`HomeView ${!currentUser ? 'without-user' : ''}`}>
-        <div className="global-search-area">
-          <div className="search-bar-container">
-            <input ref={searchField} className="main-input" placeholder="Search..." onKeyPress={(e) => pressEnter(e)} />
-            <button onClick={handleSearch}>
-              <i className="bi bi-search"></i>
-            </button>
-          </div>
-          <div className="search-buttons-group">
-            <button className="search-btn" onClick={openLocationModal}>
-              <i className="bi bi-geo-alt"></i>
-              <span>{locationGroupField.address ? locationGroupField.address : 'Location'}</span>
-            </button>
-            <button className="search-btn" onClick={openFiltersModal}>
-              <span>Filter</span>
-              <i className="bi bi-sliders"></i>
-            </button>
-          </div>
+ if (isLoading) {
+   return (
+   <AppBody>
+     <FullScreenLoadingIndicator/>
+   </AppBody>)
+ } else {
+   return (<AppBody>
+    <div className={`HomeView ${!currentUser ? 'without-user' : ''}`}>
+      <div className="global-search-area">
+        <div className="search-bar-container">
+          <input ref={searchField} className="main-input" placeholder="Search..." onKeyPress={(e) => pressEnter(e)} />
+          <button onClick={handleSearch}>
+            <i className="bi bi-search"></i>
+          </button>
         </div>
-
-        <FiltersComponent
-          filtersAreVisible={FiltersAreVisible}
-          closeFiltersModal={closeFiltersModal}
-          applyFilters={applyFilters}
-          fields={fields}
-        />
-        <LocationRadius
-          locationIsVisible={locationIsVisible}
-          closeLocationModal={closeLocationModal}
-          applyFilters={applyFilters}
-          locationGroupField={locationGroupField}
-          setLocationGroupField={setLocationGroupField}
-        />
-
-        {toggleComponent ? (
-          <CardListings favoriteList={favoriteList} setFavoriteList={setFavoriteList} listings={listings} isLoading={isLoading} loadingError={loadingError} />
-        ) : (
-          <MapListings
-            listings={listings}
-            position={{ latitude: locationGroupField.latitude, longitude: locationGroupField.longitude }}
-            activeListing={activeListing}
-            setActiveListing={setActiveListing}
-          />
-        )}
-      </div>
-
-      <div>
-        <div
-          className={`map-btn-float ${currentUser && 'with-user'} ${activeListing && 'with-listing'} ${currentUser && activeListing && 'with-user-and-listing'
-            }`}
-        >
-          <RoundedButton
-            onClick={() => {
-              setToggleComponent((prev) => !prev);
-              setActiveListing(null);
-            }}
-            content={
-              toggleComponent ? (
-                <i style={{ fontSize: '20px', color: 'white' }} className="bi bi-map"></i>
-              ) : (
-                <i style={{ fontSize: '24px', color: 'white' }} className="bi bi-grid"></i>
-              )
-            }
-          />
+        <div className="search-buttons-group">
+          <button className="search-btn" onClick={openLocationModal}>
+            <i className="bi bi-geo-alt"></i>
+            <span>{locationGroupField.address ? locationGroupField.address : 'Location'}</span>
+          </button>
+          <button className="search-btn" onClick={openFiltersModal}>
+            <span>Filter</span>
+            <i className="bi bi-sliders"></i>
+          </button>
         </div>
       </div>
-    </AppBody>
-  );
-}
+
+      <FiltersComponent
+        filtersAreVisible={FiltersAreVisible}
+        closeFiltersModal={closeFiltersModal}
+        applyFilters={applyFilters}
+        fields={fields}
+      />
+      <LocationRadius
+        locationIsVisible={locationIsVisible}
+        closeLocationModal={closeLocationModal}
+        applyLocation={applyLocation}
+        locationGroupField={locationGroupField}
+        setLocationGroupField={setLocationGroupField}
+      />
+
+      {toggleComponent ? (
+        <CardListings favoriteList={favoriteList} setFavoriteList={setFavoriteList} listings={listings} isLoading={isLoading} loadingError={loadingError} />
+      ) : (
+        <MapListings
+          listings={listings}
+          position={{ latitude: locationGroupField.latitude, longitude: locationGroupField.longitude }}
+          activeListing={activeListing}
+          setActiveListing={setActiveListing}
+        />
+      )}
+    </div>
+
+    <div>
+      <div
+        className={`map-btn-float ${currentUser && 'with-user'} ${activeListing && 'with-listing'} ${currentUser && activeListing && 'with-user-and-listing'
+          }`}
+      >
+        <RoundedButton
+          onClick={() => {
+            setToggleComponent((prev) => !prev);
+            setActiveListing(null);
+          }}
+          content={
+            toggleComponent ? (
+              <i style={{ fontSize: '20px', color: 'white' }} className="bi bi-map"></i>
+            ) : (
+              <i style={{ fontSize: '24px', color: 'white' }} className="bi bi-grid"></i>
+            )
+          }
+        />
+      </div>
+    </div>
+  </AppBody>) } }
