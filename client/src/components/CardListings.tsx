@@ -78,8 +78,8 @@ function CardListings({ listings, isLoading, loadingError, favoriteList, setFavo
         </div>
       }
       {listings4Display}
-      {!isLoading && listings.length === 0 && <EmptyState text="No listings matched your request..." />}
-      {loadingError && <p>Couldn't load listings :/</p>}
+      {!isLoading && listings.length === 0 && <EmptyState text="No listings"/>}
+      {loadingError && <EmptyState text="Couldn't load listings"/> }
     </div>
   );
 }
