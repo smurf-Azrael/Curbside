@@ -9,10 +9,10 @@ import { useAuth } from '../contexts/AuthContext';
 export default function Header({ prevRoute, buttonFree }: HeaderProps) {
   const navigate = useNavigate();
   const { currentUser } = useAuth();
-  const baseDate = new Date(2022, 4, 17, 10, 21, 32); // May 17, 2022
+  const baseDate = new Date(2022, 4, 5, 16, 30, 0); // May 17, 2022
   const now = new Date();
   let diffInHours = Math.round(Math.abs(baseDate.getTime() - now.getTime()) / (60*60*1000));
-  const treesPlanted = 1053 + diffInHours;  
+  const treesPlanted = Math.round(diffInHours * 5 * 0.5*6/7); // person hours of work invested in the project
 
   function PrevRoute() {
     return (
@@ -36,7 +36,7 @@ export default function Header({ prevRoute, buttonFree }: HeaderProps) {
         (<div className='header-login' onClick={() => navigate('/login')} >
           <ButtonSmall content={'Log in'} fill={true} />
         </div> ) : <></>
-      }    
+      }
     </div>
   )
 }
