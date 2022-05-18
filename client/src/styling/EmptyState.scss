@@ -5,13 +5,12 @@
   justify-content: center;
   height: 100%;
   gap: 8px;
-  
+
   p {
     color: var(--main-gray);
     font-size: 44px;
     margin-bottom: 0;
     font-weight: bold;
-    max-width: 60vw;
   }
 
   img {
@@ -20,6 +19,5 @@
     &.second {
       transform: rotate(-90deg);
     }
-
   }
 }

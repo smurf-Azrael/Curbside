@@ -65,14 +65,13 @@
 .ListingDetailView {
   display: flex;
   flex-direction: column;
-  padding: 15px;
+  padding: 0px 15px 15px 15px;
   padding-bottom: 60px;
 
   .listing-owner-info-wrapper {
     display: flex;
     flex: row;
     justify-content: space-between;
-    padding: 10px;
     margin-bottom: 15px;
 
     .listing-owner-image-wrapper {
@@ -118,6 +117,7 @@
   }
 
   .listing-details-gallery-wrapper {
+    background-color: white;
     margin-top: 15px;
     display: flex;
     flex-direction: row;
