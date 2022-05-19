@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 import Map from './SetProfileMap';
 import Slider from '@mui/material/Slider';
 import {ApiResponse} from '../interfaces/LocationApiResponse';
+import '../styling/FiltersComponents.css'
 
 export default function LocationRadius({
   locationIsVisible,
