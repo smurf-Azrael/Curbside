@@ -26,7 +26,7 @@ export const usersPostTests = (): void => {
     it('Should add user to the database and return it with createdAt field added', async () => {
       expect(await prisma.user.findUnique({ where: { id: mockInitialUserInput.id } })).toBeNull();
       const { body } = await request(server)
-        .post('/users')
+        .post('/api/users')
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/)
         .send(mockInitialUserInput)
@@ -40,7 +40,7 @@ export const usersPostTests = (): void => {
 
     it('Should send a custom error to the client if something goes wrong', async () => {
       const { body, statusCode } = await request(server)
-        .post('/users')
+        .post('/api/users')
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/)
         .send({});
@@ -50,7 +50,7 @@ export const usersPostTests = (): void => {
 
     it('Should send a 401 if user is not authenticated', async () => {
       const { body, statusCode } = await request(server)
-        .post('/users')
+        .post('/api/users')
         .set('Authorization', 'Bearer ' + testToken + 'X')
         .expect('Content-Type', /json/)
         .send({});

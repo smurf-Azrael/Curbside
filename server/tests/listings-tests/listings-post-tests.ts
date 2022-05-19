@@ -50,7 +50,7 @@ export const listingsPostTests = (): void => {
       const initialListings = await prisma.listing.findMany();
       expect(initialListings.length).toEqual(0);
       const { body } = await request(server)
-        .post('/listings')
+        .post('/api/listings')
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/)
         .send(mockAddListing)
@@ -64,7 +64,7 @@ export const listingsPostTests = (): void => {
 
     it('Should send a custom error to the client if the validation fails', async () => {
       const { body, statusCode } = await request(server)
-        .post('/listings')
+        .post('/api/listings')
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/)
         .send({ ...mockAddListing, photoUrls: [] });
@@ -75,7 +75,7 @@ export const listingsPostTests = (): void => {
 
     it('Should send a custom error to the client if a non valid userId is provided', async () => {
       const { body, statusCode } = await request(server)
-        .post('/listings')
+        .post('/api/listings')
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/)
         .send({ ...mockAddListing, userId: 'bla' });
@@ -86,7 +86,7 @@ export const listingsPostTests = (): void => {
 
     it('Should send a 401 if user is not authenticated', async () => {
       const { body, statusCode } = await request(server)
-        .post('/listings')
+        .post('/api/listings')
         .set('Authorization', 'Bearer ' + testToken + 'X')
         .expect('Content-Type', /json/)
         .send({});

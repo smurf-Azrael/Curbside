@@ -22,7 +22,7 @@ export const loginTests = (): void => {
 
     it('Should attach the users email and id if user is valid', async () => {
       const { body } = await request(server)
-        .get('/login')
+        .get('/api/login')
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/)
         .expect(200);
@@ -32,7 +32,7 @@ export const loginTests = (): void => {
 
     it('Should return the error if user is not valid', async () => {
       const { body } = await request(server)
-        .get('/login')
+        .get('/api/login')
         .set('Authorization', 'Bearer ' + testToken + 'X')
         .expect('Content-Type', /json/)
         .expect(401);

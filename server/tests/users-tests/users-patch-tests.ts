@@ -35,7 +35,7 @@ export const usersPatchTests = (): void => {
         }
       });
       const { body } = await request(server)
-        .patch(`/users/${process.env.SECRET_UID}`)
+        .patch(`/api/users/${process.env.SECRET_UID}`)
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/)
         .send(mockFinalizeUserInput)
@@ -48,7 +48,7 @@ export const usersPatchTests = (): void => {
 
     it('Should send a custom error to the client if something goes wrong', async () => {
       const { body, statusCode } = await request(server)
-        .patch(`/users/${process.env.SECRET_UID}`)
+        .patch(`/api/users/${process.env.SECRET_UID}`)
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/)
         .send({});
@@ -58,7 +58,7 @@ export const usersPatchTests = (): void => {
 
     it('Should send a 401 if user is not authenticated', async () => {
       const { body, statusCode } = await request(server)
-        .patch(`/users/${process.env.SECRET_UID}`)
+        .patch(`/api/users/${process.env.SECRET_UID}`)
         .set('Authorization', 'Bearer ' + testToken + 'X')
         .expect('Content-Type', /json/)
         .send({});
