@@ -4,7 +4,7 @@ import SetProfileMapLayers from './SetProfileMapLayers';
 
 import 'leaflet/dist/leaflet.css';
 
-function Map({ position, setPosition, radius }: mapSetUp) {
+function Map({ position, setPosition, radius, zoom }: mapSetUp) {
 
   function ChangeView({ center, zoom }:{ center:{lat: number, lng: number}, zoom: number }) {
     const map = useMap();
@@ -23,7 +23,7 @@ function Map({ position, setPosition, radius }: mapSetUp) {
           style={{ height: '300px', width: '100%' }}
         >
           {radius && <Circle center={[position?.lat, position?.lng]} radius={radius * 1000 || 10000} />}
-          <ChangeView center={position} zoom={9} />
+          <ChangeView center={position} zoom={zoom || 9} />
           <TileLayer
             // @ts-ignore:next-line
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
@@ -40,7 +40,8 @@ function Map({ position, setPosition, radius }: mapSetUp) {
 interface mapSetUp {
   position: { lat: number, lng: number },
   setPosition: any,
-  radius?: number
+  radius?: number,
+  zoom?: number
 }
 
 export default Map

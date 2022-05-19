@@ -170,7 +170,7 @@ export default function SetProfileView() {
                   />
                   <p className='comment'>Click on the map to select your location</p>
 
-                  <Map position={position} setPosition={setClickPosition} />
+                  <Map zoom={12} position={position} setPosition={setClickPosition} />
 
                   <p className='comment'>
                     This location will be used for the items you sell

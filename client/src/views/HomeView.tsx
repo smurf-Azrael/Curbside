@@ -31,8 +31,8 @@ export default function HomeView() {
     radius: number;
     address: string;
   }>({
-    latitude: 52.04,
-    longitude: 13.03,
+    latitude: 52.52,
+    longitude: 13.405,
     radius: 25,
     address: 'Berlin',
   });
@@ -205,7 +205,7 @@ export default function HomeView() {
             <i className="bi bi-geo-alt"></i>
             <span>{locationGroupField.address ? locationGroupField.address : 'Location'}</span>
           </button>
-          <button className="search-btn" onClick={openFiltersModal}>
+          <button className="search-btn" onClick={openFiltersModal} style={{textDecoration:'none'}} >
             <span>Filter</span>
             <i className="bi bi-sliders"></i>
           </button>
