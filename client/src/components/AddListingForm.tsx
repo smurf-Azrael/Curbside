@@ -119,7 +119,6 @@ export default function AddListingForm() {
       tags: tags.current?.length ? tags.current.map((el) => el.replace(/\s+/g, '')).join(' ') : ['Allcategories'],
     };
 
-    setLoading(true);
     try {
       const res = await api.post('/listings', newListing);
       if (res.ok) {
@@ -131,8 +130,6 @@ export default function AddListingForm() {
     } catch (e) {
       console.log(e)
 
-    } finally {
-      setLoading(false)
     }
   };
 

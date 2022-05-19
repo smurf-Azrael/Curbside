@@ -157,7 +157,6 @@ describe('Add Listing Form', ()=>{
     expect(() => screen.getByText(/Please upload at least one photo/i)).toThrowError('Unable to find an element with the text: /Please upload at least one photo/i')
     expect(() => screen.getByText(/Please add at least one category/i)).toThrowError('Unable to find an element with the text: /Please add at least one category/i')
     
-    await waitForElementToBeRemoved(()=> screen.queryByAltText('spinner'))
    })
 
 
