@@ -64,7 +64,7 @@ export const listingsPatchTests = (): void => {
 
     it('Should make corresponding updates to selected listing, and return the updated listing', async () => {
       const { body } = await request(server)
-        .patch(`/listings/${listingFromDb.id}`)
+        .patch(`/api/listings/${listingFromDb.id}`)
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/)
         .send(mockFinalizeListingInput)
@@ -78,7 +78,7 @@ export const listingsPatchTests = (): void => {
 
     it('Should send a custom error to the client if something goes wrong', async () => {
       const { body } = await request(server)
-        .patch(`/listings/${listingFromDb.id}`)
+        .patch(`/api/listings/${listingFromDb.id}`)
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/)
         .send({})
@@ -88,7 +88,7 @@ export const listingsPatchTests = (): void => {
 
     it('Should 401 error if user is NOT authorized', async () => {
       const { body } = await request(server)
-        .patch(`/listings/${listingFromDb.id}`)
+        .patch(`/api/listings/${listingFromDb.id}`)
         .set('Authorization', 'Bearer ' + testToken + 'X')
         .expect('Content-Type', /json/)
         .send(mockFinalizeListingInput)

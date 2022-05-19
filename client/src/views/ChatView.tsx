@@ -88,10 +88,10 @@ const ChatView = () => {
       const msg = newMsgField.current.value.trim();
       if (msg !== '' && socket) {
         socket.emit('message', msg, listingId, chatId.current, (res: any) => {
-          console.log('message callback');
+          // console.log('message callback');
           if (res.ok) {
             if (!chatId.current) {
-              console.log('joining chat after new message');
+              // console.log('joining chat after new message');
               chatId.current = res.data.chatId;
               socket.emit('joinChat', chatId.current);
               setMessages([res.data.message]);
@@ -113,19 +113,17 @@ const ChatView = () => {
       }
       const buyerId = state.buyerId ? state.buyerId : currentUser?.id;
       if (socket) {
-        console.log('socket connection exists');
+        // console.log('socket connection exists');
         socket.connect();
         socket.emit('getChat', listingId, buyerId, (res: { ok: boolean; data: any }) => {
           if (res.ok) {
             chatId.current = res.data.chatId;
-            console.log('joining chat');
             socket.emit('joinChat', chatId.current);
             setMessages(res.data.messages);
           }
         });
 
         socket.on('messageResponse', (res: { ok: boolean; data: any }) => {
-          console.log('messages being received by all clients');
           if (res.ok) {
             setMessages((messages) => {
               return [...messages, res.data.message];
@@ -133,7 +131,7 @@ const ChatView = () => {
           }
         });
       } else {
-        console.log('no socket connection');
+        // console.log('no socket connection');
       }
     }
     init();
@@ -195,7 +193,7 @@ const ChatView = () => {
             <div className="stars">
               {[...stars].map((star, i) =>
                 star.active ? (
-                  <div onClick={() => handleStarClick(i)}>
+                  <div key={i} onClick={() => handleStarClick(i)}>
                     <StarRoundedIcon fontSize="large" htmlColor="rgba(255,210,0,1)"></StarRoundedIcon>
                   </div>
                 ) : (

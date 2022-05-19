@@ -38,7 +38,7 @@ export const listingsGetTests = (): void => {
     it('Should update the offset', async () => {
       const offset = 0;
       const { body } = await request(server)
-        .get(`/listings?offset=${offset}&radius=10&minPrice=0&sortby=newest`)
+        .get(`/api/listings?offset=${offset}&radius=10&minPrice=0&sortby=newest`)
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/)
         .expect(200);
@@ -48,7 +48,7 @@ export const listingsGetTests = (): void => {
 
     it('Should sort listings by newest', async () => {
       const { body } = await request(server)
-        .get('/listings?offset=0&radius=100&minPrice=0&sortBy=newest')
+        .get('/api/listings?offset=0&radius=100&minPrice=0&sortBy=newest')
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/)
         .expect(200);
@@ -61,7 +61,7 @@ export const listingsGetTests = (): void => {
     it('Should sort listings by closest', async () => {
       const coords = [52.52, 13.0405];
       const { body } = await request(server)
-        .get(`/listings?offset=0&radius=100&minPrice=0&sortBy=closest&longitude=${coords[1]}&latitude=${coords[0]}`)
+        .get(`/api/listings?offset=0&radius=100&minPrice=0&sortBy=closest&longitude=${coords[1]}&latitude=${coords[0]}`)
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/)
         .expect(200);
@@ -73,7 +73,7 @@ export const listingsGetTests = (): void => {
 
     it('Should sort listings by price asc', async () => {
       const { body } = await request(server)
-        .get('/listings?offset=0&radius=100&minPrice=0&sortBy=price+asc')
+        .get('/api/listings?offset=0&radius=100&minPrice=0&sortBy=price+asc')
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/)
         .expect(200);
@@ -86,7 +86,7 @@ export const listingsGetTests = (): void => {
 
     it('Should sort listings by price desc', async () => {
       const { body } = await request(server)
-        .get('/listings?offset=0&radius=100&minPrice=0&sortBy=price+desc')
+        .get('/api/listings?offset=0&radius=100&minPrice=0&sortBy=price+desc')
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/)
         .expect(200);
@@ -98,7 +98,7 @@ export const listingsGetTests = (): void => {
 
     it('Should filter by condition', async () => {
       const { body } = await request(server)
-        .get('/listings?offset=0&radius=100&minPrice=0&sortBy=price+desc&condition=new')
+        .get('/api/listings?offset=0&radius=100&minPrice=0&sortBy=price+desc&condition=new')
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/)
         .expect(200);
@@ -109,7 +109,7 @@ export const listingsGetTests = (): void => {
 
     it('Should filter by search term in title', async () => {
       const { body } = await request(server)
-        .get('/listings?offset=0&radius=100&minPrice=0&sortBy=price+desc&search=title')
+        .get('/api/listings?offset=0&radius=100&minPrice=0&sortBy=price+desc&search=title')
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/)
         .expect(200);
@@ -120,7 +120,7 @@ export const listingsGetTests = (): void => {
 
     it('Should filter by search term in description', async () => {
       const { body } = await request(server)
-        .get('/listings?offset=0&radius=100&minPrice=0&sortBy=price+desc&search=description')
+        .get('/api/listings?offset=0&radius=100&minPrice=0&sortBy=price+desc&search=description')
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/)
         .expect(200);
@@ -131,7 +131,7 @@ export const listingsGetTests = (): void => {
 
     it('Should filter by search term in title and description', async () => {
       const { body } = await request(server)
-        .get('/listings?offset=0&radius=100&minPrice=0&sortBy=price+desc&search=description+title')
+        .get('/api/listings?offset=0&radius=100&minPrice=0&sortBy=price+desc&search=description+title')
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/)
         .expect(200);

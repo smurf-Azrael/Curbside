@@ -1,5 +1,5 @@
 import React, { useState, FormEvent, useEffect } from 'react';
-import { Form, Button, Card } from 'react-bootstrap';
+import { Form, Button, Card, Container } from 'react-bootstrap';
 import InputField from './InputField';
 import { useAuth } from '../contexts/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
@@ -15,7 +15,7 @@ export default function Signup() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(()=> {
+  useEffect(() => {
     if (currentUser) {
       navigate('/home')
     }
@@ -69,9 +69,13 @@ export default function Signup() {
     setLoading(false);
   }
 
+
   return (
-    <>
-      <Card>
+    <Container
+      className="d-flex align-items-center justify-content-center"
+      style={{ margin: "auto" }}
+    >
+      <div className="w-100" style={{ maxWidth: "400px" }} >      <Card>
         <Card.Body>
           <h2 className="text-center mb-4">Sign up</h2>
           <Form.Text className={'text-danger'}>{formErrors.globalError}</Form.Text>
@@ -101,16 +105,17 @@ export default function Signup() {
               disabled={loading}
               type="submit"
               className="w-100"
-              style={{marginTop: "10px"}}
-              >
-                Sign up
-              </Button>
+              style={{ marginTop: "10px" }}
+            >
+              Sign up
+            </Button>
           </Form>
         </Card.Body>
       </Card>
-      <div className="w-100 text-center mt-2">
-        Already have an account? <Link to="/login">Log in</Link>
+        <div className="w-100 text-center mt-2">
+          Already have an account? <Link to="/login">Log in</Link>
+        </div>
       </div>
-    </>
+    </Container>
   )
 }
