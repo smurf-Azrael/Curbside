@@ -1,10 +1,36 @@
 import React from "react";
 import '@testing-library/jest-dom'
-import { jest, describe, expect, test, beforeAll } from '@jest/globals'
+// import {  jest,describe, expect, test, beforeAll } from '@jest/globals'
 import { render, waitFor, screen, fireEvent, act, waitForElementToBeRemoved, findByAltText } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import AddListingForm from "../components/AddListingForm"
+
+
+const mockGet = require('jest-mock').fn((async () => {
+  return { ok:true, body: {data: {user: {latitude:13.13, longitude:30.30}}}}
+}));
+
+const mockPost = require('jest-mock').fn(async (url, body) => {
+  console.log(body)
+  return {ok : true}
+})
+
+jest.mock('../contexts/ApiProvider', () => {
+  return {
+    useApi: () => {
+      const api = { 
+        get: mockGet, 
+        post:mockPost
+       
+      } 
+      return api
+    }
+  }
+})
+
+
+
 
 
 jest.mock('../firebase', () => {
@@ -25,32 +51,6 @@ jest.mock('../contexts/AuthContext', () => {
   }
 })
 
-const mockPost = jest.fn(async (url, body) => {
-  console.log('hhhhhhhhhh')
-  console.log(body)
-  return {ok : true}
-})
-
-jest.mock('../contexts/ApiProvider', () => {
-  return {
-    useApi: () => {
-      const api = { 
-        get: async (url, query, options) => {
-          console.log(url)
-          return {ok: true, body: { data: { user: {latitude: 30.30, longitude: 13.13}}}}
-        }, 
-        post: () => mockPost()
-        // post: async (url, body) => {
-        //   console.log(url)
-        //   console.log(body)
-        //   return {ok : true}
-        // }
-      } 
-      return api
-    }
-  }
-})
-
 jest.mock('react-router-dom', () => {
   return {
     useNavigate: () => {
@@ -60,7 +60,10 @@ jest.mock('react-router-dom', () => {
   }
 })
 
+
 describe('Add Listing Form', ()=>{
+
+
   it('loads and displays Add Listing View', async () => {
     render(<AddListingForm />);
 
@@ -124,7 +127,6 @@ describe('Add Listing Form', ()=>{
   })
 
    it('passes the correct query to the api', async ()=> {
-     
     
     const promise = Promise.resolve();
     render(<AddListingForm />);
@@ -157,6 +159,9 @@ describe('Add Listing Form', ()=>{
     expect(() => screen.getByText(/Please upload at least one photo/i)).toThrowError('Unable to find an element with the text: /Please upload at least one photo/i')
     expect(() => screen.getByText(/Please add at least one category/i)).toThrowError('Unable to find an element with the text: /Please add at least one category/i')
     
+    expect(mockPost).toBeCalledTimes(1)
+
+    // await waitForElementToBeRemoved(()=> screen.queryByAltText('spinner'))
    })
 
 
