@@ -1,13 +1,13 @@
 import { useRef, useState, useEffect } from 'react';
-import InputField from '../components/InputField';
+import InputField from './InputField';
 import { useApi } from '../contexts/ApiProvider';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { Socket } from 'socket.io-client';
-import ChatHeader from '../components/ChatHeader';
+import ChatHeader from './ChatHeader';
 import { listingChatPreview } from '../interfaces/Listing';
-import '../styling/ChatView.scss';
-import ButtonWide from '../components/ButtonWide';
+import '../styling/Chat.scss';
+import ButtonWide from './ButtonWide';
 import { Modal } from 'react-bootstrap';
 import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
@@ -144,7 +144,7 @@ const ChatView = () => {
   }, [api, state, listingId, currentUser]);
 
   return (
-    <div className="ChatView">
+    <div className="Chat">
       {curentUserIsConfirmedBuyerAndRatingIsNotGiven && (
         <div className="ratingButton" onClick={handleRatingVisible}>
           Rate User

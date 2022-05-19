@@ -6,12 +6,11 @@ import ApiProvider from './contexts/ApiProvider';
 import SignupView from './views/SignupView';
 import SetProfileView from './views/SetProfileView';
 import LoginView from './views/LoginView';
-import VerifyView from './views/VerifyView';
 import AuthProvider from './contexts/AuthContext';
 import AddListingView from './views/AddListingView';
 import HomeView from './views/HomeView';
 import ProfileView from './views/ProfileView';
-import ChatView from './views/ChatView';
+import ChatView from './components/Chat';
 import ListingDetailView from './views/ListingDetailView';
 import ChatsView from './views/ChatsView';
 
@@ -27,7 +26,6 @@ function App() {
               <Route path="/learn-more" />
               <Route path="/login" element={<LoginView />} />
               <Route path="/signup" element={<SignupView />} />
-              <Route path="/verify" element={<VerifyView />} />
               <Route path="/set-profile/:id" element={<SetProfileView />} />
               <Route path="/listing/:id" element={<ListingDetailView />} />
               <Route path="/profile/:id" element={<ProfileView />} />
