@@ -205,7 +205,7 @@ export default function HomeView() {
             <i className="bi bi-geo-alt"></i>
             <span>{locationGroupField.address ? locationGroupField.address : 'Location'}</span>
           </button>
-          <button className="search-btn" onClick={openFiltersModal} style={{textDecoration:'none'}} >
+          <button className="search-btn" onClick={openFiltersModal}>
             <span>Filter</span>
             <i className="bi bi-sliders"></i>
           </button>
