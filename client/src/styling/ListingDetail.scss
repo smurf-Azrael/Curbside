@@ -1,5 +1,5 @@
 .noscroll {
-  overflow: hidden;
+  overflow-x: hidden;
 }
 .scrollable {
   overflow: unset;
@@ -18,10 +18,11 @@
   justify-content: center;
   align-items: center;
   z-index: 100000;
-  width: 100vw;
-  height: 100vh;
-  position: absolute;
+  width: 100%;
+  height: 100%;
+  position: fixed;
   top: 0;
+  left: 0;
   overflow: hidden;
   background-color: rgba(0, 0, 0, 0.2);
 
@@ -37,6 +38,7 @@
     padding: 15px;
     max-height: 30%;
     overflow-y: scroll;
+
     .candidate {
       display: flex;
       justify-content: flex-start;
@@ -62,10 +64,19 @@
   }
 }
 
-.ListingDetailView {
+.ListingDetail {
+  &.noscroll {
+    position: fixed;
+    left: 0;
+    // top: 50;
+    width: 100%;
+    // height: 100%;
+  }
+
+
   display: flex;
   flex-direction: column;
-  padding: 0px 15px 15px 15px;
+  padding: 50px 15px 15px 15px;
   padding-bottom: 60px;
 
   .listing-owner-info-wrapper {

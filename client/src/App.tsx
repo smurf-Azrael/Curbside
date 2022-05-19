@@ -10,7 +10,7 @@ import AuthProvider from './contexts/AuthContext';
 import AddListingView from './views/AddListingView';
 import HomeView from './views/HomeView';
 import ProfileView from './views/ProfileView';
-import ChatView from './views/ChatView';
+import ChatView from './components/Chat';
 import ListingDetailView from './views/ListingDetailView';
 import ChatsView from './views/ChatsView';
 
