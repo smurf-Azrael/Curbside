@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.c332020b.css",
-    "main.js": "/static/js/main.1c79dc72.js",
+    "main.css": "/static/css/main.96e2fdeb.css",
+    "main.js": "/static/js/main.a3c75a64.js",
     "static/media/empty-leaf.png": "/static/media/empty-leaf.f5e82082f8acf4c954ee.png",
     "static/media/bootstrap-icons.woff?": "/static/media/bootstrap-icons.c1d7432ee75fa194e499.woff",
     "static/media/bootstrap-icons.woff2?": "/static/media/bootstrap-icons.a13b815539b49de48d23.woff2",
@@ -10,11 +10,11 @@
     "static/media/x-symbol.svg": "/static/media/x-symbol.a2fcebee56e4e94cc7aba565df4ea24b.svg",
     "index.html": "/index.html",
     "static/media/check.svg": "/static/media/check.6b48b4631947d23086183c35a1a9d492.svg",
-    "main.c332020b.css.map": "/static/css/main.c332020b.css.map",
-    "main.1c79dc72.js.map": "/static/js/main.1c79dc72.js.map"
+    "main.96e2fdeb.css.map": "/static/css/main.96e2fdeb.css.map",
+    "main.a3c75a64.js.map": "/static/js/main.a3c75a64.js.map"
   },
   "entrypoints": [
-    "static/css/main.c332020b.css",
-    "static/js/main.1c79dc72.js"
+    "static/css/main.96e2fdeb.css",
+    "static/js/main.a3c75a64.js"
   ]
 }
