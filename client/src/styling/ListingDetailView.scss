@@ -65,14 +65,13 @@
 .ListingDetailView {
   display: flex;
   flex-direction: column;
-  padding: 15px;
+  padding: 0px 15px 15px 15px;
   padding-bottom: 60px;
 
   .listing-owner-info-wrapper {
     display: flex;
     flex: row;
     justify-content: space-between;
-    padding: 10px;
     margin-bottom: 15px;
 
     .listing-owner-image-wrapper {
@@ -118,6 +117,7 @@
   }
 
   .listing-details-gallery-wrapper {
+    background-color: white;
     margin-top: 15px;
     display: flex;
     flex-direction: row;
@@ -149,27 +149,27 @@
       flex-direction: row;
       justify-content: space-between;
 
-      .favorite-heart-button{
+      .favorite-heart-button {
         border: none;
         transition: 0.2s;
         position: relative;
         background-color: transparent;
 
-        .display-log-in-message{
-          opacity:1;
+        .display-log-in-message {
+          opacity: 1;
         }
 
-        p{
+        p {
           line-height: 1;
           position: absolute;
           top: 6px;
           left: -104px;
           width: 100px;
-          color:rgb(229, 0, 0);
+          color: rgb(229, 0, 0);
           opacity: 0;
           transition: opacity 0.3s linear;
         }
-        i:hover{
+        i:hover {
           text-shadow: 2px 2px 10px #fd4848;
         }
       }

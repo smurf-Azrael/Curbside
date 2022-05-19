@@ -12,6 +12,8 @@ import { Listing } from '../interfaces/Listing';
 import FullScreenLoadingIndicator from '../components/FullScreenLoadingIndicator';
 import ProfileImage from '../components/ProfileImage';
 import Modal from 'react-bootstrap/esm/Modal';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 const stockimgLink = 'https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png';
 
@@ -22,8 +24,8 @@ const ListingDetailView = () => {
   const navigate = useNavigate();
   const { currentUser } = useAuth();
   const [loading, setLoading] = useState<boolean>(true);
-  const [errorNotLoggedIn, setErrorNotLoggedIn] = useState<boolean>(false)
-  const [isFavorite, setIsFavorite] = useState<boolean>(false)
+  const [errorNotLoggedIn, setErrorNotLoggedIn] = useState<boolean>(false);
+  const [isFavorite, setIsFavorite] = useState<boolean>(false);
   const [candidates, setCandidates] = useState<{ buyerName: string; buyerId: string; buyerPhotoUrl?: string }[]>([]);
   const [showMarkAsSoldOptionWithoutCandidates, setShowMarkAsSoldOptionWithoutCandidates] = useState<boolean>();
 
@@ -42,13 +44,17 @@ const ListingDetailView = () => {
     const loadIsFavorite = async () => {
       if (currentUser && currentUser!.id) {
         const res = await api.get(`/favorites`);
-        if (res.ok && res.body.data.favorites && res.body.data.favorites.findIndex((element: any) => element.id === id) >= 0) {
-          setIsFavorite(true)
+        if (
+          res.ok &&
+          res.body.data.favorites &&
+          res.body.data.favorites.findIndex((element: any) => element.id === id) >= 0
+        ) {
+          setIsFavorite(true);
         }
       } else {
-        setIsFavorite(false)
+        setIsFavorite(false);
       }
-    }
+    };
     loadListingData();
     loadIsFavorite();
   }, [api, id, currentUser]);
@@ -83,7 +89,7 @@ const ListingDetailView = () => {
   const handleMarkAsAvailable = async () => {
     try {
       setLoading(true);
-      const response = await api.delete(`/transactions/${listing!.id}`, null);
+      const response = await api.delete(`/transactions/${listing!.id}`, undefined);
       if (response.ok) {
         setListing((prevListing: any) => ({ ...prevListing, status: 'available' }));
       }
@@ -96,26 +102,24 @@ const ListingDetailView = () => {
 
   const toggleFavorite = async () => {
     if (currentUser) {
-      console.log('logging')
+      console.log('logging');
       if (isFavorite) {
-        const response = await api.delete(`/favorites`, { favoriteId: id })
-        console.log('DELETED', response.body.data)
+        const response = await api.delete(`/favorites`, { favoriteId: id });
         if (!response.ok) {
           return;
         }
       } else {
-        const response = await api.patch(`/favorites`, { favoriteId: id })
-        console.log('ADDED', response.body.data)
+        const response = await api.patch(`/favorites`, { favoriteId: id });
         if (!response.ok) {
           return;
         }
       }
-      setIsFavorite(prev => !prev);
+      setIsFavorite((prev) => !prev);
     } else {
       setErrorNotLoggedIn(true);
-      setTimeout(()=>setErrorNotLoggedIn(false),2000)
+      setTimeout(() => setErrorNotLoggedIn(false), 2000);
     }
-  }
+  };
 
   return (
     <div className={`${candidates.length ? 'noscroll' : 'scrollable'}`}>
@@ -149,7 +153,6 @@ const ListingDetailView = () => {
       <AppBody>
         {loading ? <FullScreenLoadingIndicator /> : <></>}
         <div style={{ maxWidth: '500px', margin: '0 auto' }}>
-
           {listing !== undefined ? (
             <section className="ListingDetailView">
               <section className="listing-owner-info-wrapper">
@@ -158,13 +161,16 @@ const ListingDetailView = () => {
                 />
 
                 <section className="listing-owner-name-buttons-wrapper">
-                  <p className="listing-owner-name">{`${listing.userFirstName} ${listing.userLastName.slice(0, 1)}.`}</p>
+                  <p className="listing-owner-name">{`${listing.userFirstName} ${listing.userLastName.slice(
+                    0,
+                    1
+                  )}.`}</p>
                 </section>
               </section>
               {currentUser && listing.userId !== currentUser.id ? (
                 <section className="listing-button-wrapper">
                   <ButtonWide
-                    clickFunction={() => navigate(`/chats/${listing.id}`, { state: listing })}
+                    clickFunction={() => navigate(`/chats/${listing.id}`, { state: {...listing, sellerId: listing.userId, buyerId: currentUser.id} })}
                     content={'Contact seller'}
                     fill={true}
                   />
@@ -192,8 +198,16 @@ const ListingDetailView = () => {
                     currency: 'EUR',
                   })}`}</h4>
 
-                  <button onClick={toggleFavorite} className="favorite-heart-button" >
-                    {isFavorite ? <i className="bi bi-heart-fill"></i> : <i className="bi bi-heart"></i>}
+                  <button onClick={toggleFavorite} className="favorite-heart-button">
+                    {isFavorite ? (
+                      <div className="heart-wrapper">
+                        <FavoriteIcon fontSize="large" htmlColor="rgba(255, 66, 66, 1)"></FavoriteIcon>
+                      </div>
+                    ) : (
+                      <div className="heart-wrapper">
+                        <FavoriteBorderIcon fontSize="large" htmlColor="rgba(255, 66, 66, 1)"></FavoriteBorderIcon>
+                      </div>
+                    )}
                     {<p className={`${errorNotLoggedIn && 'display-log-in-message'}`}>Log in to save listings</p>}
                   </button>
                 </div>
@@ -214,7 +228,6 @@ const ListingDetailView = () => {
             <></>
           )}
         </div>
-
       </AppBody>
       <Modal
         size="sm"

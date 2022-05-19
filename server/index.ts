@@ -52,20 +52,12 @@ app.use(logger('dev'));
 app.use(authMiddleware);
 
 app.use('/api', router);
-app.use(router);
 app.use(express.static(path.join(__dirname, '../client/build')));
-// app.get('/', (req: Request, res: Response, next: NextFunction): void => {
-//   try {
-//     res.sendFile(path.join(__dirname, '../client/build', '../client/build/index.html'));
-//   } catch (e) {
-//     console.log(e);
-//     next(e);
-//   }
-// });
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/build/index.html'));
 });
+app.use(router);
 
 app.use(errorHandler);
 export const server = httpServer.listen(PORT, () => {

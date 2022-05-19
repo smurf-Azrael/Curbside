@@ -1,8 +1,8 @@
 .map-button{
   border:none;
   border-radius:30px;
-  background-color: rgba(127, 255, 212, 0.743);
-  background-color: #357960a2;
+  background-color: #357960;
+  opacity: 0.64;
   width: fit-content;
   font-size:20px;
   height:60px;
@@ -13,6 +13,7 @@
   border:none;
   border-radius:30px;
   background-color: #357960;
+  opacity:1;
   width: fit-content;
   font-size:20px;
   height:60px;

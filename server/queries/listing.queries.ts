@@ -87,6 +87,7 @@ export const getListingsInRadius = async (spatialQueryRes: {id:string}[], queryP
         }
       ]
     },
+
     orderBy: { // sortBy
       createdAt: queryParams.sortBy === 'newest' ? 'desc' : undefined,
       priceInCents: queryParams.sortBy === 'price desc' ? 'desc' : queryParams.sortBy === 'price asc' ? 'asc' : undefined

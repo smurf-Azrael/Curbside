@@ -7,9 +7,10 @@ import { server } from '../../index';
 import { IListingCondition } from '../../interfaces/listing.interface';
 import { AddListingDTO } from '../../interfaces/listing.interface.dto';
 import favoriteQueries from '../../queries/favorite.queries';
+import { USER_NOT_AUTHENTICATED } from '../../errors/SharedErrorMessages';
 
 export const favoritesPatchTests = (): void => {
-  describe('PATCH /favorites/:id', () => {
+  describe('PATCH /favorites', () => {
     const mockInitialUserInput: InitialUserDTO = {
       id: process.env.SECRET_UID!,
       email: mocks.Users[0].email,
@@ -50,7 +51,7 @@ export const favoritesPatchTests = (): void => {
       const initialFavorites = await favoriteQueries.getFavorites(dbUser.id);
       expect(initialFavorites.favorites.length).toBe(0);
       const { body } = await request(server)
-        .patch('/favorites')
+        .patch('/api/favorites')
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/)
         .send({ favoriteId: dbListing.id })
@@ -59,10 +60,15 @@ export const favoritesPatchTests = (): void => {
       expect(body.data.favorites.length).toEqual(1);
     });
 
-    it('Should return all favorites', async () => {
+    it('Should return 401 error for invalid user auth', async () => {
       const { body } = await request(server)
-        .patch(`/favorites/${dbUser.id}`)
-        .set('Authorization', 'Bearer ' + testToken);
+        .patch('/api/favorites/')
+        .set('Authorization', 'Bearer ' + testToken + 'X')
+        .expect('Content-Type', /json/)
+        .send({ favoriteId: dbListing.id })
+        .expect(401);
+      expect(body.error).toBe(USER_NOT_AUTHENTICATED);
+      console.log(body);
     });
   });
 };
