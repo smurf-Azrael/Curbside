@@ -34,7 +34,6 @@ function ProfileView() {
         setUserListings(res.body.data.listings);
         setLoadingError(false);
       } else {
-        console.log("failing to load user listing data");
         navigate('/')
         setLoadingError(false);
         // handleErrors
@@ -44,8 +43,6 @@ function ProfileView() {
 
     const loadIsFavorite = async () => {
       if (currentUser && currentUser!.id) {
-
-        console.log(currentUser!.id)
         const res = await api.get(`/favorites`);
         if (res.ok && res.body.data.favorites) {
           setFavoriteList(res.body.data.favorites)
