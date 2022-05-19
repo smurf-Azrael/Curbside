@@ -105,13 +105,11 @@ const ListingDetailView = () => {
       console.log('logging');
       if (isFavorite) {
         const response = await api.delete(`/favorites`, { favoriteId: id });
-        console.log('DELETED', response.body.data);
         if (!response.ok) {
           return;
         }
       } else {
         const response = await api.patch(`/favorites`, { favoriteId: id });
-        console.log('ADDED', response.body.data);
         if (!response.ok) {
           return;
         }
@@ -172,7 +170,7 @@ const ListingDetailView = () => {
               {currentUser && listing.userId !== currentUser.id ? (
                 <section className="listing-button-wrapper">
                   <ButtonWide
-                    clickFunction={() => navigate(`/chats/${listing.id}`, { state: listing })}
+                    clickFunction={() => navigate(`/chats/${listing.id}`, { state: {...listing, sellerId: listing.userId, buyerId: currentUser.id} })}
                     content={'Contact seller'}
                     fill={true}
                   />
