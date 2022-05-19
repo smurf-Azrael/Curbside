@@ -99,7 +99,6 @@ export default function HomeView() {
   }
 
   async function handleSearch() {
-    console.log('search')
     const res = await getListings(0, locationGroupField);
     if (res.ok) {
       offset.current = res.body.data.offset;
@@ -115,8 +114,6 @@ export default function HomeView() {
 
   useEffect(() => {
     const loadData = async (userLocation :LocationGroupInterface) => {
-      console.log('running')
-      console.log(userLocation)
       const res = await getListings(0, userLocation);
       if (res.ok) {
         offset.current = res.body.data.offset;
@@ -178,7 +175,6 @@ export default function HomeView() {
     const loadIsFavorite = async () => {
       if (currentUser && currentUser!.id) {
         const res = await api.get(`/favorites`);
-        console.log(res.body.data)
         if (res.ok && res.body.data.favorites) {
           setFavoriteList(res.body.data.favorites)
         }
