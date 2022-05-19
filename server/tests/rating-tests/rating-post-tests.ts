@@ -52,7 +52,7 @@ export const ratingTests = ():void => {
 
     it('Should add new rating to db and return the entry', async () => {
       const { body } = await request(server)
-        .post('/ratings')
+        .post('/api/ratings')
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/)
         .send(mockAddRating)
@@ -64,7 +64,7 @@ export const ratingTests = ():void => {
     });
     it('Should send a 401 error is user is not authenticated', async () => {
       const { body, statusCode } = await request(server)
-        .post('/ratings')
+        .post('/api/ratings')
         .set('Authorization', 'Bearer ' + testToken + 'X')
         .expect('Content-Type', /json/)
         .send(mockAddRating);
@@ -74,7 +74,7 @@ export const ratingTests = ():void => {
 
     it('Should throw a custom error is rating input is invalid', async () => {
       const { body } = await request(server)
-        .post('/ratings')
+        .post('/api/ratings')
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/)
         .send(mockAddInvalidRating1)
@@ -84,7 +84,7 @@ export const ratingTests = ():void => {
     it('Should throw a custom error if associated users are not in db', async () => {
       await prisma.user.delete({ where: { id: mocks.Users[1].id } });
       const { body } = await request(server)
-        .post('/ratings')
+        .post('/api/ratings')
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/)
         .send(mockAddRating)

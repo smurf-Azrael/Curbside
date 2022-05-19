@@ -56,7 +56,7 @@ export const getChatsByUserIdTests = (): void => {
 
     it('Should get all chats where a user is either a buyer', async () => {
       const { body } = await request(server)
-        .get('/chats')
+        .get('/api/chats')
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/)
         .expect(200);

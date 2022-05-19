@@ -51,7 +51,7 @@ export const favoritesGetTests = (): void => {
 
     it('Should return all favorites associated with the authorized user', async () => {
       const { body } = await request(server)
-        .get('/favorites')
+        .get('/api/favorites')
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/)
         // .send(dbUser.id)
@@ -62,7 +62,7 @@ export const favoritesGetTests = (): void => {
 
     it('Should return 401 error for invalid user auth', async () => {
       const { body } = await request(server)
-        .get('/favorites')
+        .get('/api/favorites')
         .set('Authorization', 'Bearer ' + testToken + 'X')
         .expect('Content-Type', /json/)
         // .send(dbUser.id)
