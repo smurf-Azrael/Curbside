@@ -74,7 +74,7 @@ export const getListingsByIdTests = (): void => {
     it('Should find listing and return it with the userPhoto and rating', async () => {
       const id = listingFromDb.id;
       const { body, statusCode } = await request(app)
-        .get(`/listings/${id}`);
+        .get(`/api/listings/${id}`);
 
       expect(statusCode).toEqual(200);
       expect(body.data.listing.id).toEqual(id);
@@ -93,7 +93,7 @@ export const getListingsByIdTests = (): void => {
     });
     it('Should send 404 if listing can\'t be found', async () => {
       const { body, statusCode } = await request(app)
-        .get('/listings/NONE');
+        .get('/api/listings/NONE');
       expect(statusCode).toEqual(404);
       expect(body.error).toEqual(LISTING_NOT_FOUND);
     });

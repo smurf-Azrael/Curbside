@@ -50,7 +50,7 @@ export const favoritesDeleteTests = (): void => {
 
     it('Should add a new listing to user favorites and return all favorites', async () => {
       const { body } = await request(server)
-        .delete('/favorites')
+        .delete('/api/favorites')
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/)
         .send({ favoriteId: dbListing.id })
@@ -60,7 +60,7 @@ export const favoritesDeleteTests = (): void => {
 
     it('Should return 401 error for invalid user auth', async () => {
       const { body } = await request(server)
-        .patch('/favorites/')
+        .patch('/api/favorites/')
         .set('Authorization', 'Bearer ' + testToken + 'X')
         .expect('Content-Type', /json/)
         .send({ favoriteId: dbListing.id })

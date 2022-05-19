@@ -28,7 +28,7 @@ export const usersGetTests = (): void => {
       expect(await prisma.user.findUnique({ where: { id: mockUserInput.id } })).toBeNull();
       await prisma.user.create({ data: mockUserInput });
       const { body } = await request(server)
-        .get(`/users/${mockUserInput.id}`)
+        .get(`/api/users/${mockUserInput.id}`)
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/)
         .expect(200);
@@ -52,7 +52,7 @@ export const usersGetTests = (): void => {
       await prisma.user.create({ data: mockUserInputForeign });
       await prisma.listing.create({ data: mockAddListing });
       const { body } = await request(server)
-        .get(`/users/${mockUserInputForeign.id}`)
+        .get(`/api/users/${mockUserInputForeign.id}`)
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/)
         .expect(200);
@@ -71,7 +71,7 @@ export const usersGetTests = (): void => {
 
     it('Should send a custom error to the client if something goes wrong', async () => {
       const { body, statusCode } = await request(server)
-        .get('/users/NONE')
+        .get('/api/users/NONE')
         .set('Authorization', 'Bearer ' + testToken)
         .expect('Content-Type', /json/);
       expect(statusCode).toBeGreaterThanOrEqual(400);
@@ -81,7 +81,7 @@ export const usersGetTests = (): void => {
     it('Should send a 200 even if user is not authenticated', async () => {
       await prisma.user.create({ data: mockUserInput });
       await request(server)
-        .get(`/users/${mockUserInput.id}`)
+        .get(`/api/users/${mockUserInput.id}`)
         .expect('Content-Type', /json/)
         .expect(200);
     });
