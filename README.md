@@ -32,7 +32,7 @@ Post items for sale, interact with sellers, save items you are interested in. Al
 
 ### Installation
 1. Fork and clone the repo
-2. Add the four `.env` files in `client/` and `server/` folders (see examples below)
+2. Add the three `.env` files in `client/` and `server/` folders (see examples below)
 3. Install requirements with `npm install` from project root folder, /server and /client folders
 4. Generate Prisma artifacts and sync database schema with prisma client with `npx prisma generate` and `npx prisma db push` from `/server` folder.
 
