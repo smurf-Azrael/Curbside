@@ -1,18 +1,15 @@
 import React from "react";
 import '@testing-library/jest-dom'
-// import {  jest,describe, expect, test, beforeAll } from '@jest/globals'
-import { render, waitFor, screen, fireEvent, act, waitForElementToBeRemoved, findByAltText } from '@testing-library/react'
+import { render, waitFor, screen, waitForElementToBeRemoved } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import AddListingForm from "../components/AddListingForm"
-
 
 const mockGet = require('jest-mock').fn((async () => {
   return { ok:true, body: {data: {user: {latitude:13.13, longitude:30.30}}}}
 }));
 
-const mockPost = require('jest-mock').fn(async (url, body) => {
-  console.log(body)
+const mockPost = require('jest-mock').fn().mockImplementation(async (url, body) => {
   return {ok : true}
 })
 
@@ -21,16 +18,20 @@ jest.mock('../contexts/ApiProvider', () => {
     useApi: () => {
       const api = { 
         get: mockGet, 
-        post:mockPost
-       
+        post: mockPost
       } 
       return api
     }
   }
 })
 
-
-
+jest.mock('firebase/storage', ()=> {
+  return {
+    ref: (storage, title) => 'imageRefOnFB',
+    uploadBytes: (imageRef, file) => undefined,
+    getDownloadURL: (imageref) => 'www.imageurl.com'
+  }
+})
 
 
 jest.mock('../firebase', () => {
@@ -61,9 +62,7 @@ jest.mock('react-router-dom', () => {
 })
 
 
-describe('Add Listing Form', ()=>{
-
-
+describe('Add Listing Form', () => {
   it('loads and displays Add Listing View', async () => {
     render(<AddListingForm />);
 
@@ -79,6 +78,7 @@ describe('Add Listing Form', ()=>{
   })
 
   it('displays errors when missing info', async () => {
+    const user = userEvent.setup()
     render(<AddListingForm />);
     await waitForElementToBeRemoved(()=> screen.queryByAltText('spinner'))
 
@@ -91,46 +91,39 @@ describe('Add Listing Form', ()=>{
     const photos = screen.getByLabelText(/photos/i)
     const submit = screen.getByRole('button', {name : /create/i})
     
+    await user.click(submit);
 
-    userEvent.click(submit);
-
-    
     expect(screen.getByText(/Title is required/i)).toBeTruthy()
     expect(screen.getByText(/Price is required/i)).toBeTruthy()
     expect(screen.getByText(/Description is required/i)).toBeTruthy()
     expect(screen.getByText(/Please upload at least one photo/i)).toBeTruthy()
     expect(screen.getByText(/Please add at least one category/i)).toBeTruthy()
     
-
-
-    userEvent.type(title, 'Awesome Sauce')
-
-  
-    userEvent.click(submit);
+    await user.type(title, 'Awesome Sauce')
+    await user.click(submit);
 
     expect(()=>screen.getByText(/Title is required/i)).toThrowError('Unable to find an element with the text: /Title is required/i')
     
-    userEvent.type(categories, 'moto')
+    await user.type(categories, 'moto')
     const option = screen.getByText('Motorbikes')
-    userEvent.click(option);
-    userEvent.click(submit);
+    await user.click(option);
+    await user.click(submit);
 
     expect(()=>screen.getByText(/Please add at least one category/i)).toThrowError('Unable to find an element with the text: /Please add at least one category/i')
     
     const file = new File(['(⌐□_□)'], 'chucknorris.png', { type: 'image/png' })
-    fireEvent.change(photos, { target :{ files:file }})
-    userEvent.click(submit);
+    await user.upload(photos, file)
+    await user.click(submit);
     
     expect(()=>screen.getByText(/Please upload at least one photo/i)).toThrowError('Unable to find an element with the text: /Please upload at least one photo/i')
     
-
   })
 
-   it('passes the correct query to the api', async ()=> {
-    
-    const promise = Promise.resolve();
+  it('passes the correct query to the api', async ()=> {
+  
+    const user = userEvent.setup()
     render(<AddListingForm />);
-    await act(async ()=> await promise);
+    await waitForElementToBeRemoved(()=> screen.queryByAltText('spinner'))
 
     const title = screen.getByLabelText(/title/i);
     const price = screen.getByLabelText(/price/i);
@@ -139,30 +132,42 @@ describe('Add Listing Form', ()=>{
     const description = screen.getByLabelText(/description/i)
     const photos = screen.getByLabelText(/photos/i)
     const submit = screen.getByRole('button', {name : /create/i})
-
-    const file = new File(['(⌐□_□)'], 'chucknorris.png', { type: 'image/png' })
-    fireEvent.change(photos, { target :{ files: file }})
-
-    userEvent.type(title, 'A new thing');
-    userEvent.type(price, '42.34');
-    userEvent.type(description, 'The Coolest new thing');
-    userEvent.selectOptions(condition, screen.getAllByRole('option', {name: 'Gently Used'}));
-    userEvent.type(categories, 'moto')
-    const option = screen.getByText('Motorbikes')
-    userEvent.click(option);
-
     
-    userEvent.click(submit);
+    const file = new File(['(⌐□_□)'], 'chucknorris.png', { type: 'image/png' })
+    await userEvent.upload(photos, file)
+
+    await user.type(title, 'A new thing');
+    await user.type(price, '42.34');
+    await user.type(description, 'The Coolest new thing');
+    await user.selectOptions(condition, screen.getAllByRole('option', {name: 'Gently Used'}));
+    await user.type(categories, 'moto')
+    const option = screen.getByText('Motorbikes')
+    await user.click(option);
+
+    await user.click(submit);
     expect(() => screen.getByText(/Title is required/i)).toThrowError('Unable to find an element with the text: /Title is required/i')
     expect(() => screen.getByText(/Price is required/i)).toThrowError('Unable to find an element with the text: /Price is required/i')
     expect(() => screen.getByText(/Description is required/i)).toThrowError('Unable to find an element with the text: /Description is required/i')
     expect(() => screen.getByText(/Please upload at least one photo/i)).toThrowError('Unable to find an element with the text: /Please upload at least one photo/i')
     expect(() => screen.getByText(/Please add at least one category/i)).toThrowError('Unable to find an element with the text: /Please add at least one category/i')
     
+    const url = '/listings'
+    const body = {
+      userId: '1',
+      currency: 'eur',
+      photoUrls: ['www.imageurl.com'],
+      latitude: 13.13,
+      longitude: 30.3,
+      title: 'A new thing',
+      description: 'The Coolest new thing',
+      condition: 'gentlyUsed',
+      priceInCents: 4234,
+      tags: 'Motorbikes'
+    }
     expect(mockPost).toBeCalledTimes(1)
-
-    // await waitForElementToBeRemoved(()=> screen.queryByAltText('spinner'))
-   })
-
-
+    expect(mockPost).toBeCalledWith(url, body)
+  
+  })
 })
+
+
