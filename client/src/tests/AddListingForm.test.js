@@ -10,7 +10,6 @@ const mockGet = require('jest-mock').fn((async () => {
 }));
 
 const mockPost = require('jest-mock').fn().mockImplementation(async (url, body) => {
-  console.log('Mock post called', body)
   return {ok : true}
 })
 
@@ -63,7 +62,7 @@ jest.mock('react-router-dom', () => {
 })
 
 
-describe('Add Listing Form', ()=>{
+describe('Add Listing Form', () => {
   it('loads and displays Add Listing View', async () => {
     render(<AddListingForm />);
 
