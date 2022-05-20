@@ -118,7 +118,6 @@ export default function AddListingForm() {
       priceInCents,
       tags: tags.current?.length ? tags.current.map((el) => el.replace(/\s+/g, '')).join(' ') : ['Allcategories'],
     };
-
     try {
       const res = await api.post('/listings', newListing);
       if (res.ok) {
