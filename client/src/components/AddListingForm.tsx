@@ -11,6 +11,7 @@ import { storage } from '../firebase';
 import FullScreenLoadingIndicator from '../components/FullScreenLoadingIndicator';
 import AutoCompleteSearch from '../components/AutoCompleteSearch';
 import { User } from '../interfaces/User';
+import imageCompression from 'browser-image-compression';
 
 export default function AddListingForm() {
   const titleField = useRef<HTMLInputElement>(null);
@@ -18,11 +19,10 @@ export default function AddListingForm() {
   const conditionField = useRef<HTMLSelectElement>(null);
   const priceField = useRef<HTMLInputElement>(null);
   const photoField = useRef<HTMLInputElement>(null);
-  const user = useRef<User>()
+  const user = useRef<User>();
   const [files, setFiles] = useState([]);
   const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
   const [loading, setLoading] = useState<boolean>(true);
-
 
   const tags = useRef<string[]>(null);
 
@@ -34,17 +34,16 @@ export default function AddListingForm() {
   const navigate = useNavigate();
   const { currentUser } = useAuth();
 
-
   useEffect(() => {
     if (currentUser) {
       const loadUserData = async () => {
         try {
           const res = await api.get(`/users/${currentUser.id}`);
           if (res.ok) {
-            user.current = res.body.data.user
+            user.current = res.body.data.user;
           } else {
-            console.log("failing to load user listing data");
-            navigate('/')
+            console.log('failing to load user listing data');
+            navigate('/');
             // handleErrors
           }
         }
@@ -55,14 +54,12 @@ export default function AddListingForm() {
           setLoading(false);
           
         }
-
       };
       loadUserData();
     } else {
-      navigate('/')
+      navigate('/');
     }
   }, [api, navigate, currentUser]);
-
 
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
@@ -94,7 +91,13 @@ export default function AddListingForm() {
       for (let file of files) {
         // @ts-ignore
         const imageRef = ref(storage, `images/${currentUser?.id}-${file.name}`);
-        await uploadBytes(imageRef, file);
+        const options = {
+          maxSizeMB: 1,
+          maxWidthOrHeight: 1920,
+          useWebWorker: true,
+        };
+        const compressedFile = await imageCompression(file, options);
+        await uploadBytes(imageRef, compressedFile);
         const url = await getDownloadURL(imageRef);
         urls.push(url);
       }
@@ -123,11 +126,10 @@ export default function AddListingForm() {
         navigate('/');
       } else {
         console.log('Failed to post listing');
-        return <p>Sorry, something went wrong and listing could not be posted</p>//should have errors
+        return <p>Sorry, something went wrong and listing could not be posted</p>; //should have errors
       }
     } catch (e) {
-      console.log(e)
-
+      console.log(e);
     }
   };
 
@@ -136,13 +138,7 @@ export default function AddListingForm() {
       {loading && <FullScreenLoadingIndicator />}
       <form className="AddListingView" onSubmit={onSubmit}>
         <h3 className="form-title">Add a new Listing</h3>
-        <InputField
-          name="title"
-          placeholder="Road Bike"
-          label="Title"
-          error={formErrors.title}
-          fieldref={titleField}
-        />
+        <InputField name="title" placeholder="Road Bike" label="Title" error={formErrors.title} fieldref={titleField} />
         <InputField
           name="price"
           placeholder="249.50"
@@ -153,7 +149,7 @@ export default function AddListingForm() {
           error={formErrors.price}
           fieldref={priceField}
         />
-        <Form.Group controlId={'condition'} style={{ textAlign: "left" }}>
+        <Form.Group controlId={'condition'} style={{ textAlign: 'left' }}>
           <Form.Label>Condition</Form.Label>
           <FormSelect ref={conditionField}>
             <option value="new">New</option>
@@ -184,7 +180,9 @@ export default function AddListingForm() {
           onChange={(e) => handleFileSelect(e)}
         />
 
-        <Form.Label htmlFor="categories" style={{ marginRight: 'auto', marginBottom: '5px', marginLeft: '3px' }}>Categories</Form.Label>
+        <Form.Label htmlFor="categories" style={{ marginRight: 'auto', marginBottom: '5px', marginLeft: '3px' }}>
+          Categories
+        </Form.Label>
         <AutoCompleteSearch tagStack={tags} />
         {formErrors.tags && <p className="custom-manual-error">Please add at least one category</p>}
 
