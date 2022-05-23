@@ -1,4 +1,4 @@
-import { createContext, useState, useContext, useEffect } from "react";
+import { createContext, useState, useContext, useEffect, useCallback } from "react";
 import { auth } from '../firebase';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { AuthContextType, User } from '../interfaces/AuthContextInterface';
@@ -11,11 +11,10 @@ export function useAuth() {
 }
 
 export default function AuthProvider({ children }: { children: any }) {
-
   const api = useApi();
   const [currentUser, setCurrentUser] = useState<User | null>(null);
 
-  async function signUp(email: string, password: string): Promise<any> {
+  const signUp = useCallback(async (email: string, password: string): Promise<any> => {
     try {
       const fUser = await auth.createUserWithEmailAndPassword(email, password);
       //@ts-ignore
@@ -41,20 +40,10 @@ export default function AuthProvider({ children }: { children: any }) {
         error: error
       }
     }
-  }
-  //! Verify email later
-  // async function sendVerification(firebaseUser: any): Promise<any> {
-  //   console.log('sendVerificationAgain')
-  //   console.log(firebaseUser)
-  //   console.log(firebaseUser.user)
-  //   if (firebaseUser!.user) {
-  //     await sendEmailVerification(firebaseUser.user)
-  //       .then(() => console.log('email sent'))
-  //       .catch(e => console.log('email not sent', e))
-  //   }
-  // }
+  }, [api]);
 
-  async function logIn(email: string, password: string): Promise<any> {
+
+  const logIn = useCallback(async (email: string, password: string): Promise<any> => {
     try {
       const fUser = await auth.signInWithEmailAndPassword(email, password);
       //@ts-ignore
@@ -72,12 +61,12 @@ export default function AuthProvider({ children }: { children: any }) {
         error: error
       }
     }
-  }
+  }, []);
 
-  async function logOut() {
+  const logOut = useCallback(async () => {
     await auth.signOut();
     setCurrentUser(null);
-  };
+  }, []);
 
   useEffect(() => {
     const auth = getAuth();

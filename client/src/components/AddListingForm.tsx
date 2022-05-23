@@ -52,9 +52,8 @@ export default function AddListingForm() {
           console.error(e)
         }
         finally {
-          if (loading) {
-            setLoading(false);
-          }
+          setLoading(false);
+          
         }
 
       };
@@ -62,7 +61,7 @@ export default function AddListingForm() {
     } else {
       navigate('/')
     }
-  }, [api, navigate, loading, currentUser]);
+  }, [api, navigate, currentUser]);
 
 
   const onSubmit = async (event: FormEvent) => {

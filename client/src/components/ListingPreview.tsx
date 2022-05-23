@@ -2,13 +2,11 @@ import '../styling/ListingPreview.scss';
 
 export default function ListingPreview({ listing }: { [key: string]: any }) {
   const price = (listing.priceInCents / 100).toLocaleString('en-US', { style: 'currency', currency: 'EUR' });
-console.log(listing)
   return (
     <div className="ListingPreview">
       <div className="card-product-image-holder">
         <img
           src={listing.photoUrls[0]}
-          // src={require('../assets/empty-leaf.png')}
           onError={({ currentTarget }) => {
             currentTarget.onerror = null; // prevents looping
             currentTarget.src = require('../assets/empty-leaf.png');
