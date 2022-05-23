@@ -62,7 +62,8 @@ jest.mock('react-router-dom', () => {
 })
 
 
-describe('Add Listing Form', () => {
+describe.only('Add Listing Form', () => {
+  console.log('running add listing form test')
   it('loads and displays Add Listing View', async () => {
     render(<AddListingForm />);
 
