@@ -36,7 +36,6 @@
     "@commitlint/cli": "^16.2.4",
     "@commitlint/config-conventional": "^16.2.4",
     "@types/leaflet.markercluster": "^1.5.0",
-    "browser-image-compression": "^2.0.0",
     "leaflet.markercluster": "^1.5.3",
     "react-leaflet-cluster": "^1.0.3"
   }
