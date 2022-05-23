@@ -51,6 +51,29 @@ export default function SetProfileForm() {
     loadUserData();
   }, [api, currentUser, navigate])
 
+  useEffect(() => {
+    if (clickPosition && clickPosition?.lat) {
+      const response = () => {
+        const latCopy = clickPosition.lat!.toString();
+        const lngCopy = clickPosition.lng!.toString();
+        const positionLessAccurate = [
+          latCopy?.slice(0, latCopy?.indexOf('.') + 5),
+          lngCopy?.slice(0, lngCopy?.indexOf('.') + 5)
+        ];
+        fetch(urlSearch + positionLessAccurate.join(','))
+          .then(res => res.json())
+          .then(res => formatResponse(res))
+          .then(res => (
+            setAddress(res.display_name)
+          ))
+          .then(() => {
+            setPosition({lat: parseFloat(latCopy), lng: parseFloat(lngCopy)})
+          });
+      };
+      response();
+    }
+  }, [clickPosition])
+
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
     const name = nameRef.current?.value;
@@ -87,29 +110,6 @@ export default function SetProfileForm() {
 
     }
   }
-  useEffect(() => {
-    if (clickPosition && clickPosition?.lat) {
-      const response = () => {
-        const latCopy = clickPosition.lat!.toString();
-        const lngCopy = clickPosition.lng!.toString();
-        const positionLessAccurate = [
-          latCopy?.slice(0, latCopy?.indexOf('.') + 5),
-          lngCopy?.slice(0, lngCopy?.indexOf('.') + 5)
-        ];
-        fetch(urlSearch + positionLessAccurate.join(','))
-          .then(res => res.json())
-          .then(res => formatResponse(res))
-          .then(res => (
-            setAddress(res.display_name)
-          ))
-          .then(() => {
-            setPosition({lat: parseFloat(latCopy), lng: parseFloat(lngCopy)})
-          });
-      };
-      response();
-    }
-  }, [clickPosition])
-
   function pressEnter(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key === 'Enter' && address) {
       getCityInformation(address)

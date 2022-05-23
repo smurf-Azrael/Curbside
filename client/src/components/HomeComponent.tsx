@@ -21,7 +21,7 @@ export default function HomeComponent() {
   const tagStack = useRef<string[]>([]);
   const [toggleComponent, setToggleComponent] = useState<boolean>(true);
   const [activeListing, setActiveListing] = useState<Listing | null | undefined>(null);
-
+  const [favoriteList, setFavoriteList] = useState<any[]>([])
   const { currentUser } = useAuth();
 
   const [locationGroupField, setLocationGroupField] = useState<{
@@ -65,7 +65,6 @@ export default function HomeComponent() {
     [api]
   );
 
-
   const openFiltersModal = () => setFiltersAreVisible(true);
   const closeFiltersModal = () => setFiltersAreVisible(false);
   const openLocationModal = () => setLocationIsVisible(true);
@@ -96,7 +95,11 @@ export default function HomeComponent() {
       //handleError
     }
   }
-
+  function pressEnter(event: KeyboardEvent<HTMLInputElement>): any {
+    if (event.key === 'Enter') {
+      handleSearch();
+    }
+  }
   async function handleSearch() {
     const res = await getListings(0, locationGroupField);
     if (res.ok) {
@@ -114,6 +117,7 @@ export default function HomeComponent() {
   useEffect(() => {
     const loadData = async (userLocation :LocationGroupInterface) => {
       const res = await getListings(0, userLocation);
+      console.log(res.body.data)
       if (res.ok) {
         offset.current = res.body.data.offset;
         setListings(res.body.data.listings);
@@ -125,6 +129,7 @@ export default function HomeComponent() {
     };
 
     if (currentUser) {
+      console.log('current')
       const loadLocation = async () => {
         let userLocation;
         const res = await api.get(`/users/${currentUser?.id}`);
@@ -151,6 +156,7 @@ export default function HomeComponent() {
       } 
       loadLocation()
     } else {
+      console.log('else')
       const userLocation = {
         latitude: 52.52,
         longitude: 13.04,
@@ -161,15 +167,6 @@ export default function HomeComponent() {
     }
   }, [api, getListings, currentUser]);
 
-  function pressEnter(event: KeyboardEvent<HTMLInputElement>): any {
-    if (event.key === 'Enter') {
-      handleSearch();
-    }
-  }
-
-
-  const [favoriteList, setFavoriteList] = useState<any[]>([])
-  
   useEffect(() => {
     const loadIsFavorite = async () => {
       if (currentUser && currentUser!.id) {
