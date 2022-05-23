@@ -71,6 +71,16 @@ const mockGet = require("jest-mock").fn(async () => {
   };
 });
 
+jest.mock('react-leaflet', () => {});
+jest.mock('react-router-dom', () => {
+  return {Link: {}}
+});
+
+jest.mock('../components/CardListings')
+
+
+
+
 jest.mock("../contexts/ApiProvider", () => {
   return {
     useApi: () => {
@@ -92,26 +102,13 @@ jest.mock('../contexts/AuthContext', () => {
   }
 })
 
-// describe("Home View Component", () => {
-//   it.only("should display home view elements", async () => {
-//     await act(async () => {
-//       render(<HomeComponent />);
-
-//       await waitFor(() => {
-//         screen.getByText("Log in");
-//         screen.getByPlaceholderText("Search...");
-//         screen.getByText("Berlin");
-//         screen.getByText("Filter");
-//         screen.getByText('Phone');
-//         screen.getByText('Desk');
-//         screen.getByText('Chair');
-//       });
-//     })
-
-//   });
-
-//   it("should display message when no listing", async () => {
-//     render(<HomeComponent />);
-//     await waitForElementToBeRemoved(() => screen.queryByAltText("spinner"));
-//   });
-// });
+describe("Home View Component", () => {
+  it.only("should display home view elements", async () => {
+      render(<HomeComponent />);
+      await waitFor(() => {
+        screen.getByPlaceholderText("Search...");
+        screen.getByText("Berlin");
+        screen.getByText("Filter");
+      });
+  });
+});

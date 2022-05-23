@@ -17,7 +17,7 @@ export default function HomeComponent() {
   const [FiltersAreVisible, setFiltersAreVisible] = useState(false);
   const [locationIsVisible, setLocationIsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [loadingError, setLoadingError] = useState<boolean>(false);
+  // const [loadingError, setLoadingError] = useState<boolean>(false);
   const tagStack = useRef<string[]>([]);
   const [toggleComponent, setToggleComponent] = useState<boolean>(true);
   const [activeListing, setActiveListing] = useState<Listing | null | undefined>(null);
@@ -62,7 +62,7 @@ export default function HomeComponent() {
       const res = await api.get('/listings', query);
       return res;
     },
-    [api]
+    []
   );
 
   const openFiltersModal = () => setFiltersAreVisible(true);
@@ -105,31 +105,38 @@ export default function HomeComponent() {
     if (res.ok) {
       offset.current = res.body.data.offset;
       setListings(res.body.data.listings);
-      setLoadingError(false);
+      // setLoadingError(false);
       searchField.current!.value = '';
     } else {
       // handleErrors
-      setLoadingError(false);
+      // setLoadingError(false);
     }
     setIsLoading(false);
   }
 
   useEffect(() => {
     const loadData = async (userLocation :LocationGroupInterface) => {
-      const res = await getListings(0, userLocation);
-      console.log(res.body.data)
-      if (res.ok) {
-        offset.current = res.body.data.offset;
-        setListings(res.body.data.listings);
-        setLoadingError(false);
-      } else {
-        setLoadingError(false);
+      try {
+        const res = await getListings(0, userLocation);
+        // console.log(res.body.data)
+        if (res.ok) {
+          offset.current = res.body.data.offset;
+          setListings(res.body.data.listings);
+          // setLoadingError(false);
+        } else {
+          // setLoadingError(false);
+        }
+
+      } catch (e) {
+
+      } finally {
+      
+        setIsLoading(false);
+      
       }
-      setIsLoading(false);
     };
 
     if (currentUser) {
-      console.log('current')
       const loadLocation = async () => {
         let userLocation;
         const res = await api.get(`/users/${currentUser?.id}`);
@@ -156,7 +163,6 @@ export default function HomeComponent() {
       } 
       loadLocation()
     } else {
-      console.log('else')
       const userLocation = {
         latitude: 52.52,
         longitude: 13.04,
@@ -165,7 +171,7 @@ export default function HomeComponent() {
       }
       loadData(userLocation);
     }
-  }, [api, getListings, currentUser]);
+  }, [currentUser]);
 
   useEffect(() => {
     const loadIsFavorite = async () => {
@@ -220,7 +226,8 @@ export default function HomeComponent() {
       />
 
       {toggleComponent ? (
-        <CardListings favoriteList={favoriteList} setFavoriteList={setFavoriteList} listings={listings} isLoading={isLoading} loadingError={loadingError} />
+        <CardListings favoriteList={favoriteList} setFavoriteList={setFavoriteList} listings={listings} isLoading={isLoading} />
+        // <CardListings favoriteList={favoriteList} setFavoriteList={setFavoriteList} listings={listings} isLoading={isLoading} loadingError={loadingError} />
       ) : (
         <MapListings
           listings={listings}

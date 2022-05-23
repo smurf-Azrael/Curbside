@@ -38,7 +38,7 @@ export default function AddListingForm() {
   useEffect(() => {
     if (currentUser) {
       const loadUserData = async () => {
-        try {'11'
+        try {
           const res = await api.get(`/users/${currentUser.id}`);
           if (res.ok) {
             user.current = res.body.data.user
