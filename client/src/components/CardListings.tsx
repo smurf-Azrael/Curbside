@@ -18,7 +18,7 @@ import('leaflet.markercluster/dist/MarkerCluster.Default.css');
 interface cardArguments {
   listings: Listing[];
   isLoading: boolean;
-  loadingError: boolean;
+  loadingError?: boolean;
   favoriteList: Listing[];
   setFavoriteList: React.Dispatch<SetStateAction<Listing[]>>;
 }
@@ -66,8 +66,8 @@ function CardListings({ listings, isLoading, loadingError, favoriteList, setFavo
   return (
     <div className="CardListings">
       {listings4Display}
-      {!isLoading && listings.length === 0 && <EmptyState text="No listings"/>}
-      {loadingError && <EmptyState text="Couldn't load listings"/> }
+      {!isLoading && listings && listings.length === 0 && <EmptyState text="No listings"/>}
+      {/* {loadingError && <EmptyState text="Couldn't load listings"/> } */}
     </div>
   );
 }

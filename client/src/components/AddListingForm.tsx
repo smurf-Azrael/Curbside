@@ -47,19 +47,20 @@ export default function AddListingForm() {
             navigate('/');
             // handleErrors
           }
-        } catch (e) {
-          console.error(e);
-        } finally {
-          if (loading) {
-            setLoading(false);
-          }
+        }
+        catch (e) {
+          console.error(e)
+        }
+        finally {
+          setLoading(false);
+          
         }
       };
       loadUserData();
     } else {
       navigate('/');
     }
-  }, [api, navigate, loading, currentUser]);
+  }, [api, navigate, currentUser]);
 
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
@@ -88,6 +89,7 @@ export default function AddListingForm() {
 
     const urls: string[] = [];
     if (!errors.title && !errors.description && !errors.price && files.length > 0) {
+      setLoading(true)
       for (let file of files) {
         const fileNameExt = file.name.substr(file.name.lastIndexOf('.') + 1);
         if (fileNameExt === 'HEIC') {

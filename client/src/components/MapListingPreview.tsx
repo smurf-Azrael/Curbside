@@ -51,4 +51,4 @@ function MapListingPreview({
   );
 }
 
-export default MapListingPreview;
+export default React.memo(MapListingPreview);
