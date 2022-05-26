@@ -11,7 +11,6 @@ import { storage } from '../firebase';
 import FullScreenLoadingIndicator from '../components/FullScreenLoadingIndicator';
 import AutoCompleteSearch from '../components/AutoCompleteSearch';
 import { User } from '../interfaces/User';
-import imageCompression from 'browser-image-compression';
 
 export default function AddListingForm() {
   const titleField = useRef<HTMLInputElement>(null);
@@ -90,13 +89,7 @@ export default function AddListingForm() {
       for (let file of files) {
         // @ts-ignore
         const imageRef = ref(storage, `images/${currentUser?.id}-${file.name}`);
-        const options = {
-          maxSizeMB: 1,
-          maxWidthOrHeight: 1920,
-          useWebWorker: true,
-        };
-        const compressedFile = await imageCompression(file, options);
-        await uploadBytes(imageRef, compressedFile);
+        await uploadBytes(imageRef, file);
         const url = await getDownloadURL(imageRef);
         urls.push(url);
       }

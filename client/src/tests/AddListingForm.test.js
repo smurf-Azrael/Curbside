@@ -15,10 +15,6 @@ const mockPost = require('jest-mock')
     return { ok: true };
   });
 
-jest.mock('browser-image-compression', () => {
-  return () => '';
-});
-
 jest.mock('../contexts/ApiProvider', () => {
   return {
     useApi: () => {
