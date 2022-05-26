@@ -47,13 +47,10 @@ export default function AddListingForm() {
             navigate('/');
             // handleErrors
           }
-        }
-        catch (e) {
-          console.error(e)
-        }
-        finally {
+        } catch (e) {
+          console.error(e);
+        } finally {
           setLoading(false);
-          
         }
       };
       loadUserData();
@@ -89,7 +86,7 @@ export default function AddListingForm() {
 
     const urls: string[] = [];
     if (!errors.title && !errors.description && !errors.price && files.length > 0) {
-      setLoading(true)
+      setLoading(true);
       for (let file of files) {
         const fileNameExt = file.name.substr(file.name.lastIndexOf('.') + 1);
         if (fileNameExt === 'HEIC') {
@@ -97,7 +94,8 @@ export default function AddListingForm() {
           const newFileName = file.name.substr(0, file.name.lastIndexOf('.')) + '.jpeg';
           file = new File([blob as Blob], newFileName, { type: 'image/jpeg' });
         }
-        let imageRef = ref(storage, `images/${currentUser?.id}-${file.name}`);
+        const date = Date.now();
+        let imageRef = ref(storage, `images/${currentUser?.id}-${file.name}-${date}`);
         const options = {
           maxSizeMB: 1,
           maxWidthOrHeight: 1920,
