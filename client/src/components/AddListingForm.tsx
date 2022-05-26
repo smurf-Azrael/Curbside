@@ -11,6 +11,8 @@ import { storage } from '../firebase';
 import FullScreenLoadingIndicator from '../components/FullScreenLoadingIndicator';
 import AutoCompleteSearch from '../components/AutoCompleteSearch';
 import { User } from '../interfaces/User';
+import heic2any from 'heic2any';
+import imageCompression from 'browser-image-compression';
 
 export default function AddListingForm() {
   const titleField = useRef<HTMLInputElement>(null);
@@ -19,7 +21,7 @@ export default function AddListingForm() {
   const priceField = useRef<HTMLInputElement>(null);
   const photoField = useRef<HTMLInputElement>(null);
   const user = useRef<User>();
-  const [files, setFiles] = useState([]);
+  const [files, setFiles] = useState<File[]>([]);
   const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -84,21 +86,24 @@ export default function AddListingForm() {
     }
     setFormErrors(errors);
 
-    const getResizedName = (fileName: string, dimensions = '480x720') => {
-      const extIndex = fileName.lastIndexOf('.');
-      const ext = '.jpeg';
-      return `${fileName.substring(0, extIndex)}_${dimensions}${ext}`;
-    };
-
     const urls: string[] = [];
     if (!errors.title && !errors.description && !errors.price && files.length > 0) {
       for (let file of files) {
-        // @ts-ignore
-        const imageRef = ref(storage, `images/${currentUser?.id}-${file.name}`);
-        await uploadBytes(imageRef, file);
-        const resizedPath = getResizedName(imageRef.toString(), '480x720');
-        const resizedImageRef = ref(storage, resizedPath);
-        const url = await getDownloadURL(resizedImageRef);
+        const fileNameExt = file.name.substr(file.name.lastIndexOf('.') + 1);
+        if (fileNameExt === 'HEIC') {
+          const blob = await heic2any({ blob: file, toType: 'image/jpeg' });
+          const newFileName = file.name.substr(0, file.name.lastIndexOf('.')) + '.jpeg';
+          file = new File([blob as Blob], newFileName, { type: 'image/jpeg' });
+        }
+        let imageRef = ref(storage, `images/${currentUser?.id}-${file.name}`);
+        const options = {
+          maxSizeMB: 1,
+          maxWidthOrHeight: 1920,
+          useWebWorker: true,
+        };
+        const compressedFile = await imageCompression(file, options);
+        await uploadBytes(imageRef, compressedFile);
+        let url = await getDownloadURL(imageRef);
         urls.push(url);
       }
     }
