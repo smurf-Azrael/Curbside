@@ -84,13 +84,21 @@ export default function AddListingForm() {
     }
     setFormErrors(errors);
 
+    const getResizedName = (fileName: string, dimensions = '480x720') => {
+      const extIndex = fileName.lastIndexOf('.');
+      const ext = '.jpeg';
+      return `${fileName.substring(0, extIndex)}_${dimensions}${ext}`;
+    };
+
     const urls: string[] = [];
     if (!errors.title && !errors.description && !errors.price && files.length > 0) {
       for (let file of files) {
         // @ts-ignore
         const imageRef = ref(storage, `images/${currentUser?.id}-${file.name}`);
         await uploadBytes(imageRef, file);
-        const url = await getDownloadURL(imageRef);
+        const resizedPath = getResizedName(imageRef.toString(), '480x720');
+        const resizedImageRef = ref(storage, resizedPath);
+        const url = await getDownloadURL(resizedImageRef);
         urls.push(url);
       }
     }
