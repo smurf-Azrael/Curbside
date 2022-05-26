@@ -88,6 +88,7 @@ export default function AddListingForm() {
 
     const urls: string[] = [];
     if (!errors.title && !errors.description && !errors.price && files.length > 0) {
+      setLoading(true)
       for (let file of files) {
         // @ts-ignore
         const imageRef = ref(storage, `images/${currentUser?.id}-${file.name}`);

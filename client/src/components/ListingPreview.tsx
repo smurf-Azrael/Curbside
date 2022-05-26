@@ -1,6 +1,7 @@
 import '../styling/ListingPreview.scss';
+import { memo } from 'react';
 
-export default function ListingPreview({ listing }: { [key: string]: any }) {
+export default memo(function ListingPreview({ listing }: { [key: string]: any }) {
   const price = (listing.priceInCents / 100).toLocaleString('en-US', { style: 'currency', currency: 'EUR' });
   return (
     <div className="ListingPreview">
@@ -21,4 +22,4 @@ export default function ListingPreview({ listing }: { [key: string]: any }) {
       </div>
     </div>
   );
-}
+});
