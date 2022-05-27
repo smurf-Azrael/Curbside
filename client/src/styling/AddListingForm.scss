@@ -1,3 +1,5 @@
+@import '../App.scss';
+
 .AddListingView {
   padding-top: 25px;
   padding-bottom: 50px;
@@ -9,7 +11,7 @@
   flex-direction: column;
   align-items: stretch;
 
-  .form-select:focus{
+  .form-select:focus {
     border-color: var(--main-green-color);
     box-shadow: rgba(53, 121, 96, 0.2) 0px 2px 8px 0px;
   }
@@ -39,6 +41,11 @@
     bottom: 75px;
     left: 15px;
     right: 15px;
+
+    @include lg {
+      left: auto;
+      right: auto;
+    }
   }
 
   .custom-manual-error {

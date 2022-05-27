@@ -1,8 +1,10 @@
+@import '../App.scss';
+
 .CardListings {
   display: flex;
   flex-wrap: wrap;
   width: 96%;
-  max-width: 500px;
+  max-width: 600px;
   justify-content: flex-start;
   margin: 0 auto;
 
@@ -51,5 +53,13 @@
       border: none;
       background-color: transparent;
     }
+
+    @include lg {
+      width: 33%;
+    }
+  }
+
+  @include lg {
+    max-width: 900px;
   }
 }
