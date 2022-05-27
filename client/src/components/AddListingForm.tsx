@@ -95,7 +95,7 @@ export default function AddListingForm() {
           file = new File([blob as Blob], newFileName, { type: 'image/jpeg' });
         }
         const date = Date.now();
-        let imageRef = ref(storage, `images/${currentUser?.id}-${file.name}-${date}`);
+        let imageRef = ref(storage, `images/${currentUser?.id}-${date}-${file.name}`);
         const options = {
           maxSizeMB: 1,
           maxWidthOrHeight: 1920,
