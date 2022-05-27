@@ -5,53 +5,57 @@ import FooterLink from './FooterLink';
 import Modal from 'react-bootstrap/Modal';
 import ButtonWide from './ButtonWide';
 
-
 export default function Footer() {
   const { currentUser, logOut } = useAuth();
   const [logOutWindowVisible, setLogOutWindowVisible] = useState(false);
   const [logOutMessageVisible, setLogOutMessageVisible] = useState(false);
 
-
   function closeLogOutWindow() {
-    setLogOutWindowVisible(false)
-  };
+    setLogOutWindowVisible(false);
+  }
   function loggingOut() {
-    setLogOutMessageVisible(true)
+    setLogOutMessageVisible(true);
     setTimeout(() => {
-      logOut()
+      logOut();
       closeLogOutWindow();
-      setTimeout(() => { setLogOutMessageVisible(false) }, 500)
-    }, 1200)
+      setTimeout(() => {
+        setLogOutMessageVisible(false);
+      }, 500);
+    }, 1200);
   }
 
   return (
     <div className="Footer">
       <FooterLink to="/">
         <i className="bi bi-house"></i>
+        <p>Home</p>
       </FooterLink>
       <FooterLink to="/chats">
         <i className="bi bi-chat-dots"></i>
+        <p>Messages</p>
       </FooterLink>
       <FooterLink to="/add-listing">
         <i className="bi bi-plus-circle"></i>
+        <p>Add Listing</p>
       </FooterLink>
       <FooterLink to={`/profile/${currentUser?.id}`}>
         <i className="bi bi-person"></i>
+        <p>Account</p>
       </FooterLink>
-      <button onClick={() => setLogOutWindowVisible(true)} style={{ border: 'none', backgroundColor: 'transparent' }} className='FooterLink' >
+      <button
+        onClick={() => setLogOutWindowVisible(true)}
+        style={{ border: 'none', backgroundColor: 'transparent' }}
+        className="FooterLink"
+      >
         <i className="bi bi-gear"></i>
+        <p>Settings</p>
       </button>
 
-      <Modal
-        size='sm'
-        centered
-        show={logOutWindowVisible}
-        onHide={closeLogOutWindow}
-      >
+      <Modal size="sm" centered show={logOutWindowVisible} onHide={closeLogOutWindow}>
         <Modal.Header closeButton>Settings</Modal.Header>
         <Modal.Body>
-          <div className={`log-out-box ${logOutMessageVisible && 'hide-div'}`} >
-            <div style={{ width: '100%' }} onClick={loggingOut} >
+          <div className={`log-out-box ${logOutMessageVisible && 'hide-div'}`}>
+            <div style={{ width: '100%' }} onClick={loggingOut}>
               <ButtonWide content={'Log out'} fill={true} />
             </div>
             <div style={{ width: '100%' }} onClick={closeLogOutWindow}>
@@ -64,5 +68,5 @@ export default function Footer() {
         </Modal.Body>
       </Modal>
     </div>
-  )
+  );
 }
