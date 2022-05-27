@@ -1,7 +1,7 @@
 .Profile {
   padding-top: 25px;
   padding-bottom: 80px;
-  max-width: 500px;
+  max-width: 900px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -15,16 +15,12 @@
     margin-left: 16px;
   }
 
-
   .profile-about-info-wrapper {
     width: 96%;
     display: flex;
     align-items: center;
     flex-direction: row;
     justify-content: space-between;
-
-
-
 
     .profile-basic-info-edit-wrapper {
       padding: 5px;
@@ -48,7 +44,6 @@
       flex-direction: column;
       width: 100%;
     }
-
   }
 
   .profile-listings-shown-options-wrapper {
@@ -60,8 +55,6 @@
     margin-top: 25px;
     width: 95%;
 
-
-
     .option-name {
       background-color: transparent;
       border: none;
@@ -69,8 +62,7 @@
       text-align: left;
       color: rgb(164, 164, 164);
 
-
-      &.active{
+      &.active {
         color: var(--main-green-color);
       }
     }

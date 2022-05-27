@@ -1,3 +1,5 @@
+@import '../App.scss';
+
 .Card-Listing-Preview {
   margin: 15px;
   position: fixed;
@@ -10,6 +12,12 @@
   border-radius: 10px;
   text-decoration: none;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+  @include lg {
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+  }
 
   &.with-user {
     bottom: 65px;
